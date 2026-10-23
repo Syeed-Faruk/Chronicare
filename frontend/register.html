@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | CHRONICARE</title>
+
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+
+<body>
+
+    <main class="auth-page">
+
+        <!-- LEFT SIDE -->
+
+        <section class="auth-showcase">
+
+            <div class="showcase-content">
+
+                <a href="index.html" class="brand">
+                    <span class="brand-mark">C</span>
+                    <span>CHRONICARE</span>
+                </a>
+
+                <div class="showcase-text">
+
+                    <span class="eyebrow">
+                        CHRONIC DISEASE MONITORING
+                    </span>
+
+                    <h1>
+                        Care that stays<br>
+                        <span>connected.</span>
+                    </h1>
+
+                    <p>
+                        Monitor health, understand trends, assess risk,
+                        and stay connected with the people involved in
+                        your care.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-list">
+
+                    <div class="feature-item">
+
+                        <div class="feature-icon">
+                            ♥
+                        </div>
+
+                        <div>
+                            <strong>Health Monitoring</strong>
+                            <span>Track important health parameters.</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature-item">
+
+                        <div class="feature-icon">
+                            ◌
+                        </div>
+
+                        <div>
+                            <strong>Risk Assessment</strong>
+                            <span>Identify changes through intelligent analysis.</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature-item">
+
+                        <div class="feature-icon">
+                            ✓
+                        </div>
+
+                        <div>
+                            <strong>Connected Care</strong>
+                            <span>Keep patients, doctors and caregivers connected.</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="showcase-footer">
+                AI-Based Chronic Disease Monitoring Platform
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT SIDE -->
+
+        <section class="auth-form-section">
+
+            <div class="form-container">
+
+                <div class="mobile-brand">
+
+                    <a href="index.html" class="brand">
+                        <span class="brand-mark">C</span>
+                        <span>CHRONICARE</span>
+                    </a>
+
+                </div>
+
+
+                <div class="form-header">
+
+                    <span class="form-step">
+                        GET STARTED
+                    </span>
+
+                    <h2>
+                        Create your account
+                    </h2>
+
+                    <p>
+                        Set up your CHRONICARE account to get started.
+                    </p>
+
+                </div>
+
+
+                <form id="registerForm">
+
+
+                    <!-- FULL NAME -->
+
+                    <div class="input-group">
+
+                        <label for="name">
+                            Full name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="input-group">
+
+                        <label for="email">
+                            Email address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- ROLE -->
+
+                    <div class="input-group">
+
+                        <label>
+                            I am registering as
+                        </label>
+
+                        <div class="role-options">
+
+
+                            <label class="role-card">
+
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="patient"
+                                    required
+                                >
+
+                                <span class="role-content">
+
+                                    <span class="role-icon">
+                                        P
+                                    </span>
+
+                                    <span class="role-text">
+
+                                        <strong>Patient</strong>
+
+                                        <small>
+                                            Manage your health
+                                        </small>
+
+                                    </span>
+
+                                </span>
+
+                            </label>
+
+
+                            <label class="role-card">
+
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="doctor"
+                                >
+
+                                <span class="role-content">
+
+                                    <span class="role-icon">
+                                        D
+                                    </span>
+
+                                    <span class="role-text">
+
+                                        <strong>Doctor</strong>
+
+                                        <small>
+                                            Monitor patients
+                                        </small>
+
+                                    </span>
+
+                                </span>
+
+                            </label>
+
+
+                            <label class="role-card">
+
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="caregiver"
+                                >
+
+                                <span class="role-content">
+
+                                    <span class="role-icon">
+                                        C
+                                    </span>
+
+                                    <span class="role-text">
+
+                                        <strong>Caregiver</strong>
+
+                                        <small>
+                                            Support a patient
+                                        </small>
+
+                                    </span>
+
+                                </span>
+
+                            </label>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="password-row">
+
+                        <div class="input-group">
+
+                            <label for="password">
+                                Password
+                            </label>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Create a password"
+                                autocomplete="new-password"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="confirmPassword">
+                                Confirm password
+                            </label>
+
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                placeholder="Repeat password"
+                                autocomplete="new-password"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="password-hint">
+                        Use at least 8 characters with a mix of letters and numbers.
+                    </p>
+
+
+                    <!-- SUBMIT -->
+
+                    <button
+                        type="submit"
+                        class="submit-button"
+                    >
+                        Create account
+                        <span>→</span>
+                    </button>
+
+
+                </form>
+
+
+                <div class="form-footer">
+
+                    <p>
+                        Already have an account?
+
+                        <a href="login.html">
+                            Sign in
+                        </a>
+                    </p>
+
+                    <a href="index.html" class="back-link">
+                        ← Back to home
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+        const nameInput = document.querySelector(
+            'input[type="text"]'
+        );
+
+        const emailInput = document.querySelector(
+            'input[type="email"]'
+        );
+
+        const passwordInputs = document.querySelectorAll(
+            'input[type="password"]'
+        );
+
+        const roleInput = document.querySelector('input[name="role"]:checked');
+
+
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const password = passwordInputs[0].value;
+        const confirmPassword = passwordInputs[1].value;
+        const role = roleInput.value;
+
+
+        // Check password
+        if (password !== confirmPassword) {
+
+            alert("Passwords do not match.");
+
+            return;
+        }
+
+
+        // Check password length
+        if (password.length < 6) {
+
+            alert("Password must contain at least 6 characters.");
+
+            return;
+        }
+
+
+        try {
+
+            const response = await fetch(
+                "http://localhost:5000/api/auth/register",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        password: password,
+                        role: role
+                    })
+                }
+            );
+
+
+            const data = await response.json();
+
+
+            if (!response.ok) {
+
+                alert(data.message || "Registration failed.");
+
+                return;
+            }
+
+
+            // Store login information
+            localStorage.setItem(
+                "chronicareToken",
+                data.token
+            );
+
+            localStorage.setItem(
+                "chronicareUser",
+                JSON.stringify(data.user)
+            );
+
+
+            alert("Registration successful!");
+
+
+            // Redirect according to role
+            if (data.user.role === "patient") {
+
+                window.location.href =
+                    "patient/dashboard.html";
+
+            } else if (data.user.role === "doctor") {
+
+                window.location.href =
+                    "doctor/dashboard.html";
+
+            } else if (data.user.role === "caregiver") {
+
+                window.location.href =
+                    "caregiver/dashboard.html";
+            }
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to connect to the CHRONICARE server. " +
+                "Make sure the backend is running."
+            );
+
+        }
+
+    });
+</script>
+
+</body>
+
+</html>

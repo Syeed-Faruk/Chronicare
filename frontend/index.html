@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CHRONICARE - Chronic Disease Monitoring</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F1F8E9;
+            color: #263238;
+        }
+
+        header {
+            background-color: #2E7D32;
+            color: white;
+            padding: 20px 60px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 16px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .hero {
+            min-height: calc(100vh - 76px);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+            padding: 40px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            color: #2E7D32;
+            margin-bottom: 20px;
+        }
+
+        .hero h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #607D68;
+            margin-bottom: 35px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .primary-btn {
+            background-color: #2E7D32;
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background-color: #1B5E20;
+        }
+
+        .secondary-btn {
+            border: 2px solid #2E7D32;
+            color: #2E7D32;
+            background-color: white;
+        }
+
+        .secondary-btn:hover {
+            background-color: #E8F5E9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+
+        <div class="logo">
+            CHRONICARE
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+        </nav>
+
+    </header>
+
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>CHRONICARE</h1>
+
+            <h2>
+                AI-Based Chronic Disease Monitoring Platform
+            </h2>
+
+            <p>
+                Monitor health parameters, analyze health trends,
+                assess health risks, receive alerts, and stay connected
+                with doctors and caregivers.
+            </p>
+
+            <div class="buttons">
+
+                <a href="register.html" class="btn primary-btn">
+                    Get Started
+                </a>
+
+                <a href="login.html" class="btn secondary-btn">
+                    Login
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</body>
+</html>

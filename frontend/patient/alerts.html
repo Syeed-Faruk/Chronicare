@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Alerts | CHRONICARE</title>
+
+    <link
+        rel="stylesheet"
+        href="../css/dashboard.css"
+    >
+
+    <style>
+
+        .alerts-page {
+            max-width: 1400px;
+        }
+
+        .alerts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 28px;
+        }
+
+        .alerts-header h1 {
+            font-size: 28px;
+            margin-bottom: 7px;
+        }
+
+        .alerts-header p {
+            color: #607D68;
+            font-size: 13px;
+        }
+
+        .alert-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            background: white;
+            border: 1px solid #E1E8E2;
+            border-radius: 10px;
+            padding: 17px;
+        }
+
+        .summary-label {
+            color: #607D68;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: .4px;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 24px;
+            font-weight: 750;
+        }
+
+        .summary-note {
+            color: #8A958E;
+            font-size: 9px;
+            margin-top: 5px;
+        }
+
+        .alerts-layout {
+            display: grid;
+            grid-template-columns: 1.5fr 0.7fr;
+            gap: 18px;
+        }
+
+        .alerts-panel,
+        .alert-info-panel {
+            background: white;
+            border: 1px solid #E1E8E2;
+            border-radius: 10px;
+            padding: 22px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 18px;
+        }
+
+        .panel-header h2 {
+            font-size: 16px;
+        }
+
+        .panel-header p {
+            color: #607D68;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        .filter-select {
+            border: 1px solid #DDE5DF;
+            border-radius: 6px;
+            background: white;
+            padding: 7px 10px;
+            color: #607D68;
+            font-size: 10px;
+            outline: none;
+        }
+
+        .alert-item {
+            display: flex;
+            gap: 14px;
+            padding: 17px 0;
+            border-bottom: 1px solid #EEF2EF;
+        }
+
+        .alert-item:last-child {
+            border-bottom: none;
+        }
+
+        .alert-icon {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .alert-icon.elevated {
+            background: #FFF8E1;
+            color: #F9A825;
+        }
+
+        .alert-icon.normal {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .alert-icon.info {
+            background: #F1F8E9;
+            color: #607D68;
+        }
+
+        .alert-details {
+            flex: 1;
+        }
+
+        .alert-title-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .alert-title {
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .alert-time {
+            color: #9AA49E;
+            font-size: 9px;
+            white-space: nowrap;
+        }
+
+        .alert-message {
+            color: #607D68;
+            font-size: 10px;
+            line-height: 1.6;
+            margin-top: 5px;
+        }
+
+        .alert-meta {
+            display: flex;
+            gap: 7px;
+            align-items: center;
+            margin-top: 9px;
+        }
+
+        .alert-type {
+            padding: 4px 6px;
+            border-radius: 4px;
+            background: #F1F8E9;
+            color: #607D68;
+            font-size: 8px;
+            font-weight: 700;
+        }
+
+        .alert-status {
+            padding: 4px 6px;
+            border-radius: 4px;
+            font-size: 8px;
+            font-weight: 700;
+        }
+
+        .alert-status.new {
+            background: #FFF8E1;
+            color: #9A6A00;
+        }
+
+        .alert-status.reviewed {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            color: #607D68;
+            font-size: 11px;
+        }
+
+        .alert-rule {
+            padding: 14px 0;
+            border-bottom: 1px solid #EEF2EF;
+        }
+
+        .alert-rule:last-child {
+            border-bottom: none;
+        }
+
+        .rule-top {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 5px;
+        }
+
+        .rule-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #F9A825;
+        }
+
+        .rule-dot.green {
+            background: #66BB6A;
+        }
+
+        .alert-rule strong {
+            font-size: 10px;
+        }
+
+        .alert-rule p {
+            color: #607D68;
+            font-size: 9px;
+            line-height: 1.5;
+            padding-left: 17px;
+        }
+
+        .notification-box {
+            margin-top: 20px;
+            padding: 14px;
+            background: #F1F8E9;
+            border-radius: 8px;
+        }
+
+        .notification-box strong {
+            display: block;
+            color: #2E7D32;
+            font-size: 10px;
+            margin-bottom: 5px;
+        }
+
+        .notification-box p {
+            color: #607D68;
+            font-size: 9px;
+            line-height: 1.6;
+        }
+
+        .demo-note {
+            margin-top: 18px;
+            padding: 11px 13px;
+            background: #FFF8E1;
+            border-left: 3px solid #F9A825;
+            color: #806000;
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 950px) {
+
+            .alerts-layout {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 750px) {
+
+            .alert-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .alerts-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .alert-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .alert-title-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="dashboard-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-top">
+
+            <a
+                href="dashboard.html"
+                class="dashboard-brand"
+            >
+
+                <span class="brand-mark">
+                    C
+                </span>
+
+                <span>
+                    CHRONICARE
+                </span>
+
+            </a>
+
+
+            <nav class="sidebar-nav">
+
+                <p class="nav-label">
+                    MAIN MENU
+                </p>
+
+
+                <a
+                    href="dashboard.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        ⌂
+                    </span>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="health-monitoring.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        ♥
+                    </span>
+
+                    <span>
+                        Health Monitoring
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="health-history.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        ◈
+                    </span>
+
+                    <span>
+                        Health History
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="health-trends.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        ↗
+                    </span>
+
+                    <span>
+                        Health Trends
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="analytics.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        ◌
+                    </span>
+
+                    <span>
+                        Analytics
+                    </span>
+
+                </a>
+
+
+                <p class="nav-label second-label">
+                    CARE
+                </p>
+
+
+                <a
+                    href="risk-status.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        !
+                    </span>
+
+                    <span>
+                        Risk Status
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="alerts.html"
+                    class="nav-item active"
+                >
+
+                    <span class="nav-icon">
+                        ◇
+                    </span>
+
+                    <span>
+                        Alerts
+                    </span>
+
+                    <span class="alert-count">
+                        2
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="#"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        □
+                    </span>
+
+                    <span>
+                        Appointments
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="#"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        ↻
+                    </span>
+
+                    <span>
+                        Follow-Up
+                    </span>
+
+                </a>
+
+            </nav>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="#"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    ○
+                </span>
+
+                <span>
+                    My Profile
+                </span>
+
+            </a>
+
+
+            <a
+                href="../index.html"
+                class="nav-item logout"
+            >
+
+                <span class="nav-icon">
+                    ←
+                </span>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <p class="page-section">
+                    PATIENT PORTAL
+                </p>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button class="icon-button">
+                    ♧
+                </button>
+
+
+                <button class="notification-button">
+
+                    ◇
+
+                    <span></span>
+
+                </button>
+
+
+                <div class="user-profile">
+
+                    <div class="avatar">
+                        SF
+                    </div>
+
+                    <div class="user-info">
+
+                        <strong>
+                            Syeed Faruk
+                        </strong>
+
+                        <small>
+                            Patient
+                        </small>
+
+                    </div>
+
+                    <span class="dropdown-arrow">
+                        ▾
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE -->
+
+        <div class="content-wrapper alerts-page">
+
+
+            <!-- HEADER -->
+
+            <section class="alerts-header">
+
+                <div>
+
+                    <p class="date-label">
+                        HEALTH NOTIFICATIONS
+                    </p>
+
+                    <h1>
+                        Alerts
+                    </h1>
+
+                    <p>
+                        Review notifications generated from your health data.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- SUMMARY -->
+
+            <section class="alert-summary">
+
+
+                <div class="summary-card">
+
+                    <p class="summary-label">
+                        TOTAL ALERTS
+                    </p>
+
+                    <div class="summary-value">
+                        8
+                    </div>
+
+                    <p class="summary-note">
+                        This month
+                    </p>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <p class="summary-label">
+                        NEW
+                    </p>
+
+                    <div class="summary-value">
+                        2
+                    </div>
+
+                    <p class="summary-note">
+                        Require review
+                    </p>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <p class="summary-label">
+                        REVIEWED
+                    </p>
+
+                    <div class="summary-value">
+                        6
+                    </div>
+
+                    <p class="summary-note">
+                        Previously handled
+                    </p>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <p class="summary-label">
+                        LATEST
+                    </p>
+
+                    <div class="summary-value">
+                        10m
+                    </div>
+
+                    <p class="summary-note">
+                        Since last alert
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ALERTS -->
+
+            <section class="alerts-layout">
+
+
+                <div class="alerts-panel">
+
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <h2>
+                                Recent Alerts
+                            </h2>
+
+                            <p>
+                                Notifications from your recent health records
+                            </p>
+
+                        </div>
+
+
+                        <select
+                            id="alertFilter"
+                            class="filter-select"
+                            onchange="filterAlerts()"
+                        >
+
+                            <option value="all">
+                                All Alerts
+                            </option>
+
+                            <option value="new">
+                                New
+                            </option>
+
+                            <option value="reviewed">
+                                Reviewed
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div id="alertList">
+
+
+                        <!-- ALERT 1 -->
+
+                        <div
+    class="alert-item"
+    data-status="new"
+    id="dynamicAlert"
+>
+
+    <div class="alert-icon elevated">
+        !
+    </div>
+
+    <div class="alert-details">
+
+        <div class="alert-title-row">
+
+            <span class="alert-title" id="alertTitle">
+                Loading alert...
+            </span>
+
+            <span class="alert-time" id="alertTime">
+                Loading...
+            </span>
+
+        </div>
+
+        <p class="alert-message" id="alertMessage">
+            Loading alert information...
+        </p>
+
+        <div class="alert-meta">
+
+            <span class="alert-type" id="alertType">
+                RISK ALERT
+            </span>
+
+            <span
+                class="alert-status new"
+                id="alertStatus"
+            >
+                NEW
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+                        <!-- ALERT 2 -->
+
+                        <div
+                            class="alert-item"
+                            data-status="new"
+                        >
+
+                            <div class="alert-icon elevated">
+                                !
+                            </div>
+
+
+                            <div class="alert-details">
+
+                                <div class="alert-title-row">
+
+                                    <span class="alert-title">
+                                        Risk assessment updated
+                                    </span>
+
+                                    <span class="alert-time">
+                                        1 hour ago
+                                    </span>
+
+                                </div>
+
+
+                                <p class="alert-message">
+
+                                    A new sample risk assessment has been
+                                    generated from your latest recorded
+                                    health parameters.
+
+                                </p>
+
+
+                                <div class="alert-meta">
+
+                                    <span class="alert-type">
+                                        ASSESSMENT
+                                    </span>
+
+                                    <span class="alert-status new">
+                                        NEW
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ALERT 3 -->
+
+                        <div
+                            class="alert-item"
+                            data-status="reviewed"
+                        >
+
+                            <div class="alert-icon normal">
+                                ✓
+                            </div>
+
+
+                            <div class="alert-details">
+
+                                <div class="alert-title-row">
+
+                                    <span class="alert-title">
+                                        Heart rate within expected range
+                                    </span>
+
+                                    <span class="alert-time">
+                                        Yesterday
+                                    </span>
+
+                                </div>
+
+
+                                <p class="alert-message">
+
+                                    Your latest heart rate measurement
+                                    was recorded without an alert condition.
+
+                                </p>
+
+
+                                <div class="alert-meta">
+
+                                    <span class="alert-type">
+                                        HEALTH DATA
+                                    </span>
+
+                                    <span class="alert-status reviewed">
+                                        REVIEWED
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ALERT 4 -->
+
+                        <div
+                            class="alert-item"
+                            data-status="reviewed"
+                        >
+
+                            <div class="alert-icon normal">
+                                ✓
+                            </div>
+
+
+                            <div class="alert-details">
+
+                                <div class="alert-title-row">
+
+                                    <span class="alert-title">
+                                        Blood pressure recorded
+                                    </span>
+
+                                    <span class="alert-time">
+                                        2 days ago
+                                    </span>
+
+                                </div>
+
+
+                                <p class="alert-message">
+
+                                    Your recent blood pressure measurement
+                                    was added to your health history.
+
+                                </p>
+
+
+                                <div class="alert-meta">
+
+                                    <span class="alert-type">
+                                        HEALTH DATA
+                                    </span>
+
+                                    <span class="alert-status reviewed">
+                                        REVIEWED
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ALERT 5 -->
+
+                        <div
+                            class="alert-item"
+                            data-status="reviewed"
+                        >
+
+                            <div class="alert-icon info">
+                                i
+                            </div>
+
+
+                            <div class="alert-details">
+
+                                <div class="alert-title-row">
+
+                                    <span class="alert-title">
+                                        Health record updated
+                                    </span>
+
+                                    <span class="alert-time">
+                                        3 days ago
+                                    </span>
+
+                                </div>
+
+
+                                <p class="alert-message">
+
+                                    A new health record was successfully
+                                    added to your patient history.
+
+                                </p>
+
+
+                                <div class="alert-meta">
+
+                                    <span class="alert-type">
+                                        SYSTEM
+                                    </span>
+
+                                    <span class="alert-status reviewed">
+                                        REVIEWED
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div
+                        id="emptyState"
+                        class="empty-state"
+                    >
+
+                        No alerts match the selected filter.
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ALERT INFORMATION -->
+
+                <div class="alert-info-panel">
+
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <h2>
+                                Alert Information
+                            </h2>
+
+                            <p>
+                                How CHRONICARE alerts work
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="alert-rule">
+
+                        <div class="rule-top">
+
+                            <span class="rule-dot"></span>
+
+                            <strong>
+                                Risk Alerts
+                            </strong>
+
+                        </div>
+
+                        <p>
+                            Generated when the risk assessment
+                            identifies parameters that require
+                            attention.
+                        </p>
+
+                    </div>
+
+
+                    <div class="alert-rule">
+
+                        <div class="rule-top">
+
+                            <span class="rule-dot green"></span>
+
+                            <strong>
+                                Health Updates
+                            </strong>
+
+                        </div>
+
+                        <p>
+                            Created when new health information
+                            is recorded or updated.
+                        </p>
+
+                    </div>
+
+
+                    <div class="alert-rule">
+
+                        <div class="rule-top">
+
+                            <span class="rule-dot green"></span>
+
+                            <strong>
+                                Assessment Updates
+                            </strong>
+
+                        </div>
+
+                        <p>
+                            Shows when a new risk assessment has
+                            been generated for the patient.
+                        </p>
+
+                    </div>
+
+
+                    <div class="notification-box">
+
+                        <strong>
+                            Connected Care
+                        </strong>
+
+                        <p>
+                            Important patient alerts can later be
+                            made available to authorized doctors
+                            and caregivers through their respective
+                            dashboards.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="demo-note">
+
+                        <strong>Prototype note:</strong>
+                        These alerts are sample frontend data.
+                        Actual alerts will be generated from the
+                        backend risk-assessment workflow.
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    let allAlerts = [];
+
+
+    async function loadAlerts() {
+
+        const token =
+            localStorage.getItem("chronicareToken");
+
+       if (!token) {
+    console.log("No login token found.");
+    return;
+}
+
+        try {
+
+            const response =
+                await fetch(
+                    "http://127.0.0.1:5000/api/health/alerts",
+                    {
+                        method: "GET",
+
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token
+                        }
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                alert(
+                    data.message ||
+                    "Failed to load alerts."
+                );
+
+                return;
+
+            }
+
+
+            allAlerts =
+                data.alerts;
+
+
+            displayAlerts(allAlerts);
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to connect to the CHRONICARE server."
+            );
+
+        }
+
+    }
+
+
+    function displayAlerts(alerts) {
+
+        const firstAlert =
+    document.querySelector(".alert-item");
+
+const container =
+    firstAlert
+        ? firstAlert.parentElement
+        : null;
+
+const emptyState =
+    document.getElementById("emptyState");
+
+        if (!container) {
+    console.error(
+        "Alert container not found."
+    );
+    return;
+}
+
+container
+    .querySelectorAll(".alert-item")
+    .forEach(function(item) {
+        item.remove();
+    });
+
+
+        if (alerts.length === 0) {
+
+            emptyState.style.display =
+                "block";
+
+            return;
+
+        }
+
+
+        emptyState.style.display =
+            "none";
+
+
+        alerts.forEach(function(alert) {
+
+            const alertItem =
+                document.createElement("div");
+
+
+            alertItem.className =
+                "alert-item";
+
+
+            alertItem.setAttribute(
+                "data-status",
+                alert.alert_status
+            );
+
+
+            const createdDate =
+                new Date(alert.created_at);
+
+
+            const timeText =
+                createdDate.toLocaleString(
+                    "en-GB",
+                    {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    }
+                );
+
+
+            alertItem.innerHTML = `
+
+                <div class="alert-icon elevated">
+                    !
+                </div>
+
+                <div class="alert-details">
+
+                    <div class="alert-title-row">
+
+                        <span class="alert-title">
+                            ${alert.alert_type}
+                        </span>
+
+                        <span class="alert-time">
+                            ${timeText}
+                        </span>
+
+                    </div>
+
+                    <p class="alert-message">
+                        ${alert.alert_message}
+                    </p>
+
+                    <div class="alert-meta">
+
+                        <span class="alert-type">
+                            RISK ALERT
+                        </span>
+
+                        <span class="alert-status new">
+                            ${alert.alert_status.toUpperCase()}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                alertItem
+            );
+
+        });
+
+    }
+
+
+    function filterAlerts() {
+
+        const filter =
+            document.getElementById(
+                "alertFilter"
+            ).value;
+
+
+        const filteredAlerts =
+            filter === "all"
+                ? allAlerts
+                : allAlerts.filter(
+                    alert =>
+                        alert.alert_status === filter
+                );
+
+
+        displayAlerts(
+            filteredAlerts
+        );
+
+    }
+
+
+    loadAlerts();
+
+</script>
+
+
+</body>
+
+</html>

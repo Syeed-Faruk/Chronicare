@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Health History | CHRONICARE</title>
+
+    <link rel="stylesheet" href="../css/dashboard.css">
+
+    <style>
+        .history-page {
+            max-width: 1400px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 28px;
+        }
+
+        .history-header h1 {
+            font-size: 28px;
+            margin-bottom: 7px;
+        }
+
+        .history-header p {
+            color: #607D68;
+            font-size: 13px;
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            border: 1px solid #DDE5DF;
+            background: white;
+            color: #607D68;
+            padding: 10px 15px;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .add-btn {
+            border: none;
+            background: #2E7D32;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            background: white;
+            border: 1px solid #E1E8E2;
+            border-radius: 10px;
+            padding: 17px;
+        }
+
+        .summary-label {
+            color: #607D68;
+            font-size: 10px;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 22px;
+            font-weight: 750;
+        }
+
+        .summary-value span {
+            color: #8A958E;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .summary-note {
+            color: #2E7D32;
+            font-size: 9px;
+            margin-top: 6px;
+        }
+
+        .history-panel {
+            background: white;
+            border: 1px solid #E1E8E2;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .history-panel-header {
+            padding: 21px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #E8EDE9;
+        }
+
+        .history-panel-header h2 {
+            font-size: 16px;
+        }
+
+        .history-panel-header p {
+            color: #607D68;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        .search-box {
+            border: 1px solid #DDE5DF;
+            border-radius: 7px;
+            padding: 9px 12px;
+            width: 210px;
+            font-size: 10px;
+            outline: none;
+        }
+
+        .search-box:focus {
+            border-color: #66BB6A;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th {
+            background: #F8FAF8;
+            color: #607D68;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            text-align: left;
+            padding: 13px 18px;
+            border-bottom: 1px solid #E8EDE9;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #EEF2EF;
+            font-size: 10px;
+            color: #263238;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #FAFCFA;
+        }
+
+        .record-date strong {
+            display: block;
+            font-size: 10px;
+        }
+
+        .record-date span {
+            display: block;
+            color: #8A958E;
+            font-size: 9px;
+            margin-top: 3px;
+        }
+
+        .normal-status,
+        .monitor-status {
+            display: inline-block;
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-size: 8px;
+            font-weight: 800;
+        }
+
+        .normal-status {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .monitor-status {
+            background: #FFF8E1;
+            color: #9A6A00;
+        }
+
+        .action-link {
+            color: #2E7D32;
+            font-size: 10px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .empty-message {
+            display: none;
+            text-align: center;
+            padding: 35px;
+            color: #607D68;
+            font-size: 12px;
+        }
+
+        @media (max-width: 900px) {
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .history-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 18px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .history-panel-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="dashboard-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-top">
+
+            <a href="dashboard.html" class="dashboard-brand">
+                <span class="brand-mark">C</span>
+                <span>CHRONICARE</span>
+            </a>
+
+
+            <nav class="sidebar-nav">
+
+                <p class="nav-label">MAIN MENU</p>
+
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">⌂</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="health-monitoring.html" class="nav-item">
+                    <span class="nav-icon">♥</span>
+                    <span>Health Monitoring</span>
+                </a>
+
+                <a href="health-history.html" class="nav-item active">
+                    <span class="nav-icon">◈</span>
+                    <span>Health History</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">↗</span>
+                    <span>Health Trends</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">◌</span>
+                    <span>Analytics</span>
+                </a>
+
+
+                <p class="nav-label second-label">CARE</p>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">!</span>
+                    <span>Risk Status</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">◇</span>
+                    <span>Alerts</span>
+                    <span class="alert-count">2</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">□</span>
+                    <span>Appointments</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">↻</span>
+                    <span>Follow-Up</span>
+                </a>
+
+            </nav>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">○</span>
+                <span>My Profile</span>
+            </a>
+
+            <a href="../index.html" class="nav-item logout">
+                <span class="nav-icon">←</span>
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+                <p class="page-section">PATIENT PORTAL</p>
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button class="icon-button">♧</button>
+
+                <button class="notification-button">
+                    ◇
+                    <span></span>
+                </button>
+
+
+                <div class="user-profile">
+
+                    <div class="avatar">SF</div>
+
+                    <div class="user-info">
+                        <strong>Syeed Faruk</strong>
+                        <small>Patient</small>
+                    </div>
+
+                    <span class="dropdown-arrow">▾</span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE -->
+
+        <div class="content-wrapper history-page">
+
+
+            <!-- HEADER -->
+
+            <section class="history-header">
+
+                <div>
+
+                    <p class="date-label">
+                        HEALTH RECORDS
+                    </p>
+
+                    <h1>
+                        Health History
+                    </h1>
+
+                    <p>
+                        View and review your previously recorded health data.
+                    </p>
+
+                </div>
+
+
+                <div class="history-actions">
+
+                    <button
+                        class="filter-btn"
+                        onclick="filterRecords()"
+                    >
+                        Filter
+                    </button>
+
+                    <button
+                        class="add-btn"
+                        onclick="window.location.href='health-monitoring.html'"
+                    >
+                        + Add Health Data
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- SUMMARY -->
+
+            <section class="summary-grid">
+
+
+                <div class="summary-card">
+
+                    <p class="summary-label">
+                        TOTAL RECORDS
+                    </p>
+
+                    <div class="summary-value">
+                        24
+                    </div>
+
+                    <p class="summary-note">
+                        ↑ 4 this month
+                    </p>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <p class="summary-label">
+                        LATEST HEART RATE
+                    </p>
+
+                    <div class="summary-value">
+                        78 <span>BPM</span>
+                    </div>
+
+                    <p class="summary-note">
+                        Within normal range
+                    </p>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <p class="summary-label">
+                        LATEST BLOOD PRESSURE
+                    </p>
+
+                    <div class="summary-value">
+                        120/80 <span>mmHg</span>
+                    </div>
+
+                    <p class="summary-note">
+                        Stable
+                    </p>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <p class="summary-label">
+                        LAST RECORDED
+                    </p>
+
+                    <div class="summary-value">
+                        Today
+                    </div>
+
+                    <p class="summary-note">
+                        10 minutes ago
+                    </p>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- TABLE -->
+
+            <section class="history-panel">
+
+
+                <div class="history-panel-header">
+
+                    <div>
+
+                        <h2>
+                            Recorded Health Data
+                        </h2>
+
+                        <p>
+                            Your previous health measurements
+                        </p>
+
+                    </div>
+
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        class="search-box"
+                        placeholder="Search records..."
+                        onkeyup="searchRecords()"
+                    >
+
+                </div>
+
+
+                <div class="table-container">
+
+                    <table id="historyTable">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Heart Rate
+                                </th>
+
+                                <th>
+                                    Blood Pressure
+                                </th>
+
+                                <th>
+                                    SpO₂
+                                </th>
+
+                                <th>
+                                    Weight
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                            <tr>
+
+                                <td class="record-date">
+
+                                    <strong>
+                                        30 Sep 2026
+                                    </strong>
+
+                                    <span>
+                                        10:15 AM
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    78 BPM
+                                </td>
+
+                                <td>
+                                    120/80
+                                </td>
+
+                                <td>
+                                    98%
+                                </td>
+
+                                <td>
+                                    72 kg
+                                </td>
+
+                                <td>
+                                    <span class="normal-status">
+                                        NORMAL
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="#" class="action-link">
+                                        View
+                                    </a>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td class="record-date">
+
+                                    <strong>
+                                        29 Sep 2026
+                                    </strong>
+
+                                    <span>
+                                        09:40 AM
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    81 BPM
+                                </td>
+
+                                <td>
+                                    122/81
+                                </td>
+
+                                <td>
+                                    97%
+                                </td>
+
+                                <td>
+                                    72.1 kg
+                                </td>
+
+                                <td>
+                                    <span class="normal-status">
+                                        NORMAL
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="#" class="action-link">
+                                        View
+                                    </a>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td class="record-date">
+
+                                    <strong>
+                                        28 Sep 2026
+                                    </strong>
+
+                                    <span>
+                                        10:05 AM
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    84 BPM
+                                </td>
+
+                                <td>
+                                    124/82
+                                </td>
+
+                                <td>
+                                    97%
+                                </td>
+
+                                <td>
+                                    72.3 kg
+                                </td>
+
+                                <td>
+                                    <span class="monitor-status">
+                                        MONITOR
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="#" class="action-link">
+                                        View
+                                    </a>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td class="record-date">
+
+                                    <strong>
+                                        27 Sep 2026
+                                    </strong>
+
+                                    <span>
+                                        09:55 AM
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    79 BPM
+                                </td>
+
+                                <td>
+                                    119/79
+                                </td>
+
+                                <td>
+                                    98%
+                                </td>
+
+                                <td>
+                                    72 kg
+                                </td>
+
+                                <td>
+                                    <span class="normal-status">
+                                        NORMAL
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="#" class="action-link">
+                                        View
+                                    </a>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td class="record-date">
+
+                                    <strong>
+                                        26 Sep 2026
+                                    </strong>
+
+                                    <span>
+                                        10:20 AM
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    82 BPM
+                                </td>
+
+                                <td>
+                                    121/80
+                                </td>
+
+                                <td>
+                                    98%
+                                </td>
+
+                                <td>
+                                    72.2 kg
+                                </td>
+
+                                <td>
+                                    <span class="normal-status">
+                                        NORMAL
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="#" class="action-link">
+                                        View
+                                    </a>
+                                </td>
+
+                            </tr>
+
+
+                        </tbody>
+
+                    </table>
+
+                    <div
+                        id="emptyMessage"
+                        class="empty-message"
+                    >
+                        No matching health records found.
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    async function loadHealthHistory() {
+
+        const token =
+            localStorage.getItem("chronicareToken");
+
+        if (!token) {
+            console.log("No login token found.");
+            return;
+        }
+
+        try {
+
+            const response =
+                await fetch(
+                    "http://127.0.0.1:5000/api/health/history",
+                    {
+                        method: "GET",
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token
+                        }
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if (!response.ok) {
+
+                console.error(
+                    data.message ||
+                    "Failed to load health history."
+                );
+
+                return;
+            }
+
+            console.log(
+                "Health history:",
+                data.records
+            );
+
+            const records =
+                data.records || [];
+
+            const tableBody =
+                document.querySelector(
+                    "#historyTable tbody"
+                );
+
+            if (!tableBody) {
+                console.error(
+                    "Health history table not found."
+                );
+                return;
+            }
+
+            tableBody.innerHTML = "";
+
+            records.forEach(function(record) {
+
+                const row =
+                    document.createElement("tr");
+
+                const date =
+                    new Date(record.record_date);
+
+                const formattedDate =
+                    date.toLocaleDateString(
+                        "en-GB",
+                        {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric"
+                        }
+                    );
+
+                let status = "NORMAL";
+                let statusClass = "normal-status";
+
+                const heartRate =
+                    Number(record.heart_rate);
+
+                const spo2 =
+                    Number(record.spo2);
+
+                const systolic =
+                    Number(
+                        String(
+                            record.blood_pressure
+                        ).split("/")[0]
+                    );
+
+                if (
+                    heartRate < 60 ||
+                    heartRate > 100 ||
+                    spo2 < 95 ||
+                    systolic >= 140
+                ) {
+                    status = "MONITOR";
+                    statusClass = "monitor-status";
+                }
+
+                row.innerHTML = `
+                    <td class="record-date">
+                        <strong>
+                            ${formattedDate}
+                        </strong>
+                        <span>
+                            ${record.record_date}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${record.heart_rate || "-"} BPM
+                    </td>
+
+                    <td>
+                        ${record.blood_pressure || "-"}
+                    </td>
+
+                    <td>
+                        ${record.spo2 || "-"}%
+                    </td>
+
+                    <td>
+                        ${record.weight || "-"} kg
+                    </td>
+
+                    <td>
+                        <span class="${statusClass}">
+                            ${status}
+                        </span>
+                    </td>
+
+                    <td>
+                        <a href="#" class="action-link">
+                            View
+                        </a>
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+
+            });
+
+            updateSummary(records);
+
+        } catch (error) {
+
+            console.error(
+                "Unable to connect to CHRONICARE server.",
+                error
+            );
+
+        }
+    }
+
+
+    function updateSummary(records) {
+
+        const summaryValues =
+            document.querySelectorAll(
+                ".summary-value"
+            );
+
+        if (
+            !summaryValues.length ||
+            records.length === 0
+        ) {
+            return;
+        }
+
+        const latest =
+            records[0];
+
+        /* Total records */
+
+        summaryValues[0].textContent =
+            records.length;
+
+
+        /* Latest heart rate */
+
+        summaryValues[1].innerHTML =
+            `${latest.heart_rate || "-"}
+            <span>BPM</span>`;
+
+
+        /* Latest blood pressure */
+
+        summaryValues[2].innerHTML =
+            `${latest.blood_pressure || "-"}
+            <span>mmHg</span>`;
+
+
+        /* Last recorded date */
+
+        const latestDate =
+            new Date(
+                latest.record_date
+            );
+
+        summaryValues[3].textContent =
+            latestDate.toLocaleDateString(
+                "en-GB",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+    }
+
+
+    function searchRecords() {
+
+        const input =
+            document.getElementById(
+                "searchInput"
+            );
+
+        const filter =
+            input.value.toLowerCase();
+
+        const rows =
+            document.querySelectorAll(
+                "#historyTable tbody tr"
+            );
+
+        let visibleRows = 0;
+
+        rows.forEach(function(row) {
+
+            const text =
+                row.textContent.toLowerCase();
+
+            if (text.includes(filter)) {
+
+                row.style.display = "";
+                visibleRows++;
+
+            } else {
+
+                row.style.display = "none";
+
+            }
+
+        });
+
+        const emptyMessage =
+            document.getElementById(
+                "emptyMessage"
+            );
+
+        if (emptyMessage) {
+
+            emptyMessage.style.display =
+                visibleRows === 0
+                    ? "block"
+                    : "none";
+        }
+    }
+
+
+    function filterRecords() {
+
+        const rows =
+            document.querySelectorAll(
+                "#historyTable tbody tr"
+            );
+
+        rows.forEach(function(row) {
+
+            row.style.display = "";
+
+        });
+
+        const emptyMessage =
+            document.getElementById(
+                "emptyMessage"
+            );
+
+        if (emptyMessage) {
+            emptyMessage.style.display =
+                "none";
+        }
+
+        const searchInput =
+            document.getElementById(
+                "searchInput"
+            );
+
+        if (searchInput) {
+            searchInput.value = "";
+        }
+    }
+
+
+    loadHealthHistory();
+
+</script>
+
+
+</body>
+
+</html>

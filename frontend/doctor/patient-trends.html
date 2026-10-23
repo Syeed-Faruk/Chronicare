@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patient Trends | CHRONICARE</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f6f8f7;
+            color: #263238;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            min-width: 250px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #ffffff;
+            border-right: 1px solid #e2e7e3;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            height: 88px;
+            padding: 22px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #edf0ee;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: #2e7d32;
+            color: #ffffff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .brand-text h2 {
+            font-size: 18px;
+        }
+
+        .brand-text p {
+            margin-top: 2px;
+            font-size: 11px;
+            color: #78909c;
+        }
+
+        .nav {
+            padding: 20px 14px;
+            flex: 1;
+        }
+
+        .nav-title {
+            padding: 0 12px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #90a4ae;
+            text-transform: uppercase;
+        }
+
+        .nav a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            height: 44px;
+            padding: 0 13px;
+            margin-bottom: 4px;
+            text-decoration: none;
+            color: #607d68;
+            font-size: 14px;
+            border-radius: 9px;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-weight: 700;
+        }
+
+        .nav-icon {
+            width: 21px;
+            text-align: center;
+        }
+
+        .sidebar-bottom {
+            padding: 14px;
+            border-top: 1px solid #edf0ee;
+        }
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+        }
+
+        .topbar {
+            height: 88px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e9e6;
+            padding: 0 34px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+        }
+
+        .page-title p {
+            margin-top: 4px;
+            font-size: 13px;
+            color: #78909c;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e8f5e9;
+            color: #2e7d32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .profile-info strong {
+            font-size: 13px;
+        }
+
+        .profile-info span {
+            font-size: 11px;
+            color: #78909c;
+        }
+
+        .content {
+            padding: 30px 34px;
+            max-width: 1500px;
+        }
+
+        .top-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 22px;
+            margin-bottom: 22px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e3e8e4;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(38,50,56,.035);
+        }
+
+        .card h2 {
+            font-size: 19px;
+        }
+
+        .card-subtitle {
+            margin-top: 5px;
+            font-size: 13px;
+            color: #78909c;
+        }
+
+        .patient-select {
+            margin-top: 20px;
+        }
+
+        .patient-select label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .patient-select select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #d8e0db;
+            border-radius: 8px;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .patient-summary {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid #edf0ee;
+        }
+
+        .patient-summary h3 {
+            font-size: 16px;
+        }
+
+        .patient-summary p {
+            margin-top: 4px;
+            font-size: 11px;
+            color: #78909c;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 6px 11px;
+            border-radius: 20px;
+            background: #fff8e1;
+            color: #f9a825;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .metric {
+            padding: 15px;
+            border: 1px solid #e3e8e4;
+            border-radius: 10px;
+            background: #fafcfb;
+        }
+
+        .metric label {
+            font-size: 10px;
+            color: #90a4ae;
+        }
+
+        .metric strong {
+            display: block;
+            margin-top: 6px;
+            font-size: 19px;
+        }
+
+        .chart-card {
+            min-height: 430px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .chart-controls select {
+            padding: 9px 12px;
+            border: 1px solid #d8e0db;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+
+        .chart-container {
+            height: 320px;
+        }
+
+        @media (max-width: 1100px) {
+            .top-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                width: 210px;
+                min-width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                width: calc(100% - 210px);
+            }
+
+            .metric-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 550px) {
+            .app {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .nav,
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .profile {
+                display: none;
+            }
+
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">C</div>
+
+            <div class="brand-text">
+                <h2>CHRONICARE</h2>
+                <p>Health Monitoring</p>
+            </div>
+
+        </div>
+
+        <nav class="nav">
+
+            <div class="nav-title">
+                Doctor Portal
+            </div>
+
+            <a href="dashboard.html">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a href="patients.html">
+                <span class="nav-icon">♙</span>
+                My Patients
+            </a>
+
+            <a href="patient-alerts.html">
+                <span class="nav-icon">⚠</span>
+                Alerts
+            </a>
+
+            <a href="patient-trends.html" class="active">
+                <span class="nav-icon">⌁</span>
+                Patient Trends
+            </a>
+
+            <a href="risk-status.html">
+                <span class="nav-icon">!</span>
+                Risk Status
+            </a>
+
+            <a href="appointments.html">
+                <span class="nav-icon">▣</span>
+                Appointments
+            </a>
+
+            <a href="profile.html">
+                <span class="nav-icon">◉</span>
+                My Profile
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="#">
+                <span class="nav-icon">⚙</span>
+                Settings
+            </a>
+
+            <a href="../login.html">
+                <span class="nav-icon">↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="page-title">
+
+                <h1>
+                    Patient Trends
+                </h1>
+
+                <p>
+                    Analyze health parameter trends for your patients.
+                </p>
+
+            </div>
+
+            <div class="profile">
+
+                <div class="avatar">
+                    PS
+                </div>
+
+                <div class="profile-info">
+                    <strong>Dr. Priya Sharma</strong>
+                    <span>General Physician</span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <div class="content">
+
+
+            <section class="top-grid">
+
+
+                <div class="card">
+
+                    <h2>
+                        Select Patient
+                    </h2>
+
+                    <p class="card-subtitle">
+                        Choose a patient to view health trends.
+                    </p>
+
+
+                    <div class="patient-select">
+
+                        <label>
+                            Patient
+                        </label>
+
+                        <select id="patientSelect">
+
+                            <option value="ananya">
+                                Ananya Ravi
+                            </option>
+
+                            <option value="rahul">
+                                Rahul Kumar
+                            </option>
+
+                            <option value="sneha">
+                                Sneha Menon
+                            </option>
+
+                            <option value="vikram">
+                                Vikram Kumar
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="patient-summary">
+
+                        <h3 id="patientName">
+                            Ananya Ravi
+                        </h3>
+
+                        <p id="patientId">
+                            Patient #P001
+                        </p>
+
+                        <span class="risk-badge" id="riskBadge">
+                            Low Risk
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h2>
+                        Current Health Parameters
+                    </h2>
+
+                    <p class="card-subtitle">
+                        Latest recorded measurements
+                    </p>
+
+
+                    <div class="metric-grid" style="margin-top:20px;">
+
+                        <div class="metric">
+
+                            <label>
+                                HEART RATE
+                            </label>
+
+                            <strong id="heartRate">
+                                72 BPM
+                            </strong>
+
+                        </div>
+
+
+                        <div class="metric">
+
+                            <label>
+                                BLOOD PRESSURE
+                            </label>
+
+                            <strong id="bloodPressure">
+                                118/78
+                            </strong>
+
+                        </div>
+
+
+                        <div class="metric">
+
+                            <label>
+                                SpO₂
+                            </label>
+
+                            <strong id="spo2">
+                                98%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="metric">
+
+                            <label>
+                                WEIGHT
+                            </label>
+
+                            <strong id="weight">
+                                68 KG
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section class="card chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h2>
+                            Health Trend Analysis
+                        </h2>
+
+                        <p class="card-subtitle">
+                            Monitor changes in patient health parameters
+                            over time.
+                        </p>
+
+                    </div>
+
+
+                    <div class="chart-controls">
+
+                        <select id="parameterSelect">
+
+                            <option value="heart">
+                                Heart Rate
+                            </option>
+
+                            <option value="bp">
+                                Systolic Blood Pressure
+                            </option>
+
+                            <option value="spo2">
+                                SpO₂
+                            </option>
+
+                            <option value="weight">
+                                Weight
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chart-container">
+
+                    <canvas id="trendChart"></canvas>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    const patientSelect =
+        document.getElementById("patientSelect");
+
+    const parameterSelect =
+        document.getElementById("parameterSelect");
+
+    let patientData = {};
+    let currentTrends = [];
+    let trendChart;
+
+
+    /* =========================
+       LOAD DOCTOR PATIENTS
+    ========================= */
+
+    async function loadPatients() {
+
+        try {
+
+            const token =
+                localStorage.getItem("chronicareToken");
+
+            if (!token) {
+                alert("Please login again.");
+                return;
+            }
+
+
+            const response =
+                await fetch(
+                    "http://127.0.0.1:5000/api/health/doctor-patients",
+                    {
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token
+                        }
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+                alert(
+                    data.message ||
+                    "Failed to load patients."
+                );
+                return;
+            }
+
+
+            patientSelect.innerHTML = "";
+
+
+            if (
+                !data.patients ||
+                data.patients.length === 0
+            ) {
+
+                patientSelect.innerHTML =
+                    `<option value="">No patients found</option>`;
+
+                return;
+            }
+
+
+            data.patients.forEach(function(patient) {
+
+                const option =
+                    document.createElement("option");
+
+                option.value =
+                    patient.patient_id;
+
+                option.textContent =
+                    patient.patient_name;
+
+                patientSelect.appendChild(option);
+
+            });
+
+
+            await loadPatientTrends(
+                data.patients[0].patient_id
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to connect to the backend."
+            );
+
+        }
+
+    }
+
+
+    /* =========================
+       LOAD PATIENT TRENDS
+    ========================= */
+
+    async function loadPatientTrends(patientId) {
+
+        if (!patientId) {
+            return;
+        }
+
+
+        try {
+
+            const token =
+                localStorage.getItem("chronicareToken");
+
+
+            const response =
+                await fetch(
+                    "http://127.0.0.1:5000/api/health/doctor-patient-trends/" +
+                    patientId,
+                    {
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token
+                        }
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                alert(
+                    data.message ||
+                    "Failed to load patient trends."
+                );
+
+                return;
+            }
+
+
+            patientData =
+                data.patient;
+
+
+            currentTrends =
+                data.trends || [];
+
+
+            updatePatientInformation();
+
+            updateChart();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to load patient trends."
+            );
+
+        }
+
+    }
+
+
+    /* =========================
+       UPDATE PATIENT INFORMATION
+    ========================= */
+
+    function updatePatientInformation() {
+
+        document.getElementById("patientName")
+            .textContent =
+                patientData.patient_name || "Patient";
+
+
+        document.getElementById("patientId")
+            .textContent =
+                "Patient #" +
+                String(patientData.patient_id)
+                    .padStart(3, "0");
+
+
+        let risk =
+            patientData.risk_category || "Low";
+
+
+        if (
+            risk.toLowerCase() === "moderate"
+        ) {
+            risk = "Elevated";
+        }
+
+
+        document.getElementById("riskBadge")
+            .textContent =
+                risk + " Risk";
+
+
+        if (currentTrends.length === 0) {
+
+            document.getElementById("heartRate")
+                .textContent = "--";
+
+            document.getElementById("bloodPressure")
+                .textContent = "--";
+
+            document.getElementById("spo2")
+                .textContent = "--";
+
+            document.getElementById("weight")
+                .textContent = "--";
+
+            return;
+        }
+
+
+        const latest =
+            currentTrends[
+                currentTrends.length - 1
+            ];
+
+
+        document.getElementById("heartRate")
+            .textContent =
+                latest.heart_rate !== null
+                    ? latest.heart_rate + " BPM"
+                    : "--";
+
+
+        document.getElementById("bloodPressure")
+            .textContent =
+                latest.blood_pressure || "--";
+
+
+        document.getElementById("spo2")
+            .textContent =
+                latest.spo2 !== null
+                    ? latest.spo2 + "%"
+                    : "--";
+
+
+        document.getElementById("weight")
+            .textContent =
+                latest.weight !== null
+                    ? latest.weight + " KG"
+                    : "--";
+
+    }
+
+
+    /* =========================
+       CHART
+    ========================= */
+
+    function updateChart() {
+
+        const labels =
+            currentTrends.map(function(record) {
+
+                return formatDate(
+                    record.recorded_at ||
+                    record.record_date
+                );
+
+            });
+
+
+        const parameter =
+            parameterSelect.value;
+
+
+        const chartValues =
+            currentTrends.map(function(record) {
+
+                if (parameter === "heart") {
+
+                    return record.heart_rate;
+
+                }
+
+
+                if (parameter === "bp") {
+
+                    if (!record.blood_pressure) {
+                        return null;
+                    }
+
+                    return parseInt(
+                        record.blood_pressure
+                            .split("/")[0]
+                    );
+
+                }
+
+
+                if (parameter === "spo2") {
+
+                    return record.spo2;
+
+                }
+
+
+                if (parameter === "weight") {
+
+                    return record.weight;
+
+                }
+
+            });
+
+
+        const names = {
+
+            heart: "Heart Rate",
+
+            bp: "Systolic Blood Pressure",
+
+            spo2: "SpO₂",
+
+            weight: "Weight"
+
+        };
+
+
+        const ctx =
+            document
+                .getElementById("trendChart")
+                .getContext("2d");
+
+
+        if (trendChart) {
+            trendChart.destroy();
+        }
+
+
+        trendChart =
+            new Chart(ctx, {
+
+                type: "line",
+
+                data: {
+
+                    labels: labels,
+
+                    datasets: [{
+
+                        label:
+                            names[parameter],
+
+                        data:
+                            chartValues,
+
+                        borderColor:
+                            "#2e7d32",
+
+                        backgroundColor:
+                            "rgba(46,125,50,0.08)",
+
+                        borderWidth: 2,
+
+                        fill: true,
+
+                        tension: 0.35,
+
+                        pointRadius: 4
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+                            display: true
+                        }
+
+                    },
+
+                    scales: {
+
+                        y: {
+                            beginAtZero: false
+                        }
+
+                    }
+
+                }
+
+            });
+
+    }
+
+
+    /* =========================
+       DATE FORMAT
+    ========================= */
+
+    function formatDate(value) {
+
+        if (!value) {
+            return "";
+        }
+
+
+        const date =
+            new Date(value);
+
+
+        return date.toLocaleDateString(
+            "en-GB",
+            {
+                day: "2-digit",
+                month: "short"
+            }
+        );
+
+    }
+
+
+    /* =========================
+       PATIENT CHANGE
+    ========================= */
+
+    patientSelect.addEventListener(
+        "change",
+        function() {
+
+            loadPatientTrends(
+                this.value
+            );
+
+        }
+    );
+
+
+    /* =========================
+       PARAMETER CHANGE
+    ========================= */
+
+    parameterSelect.addEventListener(
+        "change",
+        function() {
+
+            updateChart();
+
+        }
+    );
+
+
+    /* =========================
+       START
+    ========================= */
+
+    loadPatients();
+
+</script>
+
+</body>
+</html>

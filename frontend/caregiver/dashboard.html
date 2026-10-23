@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Caregiver Dashboard | CHRONICARE</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f6f8f7;
+            color: #263238;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            min-width: 250px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #ffffff;
+            border-right: 1px solid #e2e7e3;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            height: 88px;
+            padding: 22px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #edf0ee;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: #2e7d32;
+            color: #ffffff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .brand-text h2 {
+            font-size: 18px;
+        }
+
+        .brand-text p {
+            margin-top: 2px;
+            font-size: 11px;
+            color: #78909c;
+        }
+
+        .nav {
+            padding: 20px 14px;
+            flex: 1;
+        }
+
+        .nav-title {
+            padding: 0 12px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #90a4ae;
+            text-transform: uppercase;
+        }
+
+        .nav a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            height: 44px;
+            padding: 0 13px;
+            margin-bottom: 4px;
+            text-decoration: none;
+            color: #607d68;
+            font-size: 14px;
+            border-radius: 9px;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-weight: 700;
+        }
+
+        .nav-icon {
+            width: 21px;
+            text-align: center;
+        }
+
+        .sidebar-bottom {
+            padding: 14px;
+            border-top: 1px solid #edf0ee;
+        }
+
+        .sidebar-bottom a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            height: 42px;
+            padding: 0 13px;
+            text-decoration: none;
+            color: #607d68;
+            font-size: 14px;
+            border-radius: 9px;
+        }
+
+        .sidebar-bottom a:hover {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 88px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e9e6;
+            padding: 0 34px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+        }
+
+        .page-title p {
+            margin-top: 4px;
+            font-size: 13px;
+            color: #78909c;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e8f5e9;
+            color: #2e7d32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .profile-info strong {
+            font-size: 13px;
+        }
+
+        .profile-info span {
+            display: block;
+            margin-top: 2px;
+            color: #78909c;
+            font-size: 11px;
+        }
+
+        .content {
+            padding: 30px 34px;
+            max-width: 1500px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            font-size: 22px;
+        }
+
+        .welcome p {
+            margin-top: 5px;
+            font-size: 13px;
+            color: #78909c;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .summary-card {
+            background: #ffffff;
+            border: 1px solid #e3e8e4;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(38,50,56,.035);
+        }
+
+        .summary-label {
+            font-size: 12px;
+            color: #78909c;
+        }
+
+        .summary-number {
+            margin-top: 7px;
+            font-size: 27px;
+            font-weight: 700;
+        }
+
+        .summary-description {
+            margin-top: 5px;
+            font-size: 11px;
+            color: #90a4ae;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1.5fr .8fr;
+            gap: 22px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e3e8e4;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(38,50,56,.035);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .card-header h2 {
+            font-size: 19px;
+        }
+
+        .card-header p {
+            margin-top: 5px;
+            font-size: 13px;
+            color: #78909c;
+        }
+
+        .patient {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border: 1px solid #e4e9e6;
+            border-radius: 10px;
+            margin-bottom: 11px;
+        }
+
+        .patient:last-child {
+            margin-bottom: 0;
+        }
+
+        .patient-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .patient-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f1f8e9;
+            color: #2e7d32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .patient-info h3 {
+            font-size: 14px;
+        }
+
+        .patient-info p {
+            margin-top: 3px;
+            color: #90a4ae;
+            font-size: 11px;
+        }
+
+        .risk {
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .low {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .elevated {
+            background: #fff8e1;
+            color: #f9a825;
+        }
+
+        .high {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .alert {
+            padding: 16px 0;
+            border-bottom: 1px solid #edf0ee;
+        }
+
+        .alert:last-child {
+            border-bottom: none;
+        }
+
+        .alert h3 {
+            font-size: 13px;
+        }
+
+        .alert p {
+            margin-top: 4px;
+            font-size: 11px;
+            line-height: 1.5;
+            color: #78909c;
+        }
+
+        .alert-time {
+            margin-top: 5px;
+            font-size: 10px;
+            color: #90a4ae;
+        }
+
+        @media (max-width: 1050px) {
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 210px;
+                min-width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                width: calc(100% - 210px);
+            }
+        }
+
+        @media (max-width: 550px) {
+            .app {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .nav,
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .profile {
+                display: none;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                C
+            </div>
+
+            <div class="brand-text">
+                <h2>CHRONICARE</h2>
+                <p>Health Monitoring</p>
+            </div>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <div class="nav-title">
+                Caregiver Portal
+            </div>
+
+            <a href="dashboard.html" class="active">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a href="patient-info.html">
+                <span class="nav-icon">♙</span>
+                Patient Information
+            </a>
+
+            <a href="alerts.html">
+                <span class="nav-icon">⚠</span>
+                Alerts
+            </a>
+
+            <a href="patient-trends.html">
+                <span class="nav-icon">⌁</span>
+                Patient Trends
+            </a>
+
+            <a href="risk-status.html">
+                <span class="nav-icon">!</span>
+                Risk Status
+            </a>
+
+            <a href="appointments.html">
+                <span class="nav-icon">▣</span>
+                Appointments
+            </a>
+
+            <a href="profile.html">
+                <span class="nav-icon">◉</span>
+                My Profile
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="../login.html">
+                <span class="nav-icon">↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+
+        <header class="topbar">
+
+            <div class="page-title">
+
+                <h1>
+                    Caregiver Dashboard
+                </h1>
+
+                <p>
+                    Monitor the health and care status of your patient.
+                </p>
+
+            </div>
+
+
+            <div class="profile">
+
+                <div class="avatar">
+                    RK
+                </div>
+
+                <div class="profile-info">
+
+                    <strong>
+                        Rajesh Kumar
+                    </strong>
+
+                    <span>
+                        Caregiver
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <div class="content">
+
+
+            <section class="welcome">
+
+                <h2>
+                    Welcome back, Rajesh
+                </h2>
+
+                <p>
+                    Here is the latest health information for
+                    your connected patient.
+                </p>
+
+            </section>
+
+
+            <section class="summary-grid">
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Connected Patients
+                    </div>
+
+                    <div class="summary-number">
+                        1
+                    </div>
+
+                    <div class="summary-description">
+                        Patient under your care
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Current Risk
+                    </div>
+
+                    <div class="summary-number">
+                        72
+                    </div>
+
+                    <div class="summary-description">
+                        Elevated risk score
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Active Alerts
+                    </div>
+
+                    <div class="summary-number">
+                        2
+                    </div>
+
+                    <div class="summary-description">
+                        Require attention
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Next Appointment
+                    </div>
+
+                    <div class="summary-number">
+                        05
+                    </div>
+
+                    <div class="summary-description">
+                        October 2026
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section class="layout">
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Patient Overview
+                            </h2>
+
+                            <p>
+                                Current health status of your connected patient.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="patient">
+
+                        <div class="patient-info">
+
+                            <div class="patient-avatar">
+                                AM
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Ananya Menon
+                                </h3>
+
+                                <p>
+                                    Patient #P001 • Age 52
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="risk elevated">
+                            Elevated Risk
+                        </span>
+
+                    </div>
+
+
+                    <div class="patient">
+
+                        <div class="patient-info">
+
+                            <div class="patient-avatar">
+                                HR
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Latest Heart Rate
+                                </h3>
+
+                                <p>
+                                    Recorded today
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <strong>
+                            82 BPM
+                        </strong>
+
+                    </div>
+
+
+                    <div class="patient">
+
+                        <div class="patient-info">
+
+                            <div class="patient-avatar">
+                                BP
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Blood Pressure
+                                </h3>
+
+                                <p>
+                                    Latest reading
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <strong>
+                            138/88
+                        </strong>
+
+                    </div>
+
+
+                    <div class="patient">
+
+                        <div class="patient-info">
+
+                            <div class="patient-avatar">
+                                O₂
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Blood Oxygen
+                                </h3>
+
+                                <p>
+                                    Latest SpO₂ reading
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <strong>
+                            96%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Recent Alerts
+                            </h2>
+
+                            <p>
+                                Important patient notifications.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="alert">
+
+                        <h3>
+                            Elevated Blood Pressure
+                        </h3>
+
+                        <p>
+                            Patient blood pressure was recorded
+                            above the expected range.
+                        </p>
+
+                        <div class="alert-time">
+                            45 minutes ago
+                        </div>
+
+                    </div>
+
+
+                    <div class="alert">
+
+                        <h3>
+                            Risk Status Updated
+                        </h3>
+
+                        <p>
+                            Patient risk assessment has been updated
+                            to Elevated Risk.
+                        </p>
+
+                        <div class="alert-time">
+                            2 hours ago
+                        </div>
+
+                    </div>
+
+
+                    <div class="alert">
+
+                        <h3>
+                            Appointment Reminder
+                        </h3>
+
+                        <p>
+                            Upcoming appointment scheduled for
+                            05 October 2026.
+                        </p>
+
+                        <div class="alert-time">
+                            Yesterday
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+const API_BASE = "http://localhost:5000/api";
+
+function getAuthToken() {
+    return localStorage.getItem("chronicareToken") ||
+           sessionStorage.getItem("chronicareToken");
+}
+
+async function loadCaregiverDashboard() {
+    const token = getAuthToken();
+
+    if (!token) {
+        alert("Please log in to your caregiver account.");
+        window.location.href = "../login.html";
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `${API_BASE}/health/caregiver-patients`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        if (response.status === 401) {
+            alert("Your session has expired. Please log in again.");
+            window.location.href = "../login.html";
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error("Unable to load authorized patients.");
+        }
+
+        const data = await response.json();
+        const patients = data.patients || [];
+
+        // Update connected patient count.
+        const summaryNumbers =
+            document.querySelectorAll(".summary-number");
+
+        if (summaryNumbers.length > 0) {
+            summaryNumbers[0].textContent = patients.length;
+        }
+
+        // Replace hardcoded patient overview with authorized patients.
+        const overviewCard = [...document.querySelectorAll(".card")]
+            .find(card => card.querySelector("h2")?.textContent.trim()
+                === "Patient Overview");
+
+        if (!overviewCard) return;
+
+        const header = overviewCard.querySelector(".card-header");
+
+        overviewCard.innerHTML = "";
+        if (header) overviewCard.appendChild(header);
+
+        if (patients.length === 0) {
+            const message = document.createElement("p");
+            message.textContent = "No authorized patients are connected yet.";
+            overviewCard.appendChild(message);
+            return;
+        }
+
+        patients.forEach(patient => {
+            const patientRow = document.createElement("div");
+            patientRow.className = "patient";
+
+            const patientInfo = document.createElement("div");
+            patientInfo.className = "patient-info";
+
+            const avatar = document.createElement("div");
+            avatar.className = "patient-avatar";
+            avatar.textContent = (patient.patient_name || "P")
+                .split(/\s+/)
+                .map(part => part[0])
+                .join("")
+                .slice(0, 2)
+                .toUpperCase();
+
+            const details = document.createElement("div");
+
+            const name = document.createElement("h3");
+            name.textContent = patient.patient_name || "Unnamed patient";
+
+            const id = document.createElement("p");
+            id.textContent = `Patient #P${String(patient.patient_id).padStart(3, "0")}`;
+
+            details.append(name, id);
+            patientInfo.append(avatar, details);
+            patientRow.appendChild(patientInfo);
+            overviewCard.appendChild(patientRow);
+        });
+
+    } catch (error) {
+        console.error("Caregiver dashboard error:", error);
+        alert("Unable to load dashboard data. Check the backend and try again.");
+    }
+}
+
+async function loadCaregiverRisk() {
+    const token = getAuthToken();
+
+    if (!token) {
+        console.error("Caregiver token not found.");
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `${API_BASE}/health/caregiver-risk-status`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error("Caregiver risk API error:", data);
+            return;
+        }
+
+        // Find the Current Risk summary card.
+        const summaryCards = [
+            ...document.querySelectorAll(".summary-card")
+        ];
+
+        const riskCard = summaryCards.find(card =>
+            card.querySelector(".summary-label")
+                ?.textContent.trim() === "Current Risk"
+        );
+
+        if (!riskCard) {
+            console.error("Current Risk card not found.");
+            return;
+        }
+
+        const riskNumber = riskCard.querySelector(".summary-number");
+        const riskDescription =
+            riskCard.querySelector(".summary-description");
+
+        if (data.risk && data.risk.risk_score != null) {
+            riskNumber.textContent = data.risk.risk_score;
+
+            if (riskDescription) {
+                riskDescription.textContent =
+                    data.risk.risk_category || "Risk assessment available";
+            }
+        } else {
+            riskNumber.textContent = "--";
+
+            if (riskDescription) {
+                riskDescription.textContent =
+                    "No risk assessment available";
+            }
+        }
+
+    } catch (error) {
+        console.error("Failed to load caregiver risk:", error);
+    }
+}
+
+async function loadCaregiverAlerts() {
+    const token = getAuthToken();
+    if (!token) return;
+
+    try {
+        const response = await fetch(
+            `${API_BASE}/health/caregiver-alerts`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error("Caregiver alerts API error:", data);
+            return;
+        }
+
+        const alerts = data.alerts || [];
+
+        // Update the Active Alerts summary card.
+        const summaryCards = [
+            ...document.querySelectorAll(".summary-card")
+        ];
+
+        const activeCard = summaryCards.find(card =>
+            card.querySelector(".summary-label")
+                ?.textContent.trim() === "Active Alerts"
+        );
+
+        if (activeCard) {
+            activeCard.querySelector(".summary-number").textContent =
+                data.active_count ?? 0;
+
+            const description =
+                activeCard.querySelector(".summary-description");
+
+            if (description) {
+                description.textContent = "Alerts requiring attention";
+            }
+        }
+
+        // Find the Recent Alerts card.
+        const recentCard = [...document.querySelectorAll(".card")]
+            .find(card =>
+                card.querySelector("h2")?.textContent.trim()
+                    === "Recent Alerts"
+            );
+
+        if (!recentCard) {
+            console.error("Recent Alerts card not found.");
+            return;
+        }
+
+        const header = recentCard.querySelector(".card-header");
+        recentCard.replaceChildren();
+
+        if (header) recentCard.appendChild(header);
+
+        if (alerts.length === 0) {
+            const message = document.createElement("p");
+            message.textContent = "No alerts found for your linked patients.";
+            recentCard.appendChild(message);
+            return;
+        }
+
+        alerts.slice(0, 5).forEach(alert => {
+            const item = document.createElement("div");
+            item.className = "alert";
+
+            const heading = document.createElement("h3");
+            heading.textContent =
+                `${alert.patient_name || "Patient"} — ${alert.alert_type || "Health Alert"}`;
+
+            const message = document.createElement("p");
+            message.textContent =
+                alert.alert_message || "No additional details available.";
+
+            const time = document.createElement("div");
+            time.className = "alert-time";
+
+            time.textContent = alert.created_at
+                ? new Date(alert.created_at).toLocaleString()
+                : "Time unavailable";
+
+            item.append(heading, message, time);
+            recentCard.appendChild(item);
+        });
+
+    } catch (error) {
+        console.error("Failed to load caregiver alerts:", error);
+    }
+}
+
+
+async function loadCaregiverReadings() {
+    const token = getAuthToken();
+    if (!token) return;
+
+    try {
+        const response = await fetch(
+            `${API_BASE}/health/caregiver-latest-readings`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error("Caregiver readings API error:", data);
+            return;
+        }
+
+        const readings = data.readings || [];
+
+        const overviewCard = [
+            ...document.querySelectorAll(".card")
+        ].find(card =>
+            card.querySelector("h2")?.textContent.trim()
+                === "Patient Overview"
+        );
+
+        if (!overviewCard) return;
+
+        const reading = readings[0];
+
+        // Create a reading row if the dashboard does not already contain it.
+        function ensureReadingRow(title, label) {
+            let row = [
+                ...overviewCard.querySelectorAll(".patient")
+            ].find(item =>
+                item.querySelector("h3")?.textContent.trim() === title
+            );
+
+            if (row) return row;
+
+            row = document.createElement("div");
+            row.className = "patient";
+
+            const info = document.createElement("div");
+            info.className = "patient-info";
+
+            const avatar = document.createElement("div");
+            avatar.className = "patient-avatar";
+            avatar.textContent = label;
+
+            const details = document.createElement("div");
+
+            const heading = document.createElement("h3");
+            heading.textContent = title;
+
+            const description = document.createElement("p");
+            description.textContent = "Latest recorded reading";
+
+            details.append(heading, description);
+            info.append(avatar, details);
+
+            const output = document.createElement("strong");
+            output.textContent = "--";
+
+            row.append(info, output);
+            overviewCard.appendChild(row);
+
+            return row;
+        }
+
+        function updateReading(title, label, value) {
+            const row = ensureReadingRow(title, label);
+            const output = row.querySelector("strong");
+
+            if (output) {
+                output.textContent = value;
+            }
+        }
+
+        updateReading(
+            "Latest Heart Rate",
+            "HR",
+            reading?.heart_rate != null
+                ? `${reading.heart_rate} BPM`
+                : "--"
+        );
+
+        updateReading(
+            "Blood Pressure",
+            "BP",
+            reading?.blood_pressure != null
+                ? reading.blood_pressure
+                : "--"
+        );
+
+        updateReading(
+            "Blood Oxygen",
+            "O2",
+            reading?.spo2 != null
+                ? `${reading.spo2}%`
+                : "--"
+        );
+
+    } catch (error) {
+        console.error(
+            "Failed to load caregiver readings:",
+            error
+        );
+    }
+}
+
+
+async function loadCaregiverAppointments() {
+    const token = getAuthToken();
+
+    if (!token) {
+        console.error("Caregiver token not found.");
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `${API_BASE}/health/caregiver-appointments`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error(
+                "Caregiver appointments API error:",
+                data
+            );
+            return;
+        }
+
+        // Find the Next Appointment summary card.
+        const summaryCards = [
+            ...document.querySelectorAll(".summary-card")
+        ];
+
+        const appointmentCard = summaryCards.find(card =>
+            card.querySelector(".summary-label")
+                ?.textContent.trim() === "Next Appointment"
+        );
+
+        if (!appointmentCard) {
+            console.error("Next Appointment card not found.");
+            return;
+        }
+
+        const number =
+            appointmentCard.querySelector(".summary-number");
+
+        const description =
+            appointmentCard.querySelector(".summary-description");
+
+        const appointment = data.next_appointment;
+
+        if (!appointment) {
+            number.textContent = "--";
+
+            if (description) {
+                description.textContent =
+                    "No upcoming appointment";
+            }
+
+            return;
+        }
+
+        // Format the MySQL date safely without timezone shifting.
+        const dateText = String(
+            appointment.appointment_date
+        ).slice(0, 10);
+
+        const [year, month, day] = dateText
+            .split("-")
+            .map(Number);
+
+        const appointmentDate = new Date(
+            year, month - 1, day
+        );
+
+        if (Number.isNaN(appointmentDate.getTime())) {
+            number.textContent = "--";
+
+            if (description) {
+                description.textContent = "Invalid appointment date";
+            }
+
+            return;
+        }
+
+        number.textContent = String(day).padStart(2, "0");
+
+        const formattedDate = appointmentDate.toLocaleDateString(
+            "en-IN",
+            {
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+        const time = appointment.appointment_time
+            ? String(appointment.appointment_time).slice(0, 5)
+            : "";
+
+        if (description) {
+            description.textContent =
+                `${formattedDate}${time ? " · " + time : ""}` +
+                `${appointment.doctor_name
+                    ? " · " + appointment.doctor_name
+                    : ""}`;
+        }
+
+    } catch (error) {
+        console.error(
+            "Failed to load caregiver appointments:",
+            error
+        );
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadCaregiverDashboard();
+    await loadCaregiverRisk();
+    await loadCaregiverAlerts();
+    await loadCaregiverReadings();
+    await loadCaregiverAppointments();
+});
+</script>
+
+</body>
+</html>

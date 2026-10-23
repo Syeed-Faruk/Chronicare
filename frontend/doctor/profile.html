@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Doctor Profile | CHRONICARE</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f6f8f7;
+            color: #263238;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            min-width: 250px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            border-right: 1px solid #e2e7e3;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            height: 88px;
+            padding: 22px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #edf0ee;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: #2e7d32;
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .brand-text h2 {
+            font-size: 18px;
+        }
+
+        .brand-text p {
+            margin-top: 2px;
+            font-size: 11px;
+            color: #78909c;
+        }
+
+        .nav {
+            padding: 20px 14px;
+            flex: 1;
+        }
+
+        .nav-title {
+            padding: 0 12px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #90a4ae;
+            text-transform: uppercase;
+        }
+
+        .nav a,
+        .sidebar-bottom a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            height: 44px;
+            padding: 0 13px;
+            margin-bottom: 4px;
+            text-decoration: none;
+            color: #607d68;
+            font-size: 14px;
+            border-radius: 9px;
+        }
+
+        .nav a:hover,
+        .nav a.active,
+        .sidebar-bottom a:hover {
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-weight: 700;
+        }
+
+        .nav-icon {
+            width: 21px;
+            text-align: center;
+        }
+
+        .sidebar-bottom {
+            padding: 14px;
+            border-top: 1px solid #edf0ee;
+        }
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 88px;
+            background: #fff;
+            border-bottom: 1px solid #e5e9e6;
+            padding: 0 34px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+        }
+
+        .page-title p {
+            margin-top: 4px;
+            font-size: 13px;
+            color: #78909c;
+        }
+
+        .profile-mini {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e8f5e9;
+            color: #2e7d32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .profile-mini span {
+            font-size: 11px;
+            color: #78909c;
+        }
+
+        .content {
+            padding: 30px 34px;
+            max-width: 1200px;
+        }
+
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 22px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e3e8e4;
+            border-radius: 14px;
+            padding: 26px;
+            box-shadow: 0 2px 8px rgba(38,50,56,.035);
+        }
+
+        .profile-summary {
+            text-align: center;
+        }
+
+        .large-avatar {
+            width: 92px;
+            height: 92px;
+            margin: 4px auto 16px;
+            border-radius: 50%;
+            background: #e8f5e9;
+            color: #2e7d32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .profile-summary h2 {
+            font-size: 19px;
+        }
+
+        .profile-summary p {
+            margin-top: 5px;
+            color: #78909c;
+            font-size: 12px;
+        }
+
+        .account-status {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 6px 12px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .profile-stats {
+            margin-top: 24px;
+            border-top: 1px solid #edf0ee;
+        }
+
+        .stat {
+            padding: 15px 0;
+            border-bottom: 1px solid #edf0ee;
+        }
+
+        .stat:last-child {
+            border-bottom: none;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 18px;
+        }
+
+        .stat span {
+            display: block;
+            margin-top: 3px;
+            font-size: 10px;
+            color: #90a4ae;
+        }
+
+        .card-header {
+            margin-bottom: 24px;
+        }
+
+        .card-header h2 {
+            font-size: 19px;
+        }
+
+        .card-header p {
+            margin-top: 5px;
+            color: #78909c;
+            font-size: 13px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 2px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #d8e0db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #66bb6a;
+        }
+
+        .form-group textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .form-group input:disabled {
+            background: #f6f8f7;
+            color: #78909c;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #edf0ee;
+        }
+
+        .button {
+            padding: 11px 20px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .cancel {
+            background: #fff;
+            color: #607d68;
+            border: 1px solid #d8e0db;
+        }
+
+        .save {
+            background: #2e7d32;
+            color: #fff;
+            border: none;
+        }
+
+        .save:hover {
+            background: #1b5e20;
+        }
+
+        @media (max-width: 850px) {
+            .profile-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 210px;
+                min-width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                width: calc(100% - 210px);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .app {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .nav,
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .profile-mini {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">C</div>
+
+            <div class="brand-text">
+                <h2>CHRONICARE</h2>
+                <p>Health Monitoring</p>
+            </div>
+        </div>
+
+
+        <nav class="nav">
+
+            <div class="nav-title">
+                Doctor Portal
+            </div>
+
+            <a href="dashboard.html">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a href="patients.html">
+                <span class="nav-icon">♙</span>
+                My Patients
+            </a>
+
+            <a href="patient-alerts.html">
+                <span class="nav-icon">⚠</span>
+                Alerts
+            </a>
+
+            <a href="patient-trends.html">
+                <span class="nav-icon">⌁</span>
+                Patient Trends
+            </a>
+
+            <a href="risk-status.html">
+                <span class="nav-icon">!</span>
+                Risk Status
+            </a>
+
+            <a href="appointments.html">
+                <span class="nav-icon">▣</span>
+                Appointments
+            </a>
+
+            <a href="profile.html" class="active">
+                <span class="nav-icon">◉</span>
+                My Profile
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="#">
+                <span class="nav-icon">⚙</span>
+                Settings
+            </a>
+
+            <a href="../login.html">
+                <span class="nav-icon">↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="page-title">
+                <h1>My Profile</h1>
+                <p>Manage your doctor profile information.</p>
+            </div>
+
+            <div class="profile-mini">
+
+                <div class="avatar">
+                    PS
+                </div>
+
+                <div>
+                    <strong id="headerDoctorName">Dr. Priya Sharma</strong><br>
+<span id="headerDoctorSpecialization">General Physician</span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <div class="content">
+
+            <section class="profile-layout">
+
+
+                <div class="card profile-summary">
+
+                    <div class="large-avatar">
+                        PS
+                    </div>
+
+                    <h2 id="profileDoctorName">
+    Dr. Priya Sharma
+</h2>
+
+                    <p id="profileDoctorSpecialization">
+    General Physician
+</p>
+
+                    <span class="account-status">
+                        ACTIVE ACCOUNT
+                    </span>
+
+
+                    <div class="profile-stats">
+
+                        <div class="stat">
+                            <strong id="assignedPatients">24</strong>
+<span>Assigned Patients</span>
+                        </div>
+
+                        <div class="stat">
+                            <strong id="todayAppointments">6</strong>
+<span>Today's Appointments</span>
+                        </div>
+
+                        <div class="stat">
+                            <strong id="completedConsultations">18</strong>
+<span>Completed Consultations</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h2>
+                            Professional Information
+                        </h2>
+
+                        <p>
+                            Update your personal and professional details.
+                        </p>
+
+                    </div>
+
+
+                    <form id="profileForm">
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Full Name
+                                </label>
+
+                                <input
+    id="doctorName"
+    type="text"
+    value="Dr. Priya Sharma"
+    required
+>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Email Address
+                                </label>
+
+                                <input
+    id="doctorEmail"
+    type="email"
+    value="priya.sharma@chronicare.com"
+    required
+>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Phone Number
+                                </label>
+
+                                <input
+    id="doctorPhone"
+    type="tel"
+    value="+91 98765 43210"
+>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Specialization
+                                </label>
+
+                                <input
+    id="doctorSpecialization"
+    type="text"
+    value="General Physician"
+>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Doctor ID
+                                </label>
+
+                                <input
+    id="doctorId"
+    type="text"
+    value="D001"
+    disabled
+>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Role
+                                </label>
+
+                                <input
+    id="doctorRole"
+    type="text"
+    value="Doctor"
+    disabled
+>
+
+                            </div>
+
+
+                            <div class="form-group full">
+
+                                <label>
+                                    Professional Address
+                                </label>
+
+                                <textarea>CHRONICARE Medical Centre, Chennai, Tamil Nadu</textarea>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="actions">
+
+                            <button
+                                type="button"
+                                class="button cancel"
+                                onclick="location.reload()"
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                type="submit"
+                                class="button save"
+                            >
+                                Save Changes
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+    const API_URL = "http://127.0.0.1:5000";
+const token = localStorage.getItem("chronicareToken");
+async function loadDoctorProfile() {
+    try {
+        const response = await fetch(
+            `${API_URL}/api/auth/doctor-profile`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error(data.message);
+            return;
+        }
+
+        const doctor = data.doctor;
+
+        document.getElementById("doctorName").value =
+            doctor.name || "";
+
+        document.getElementById("doctorEmail").value =
+            doctor.email || "";
+
+        document.getElementById("doctorPhone").value =
+            doctor.phone || "";
+
+        document.getElementById("doctorSpecialization").value =
+            doctor.specialization || "";
+        document.getElementById("profileDoctorName").textContent =
+    doctor.name || "";
+
+document.getElementById("profileDoctorSpecialization").textContent =
+    doctor.specialization || "";
+    document.getElementById("headerDoctorName").textContent =
+    doctor.name || "";
+
+document.getElementById("headerDoctorSpecialization").textContent =
+    doctor.specialization || "";
+    document.getElementById("doctorId").value =
+    doctor.doctor_id || "";
+    document.getElementById("doctorRole").value =
+    doctor.role || "";
+
+    } catch (error) {
+        console.error("Error loading doctor profile:", error);
+    }
+}
+async function loadDoctorStatistics() {
+    try {
+        const response = await fetch(
+            `${API_URL}/api/health/doctor-statistics`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error(data.message);
+            return;
+        }
+
+        document.getElementById("assignedPatients").textContent =
+            data.assignedPatients;
+
+        document.getElementById("todayAppointments").textContent =
+            data.todayAppointments;
+
+        document.getElementById("completedConsultations").textContent =
+            data.completedConsultations;
+
+    } catch (error) {
+        console.error("Error loading doctor statistics:", error);
+    }
+}
+loadDoctorProfile();
+loadDoctorStatistics();
+
+    document
+    .getElementById("profileForm")
+    .addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById("doctorName").value;
+        const phone = document.getElementById("doctorPhone").value;
+        const specialization =
+            document.getElementById("doctorSpecialization").value;
+
+        try {
+            const response = await fetch(
+                `${API_URL}/api/auth/doctor-profile`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        name,
+                        phone,
+                        specialization
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(data.message || "Failed to update profile.");
+                return;
+            }
+
+            alert("Profile updated successfully.");
+
+            loadDoctorProfile();
+
+        } catch (error) {
+            console.error("Error updating doctor profile:", error);
+            alert("Unable to update profile.");
+        }
+    });
+
+</script>
+
+</body>
+</html>

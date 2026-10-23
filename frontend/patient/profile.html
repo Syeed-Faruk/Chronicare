@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | CHRONICARE</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f6f8f7;
+            color: #263238;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            width: 250px;
+            min-width: 250px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            background: #ffffff;
+            border-right: 1px solid #e2e7e3;
+
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .brand {
+            height: 88px;
+            padding: 22px 24px;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            border-bottom: 1px solid #edf0ee;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+
+            background: #2e7d32;
+            color: white;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .brand-text h2 {
+            font-size: 18px;
+            color: #263238;
+            letter-spacing: 0.3px;
+        }
+
+        .brand-text p {
+            margin-top: 2px;
+            font-size: 11px;
+            color: #78909c;
+        }
+
+        .nav {
+            padding: 20px 14px;
+            flex: 1;
+        }
+
+        .nav-title {
+            padding: 0 12px 10px;
+
+            font-size: 11px;
+            font-weight: 700;
+            color: #90a4ae;
+
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .nav a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            height: 44px;
+            padding: 0 13px;
+            margin-bottom: 4px;
+
+            text-decoration: none;
+            color: #607d68;
+
+            font-size: 14px;
+            font-weight: 500;
+
+            border-radius: 9px;
+
+            transition: 0.2s ease;
+        }
+
+        .nav a:hover {
+            background: #f1f8e9;
+            color: #2e7d32;
+        }
+
+        .nav a.active {
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-weight: 700;
+        }
+
+        .nav-icon {
+            width: 21px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .sidebar-bottom {
+            padding: 14px;
+            border-top: 1px solid #edf0ee;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        /* ================= TOPBAR ================= */
+
+        .topbar {
+            height: 88px;
+
+            background: #ffffff;
+            border-bottom: 1px solid #e5e9e6;
+
+            padding: 0 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #263238;
+        }
+
+        .page-title p {
+            margin-top: 4px;
+            font-size: 13px;
+            color: #78909c;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 50%;
+
+            background: #e8f5e9;
+            color: #2e7d32;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .profile-info strong {
+            font-size: 13px;
+            color: #263238;
+        }
+
+        .profile-info span {
+            font-size: 11px;
+            color: #78909c;
+        }
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 30px 34px 40px;
+            max-width: 1450px;
+        }
+
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 280px minmax(0, 1fr);
+            gap: 22px;
+            align-items: start;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e3e8e4;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(38, 50, 56, 0.035);
+        }
+
+        /* ================= PROFILE SUMMARY ================= */
+
+        .profile-summary {
+            padding: 28px 22px;
+            text-align: center;
+        }
+
+        .large-avatar {
+            width: 92px;
+            height: 92px;
+
+            margin: 0 auto 16px;
+
+            border-radius: 50%;
+
+            background: #e8f5e9;
+            color: #2e7d32;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 28px;
+            font-weight: 700;
+
+            border: 4px solid #f1f8e9;
+        }
+
+        .profile-summary h2 {
+            font-size: 19px;
+            color: #263238;
+        }
+
+        .profile-summary .role {
+            margin-top: 5px;
+
+            font-size: 12px;
+            color: #607d68;
+        }
+
+        .profile-status {
+            display: inline-flex;
+            margin-top: 15px;
+
+            padding: 6px 12px;
+
+            background: #e8f5e9;
+            color: #2e7d32;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .profile-divider {
+            height: 1px;
+            background: #edf0ee;
+            margin: 24px 0;
+        }
+
+        .profile-meta {
+            text-align: left;
+        }
+
+        .meta-item {
+            margin-bottom: 18px;
+        }
+
+        .meta-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .meta-label {
+            display: block;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            color: #90a4ae;
+
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            font-size: 13px;
+            color: #455a64;
+        }
+
+        /* ================= EDIT PROFILE ================= */
+
+        .edit-card {
+            padding: 26px;
+        }
+
+        .card-header {
+            padding-bottom: 20px;
+            margin-bottom: 22px;
+
+            border-bottom: 1px solid #edf0ee;
+        }
+
+        .card-header h2 {
+            font-size: 19px;
+            color: #263238;
+        }
+
+        .card-header p {
+            margin-top: 5px;
+            font-size: 13px;
+            color: #78909c;
+        }
+
+        .section-title {
+            margin: 24px 0 16px;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            color: #2e7d32;
+        }
+
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 17px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #455a64;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+
+            padding: 11px 12px;
+
+            border: 1px solid #d8e0db;
+            border-radius: 8px;
+
+            background: #ffffff;
+            color: #263238;
+
+            font-family: inherit;
+            font-size: 13px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+        .form-group textarea {
+            min-height: 95px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #66bb6a;
+
+            box-shadow:
+                0 0 0 3px rgba(102, 187, 106, 0.12);
+        }
+
+        .readonly {
+            background: #f5f7f6 !important;
+            color: #78909c !important;
+            cursor: not-allowed;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .button-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+
+            margin-top: 26px;
+            padding-top: 20px;
+
+            border-top: 1px solid #edf0ee;
+        }
+
+        .button {
+            padding: 11px 20px;
+
+            border-radius: 8px;
+
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .cancel-button {
+            background: #ffffff;
+            color: #607d68;
+            border: 1px solid #d8e0db;
+        }
+
+        .cancel-button:hover {
+            background: #f6f8f7;
+        }
+
+        .save-button {
+            background: #2e7d32;
+            color: #ffffff;
+            border: 1px solid #2e7d32;
+        }
+
+        .save-button:hover {
+            background: #1b5e20;
+        }
+
+        /* ================= INFORMATION ================= */
+
+        .info-box {
+            margin-top: 22px;
+
+            padding: 15px 17px;
+
+            background: #f1f8e9;
+
+            border-left: 3px solid #66bb6a;
+
+            border-radius: 8px;
+
+            font-size: 11px;
+            line-height: 1.6;
+
+            color: #607d68;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1000px) {
+
+            .profile-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-summary {
+                text-align: left;
+
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .large-avatar {
+                margin: 0;
+                flex-shrink: 0;
+            }
+
+            .profile-divider,
+            .profile-meta {
+                display: none;
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                width: 210px;
+                min-width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                width: calc(100% - 210px);
+            }
+
+            .content {
+                padding: 22px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .app {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .topbar {
+                height: auto;
+                padding: 18px 20px;
+            }
+
+            .profile {
+                display: none;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .profile-summary {
+                display: block;
+                text-align: center;
+            }
+
+            .large-avatar {
+                margin: 0 auto 16px;
+            }
+
+            .button-row {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                C
+            </div>
+
+            <div class="brand-text">
+                <h2>CHRONICARE</h2>
+                <p>Health Monitoring</p>
+            </div>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <div class="nav-title">
+                Patient Portal
+            </div>
+
+            <a href="dashboard.html">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a href="health-monitoring.html">
+                <span class="nav-icon">♡</span>
+                Health Monitoring
+            </a>
+
+            <a href="health-history.html">
+                <span class="nav-icon">▤</span>
+                Health History
+            </a>
+
+            <a href="health-trends.html">
+                <span class="nav-icon">⌁</span>
+                Health Trends
+            </a>
+
+            <a href="analytics.html">
+                <span class="nav-icon">◫</span>
+                Analytics
+            </a>
+
+            <a href="risk-status.html">
+                <span class="nav-icon">!</span>
+                Risk Status
+            </a>
+
+            <a href="alerts.html">
+                <span class="nav-icon">⚠</span>
+                Alerts
+            </a>
+
+            <a href="appointments.html">
+                <span class="nav-icon">▣</span>
+                Appointments
+            </a>
+
+            <a href="profile.html" class="active">
+                <span class="nav-icon">◉</span>
+                My Profile
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="#">
+                <span class="nav-icon">⚙</span>
+                Settings
+            </a>
+
+            <a href="../login.html">
+                <span class="nav-icon">↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="page-title">
+
+                <h1>My Profile</h1>
+
+                <p>
+                    Manage your personal and health information.
+                </p>
+
+            </div>
+
+
+            <div class="profile">
+
+                <div class="avatar">
+                    SF
+                </div>
+
+                <div class="profile-info">
+
+                    <strong>Syeed Faruk</strong>
+
+                    <span>Patient</span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <div class="content">
+
+            <div class="profile-layout">
+
+
+                <!-- ================= PROFILE SUMMARY ================= -->
+
+                <div class="card profile-summary">
+
+                    <div class="large-avatar">
+                        SF
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Syeed Faruk
+                        </h2>
+
+                        <p class="role">
+                            Patient
+                        </p>
+
+                        <span class="profile-status">
+                            Active Account
+                        </span>
+
+                    </div>
+
+
+                    <div class="profile-divider"></div>
+
+
+                    <div class="profile-meta">
+
+                        <div class="meta-item">
+
+                            <span class="meta-label">
+                                Email
+                            </span>
+
+                            <span class="meta-value">
+                                syeed@example.com
+                            </span>
+
+                        </div>
+
+
+                        <div class="meta-item">
+
+                            <span class="meta-label">
+                                Member Since
+                            </span>
+
+                            <span class="meta-value">
+                                September 2026
+                            </span>
+
+                        </div>
+
+
+                        <div class="meta-item">
+
+                            <span class="meta-label">
+                                Account Type
+                            </span>
+
+                            <span class="meta-value">
+                                Patient Account
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= EDIT PROFILE ================= -->
+
+                <div class="card edit-card">
+
+                    <div class="card-header">
+
+                        <h2>
+                            Personal Information
+                        </h2>
+
+                        <p>
+                            Update your personal information and
+                            medical profile details.
+                        </p>
+
+                    </div>
+
+
+                    <form id="profileForm">
+
+
+                        <!-- PERSONAL -->
+
+                        <div class="section-title">
+                            Personal Details
+                        </div>
+
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group">
+
+                                <label for="fullName">
+                                    Full Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="fullName"
+                                    value="Syeed Faruk"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="email">
+                                    Email Address
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    value="syeed@example.com"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="dob">
+                                    Date of Birth
+                                </label>
+
+                                <input
+                                    type="date"
+                                    id="dob"
+                                    value="2006-08-15"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="gender">
+                                    Gender
+                                </label>
+
+                                <select id="gender">
+
+                                    <option value="">
+                                        Select gender
+                                    </option>
+
+                                    <option selected>
+                                        Male
+                                    </option>
+
+                                    <option>
+                                        Female
+                                    </option>
+
+                                    <option>
+                                        Other
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="phone">
+                                    Phone Number
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    value="+91 98765 43210"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="role">
+                                    Account Role
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="role"
+                                    value="Patient"
+                                    class="readonly"
+                                    readonly
+                                >
+
+                            </div>
+
+
+                            <div class="form-group full">
+
+                                <label for="address">
+                                    Address
+                                </label>
+
+                                <textarea
+                                    id="address"
+                                    placeholder="Enter your address..."
+                                >Chennai, Tamil Nadu, India</textarea>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- MEDICAL -->
+
+                        <div class="section-title">
+                            Medical Information
+                        </div>
+
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group full">
+
+                                <label for="medicalHistory">
+                                    Medical History
+                                </label>
+
+                                <textarea
+                                    id="medicalHistory"
+                                    placeholder="Enter relevant medical history..."
+                                >No major medical history reported.</textarea>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- BUTTONS -->
+
+                        <div class="button-row">
+
+                            <button
+                                type="button"
+                                class="button cancel-button"
+                                id="cancelButton"
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                type="submit"
+                                class="button save-button"
+                            >
+                                Save Changes
+                            </button>
+
+                        </div>
+
+                    </form>
+
+
+                    <div class="info-box">
+
+                        <strong>Profile Information</strong><br>
+
+                        Your profile information will later be
+                        connected to the CHRONICARE authentication
+                        system and stored in the MySQL database.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    const profileForm =
+        document.getElementById("profileForm");
+
+    const cancelButton =
+        document.getElementById("cancelButton");
+
+
+    profileForm.addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        alert(
+            "Profile updated successfully!\n\n" +
+            "Backend and MySQL integration will be added later."
+        );
+
+    });
+
+
+    cancelButton.addEventListener("click", function() {
+
+        const confirmed =
+            confirm(
+                "Discard your changes?"
+            );
+
+        if (confirmed) {
+
+            location.reload();
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

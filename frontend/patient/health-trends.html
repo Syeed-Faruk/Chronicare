@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Health Trends | CHRONICARE</title>
+
+    <link rel="stylesheet" href="../css/dashboard.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        .trends-page {
+            max-width: 1400px;
+        }
+
+        .trends-header {
+            margin-bottom: 28px;
+        }
+
+        .trends-header h1 {
+            font-size: 28px;
+            margin-bottom: 7px;
+        }
+
+        .trends-header p {
+            color: #607D68;
+            font-size: 13px;
+        }
+
+        .trend-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .trend-card {
+            background: white;
+            border: 1px solid #E1E8E2;
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+        .trend-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .trend-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: #E8F5E9;
+            color: #2E7D32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .trend-card-label {
+            color: #607D68;
+            font-size: 10px;
+        }
+
+        .trend-value {
+            font-size: 23px;
+            font-weight: 750;
+        }
+
+        .trend-value span {
+            color: #89958D;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .trend-change {
+            margin-top: 6px;
+            color: #2E7D32;
+            font-size: 9px;
+        }
+
+        .chart-panel {
+            background: white;
+            border: 1px solid #E1E8E2;
+            border-radius: 10px;
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        .chart-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .chart-panel-header h2 {
+            font-size: 16px;
+        }
+
+        .chart-panel-header p {
+            color: #607D68;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chart-controls button,
+        .period-select {
+            border: 1px solid #DDE5DF;
+            background: white;
+            color: #607D68;
+            border-radius: 6px;
+            padding: 7px 10px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .chart-controls button.active {
+            background: #E8F5E9;
+            color: #2E7D32;
+            border-color: #C8DFC9;
+            font-weight: 700;
+        }
+
+        .chart-container {
+            height: 330px;
+            position: relative;
+        }
+
+        .bottom-trends {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .insight-panel,
+        .range-panel {
+            background: white;
+            border: 1px solid #E1E8E2;
+            border-radius: 10px;
+            padding: 21px;
+        }
+
+        .panel-heading h2 {
+            font-size: 15px;
+        }
+
+        .panel-heading p {
+            color: #607D68;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        .insight {
+            display: flex;
+            gap: 12px;
+            padding: 15px 0;
+            border-bottom: 1px solid #EEF2EF;
+        }
+
+        .insight:last-child {
+            border-bottom: none;
+        }
+
+        .insight-icon {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            border-radius: 7px;
+            background: #E8F5E9;
+            color: #2E7D32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .insight strong {
+            display: block;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+        .insight span {
+            color: #607D68;
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+        .range-row {
+            display: grid;
+            grid-template-columns: 1fr 80px 80px;
+            gap: 10px;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #EEF2EF;
+            font-size: 10px;
+        }
+
+        .range-row:last-child {
+            border-bottom: none;
+        }
+
+        .range-name {
+            color: #263238;
+            font-weight: 600;
+        }
+
+        .range-value {
+            color: #607D68;
+            text-align: right;
+        }
+
+        .range-status {
+            text-align: right;
+            color: #2E7D32;
+            font-weight: 700;
+            font-size: 9px;
+        }
+
+        .range-status.monitor {
+            color: #9A6A00;
+        }
+
+        .demo-note {
+            margin-top: 18px;
+            padding: 11px 13px;
+            background: #FFF8E1;
+            border-left: 3px solid #F9A825;
+            color: #806000;
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 950px) {
+
+            .trend-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bottom-trends {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .trend-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-panel-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="dashboard-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-top">
+
+            <a href="dashboard.html" class="dashboard-brand">
+
+                <span class="brand-mark">
+                    C
+                </span>
+
+                <span>
+                    CHRONICARE
+                </span>
+
+            </a>
+
+
+            <nav class="sidebar-nav">
+
+                <p class="nav-label">
+                    MAIN MENU
+                </p>
+
+
+                <a href="dashboard.html" class="nav-item">
+
+                    <span class="nav-icon">
+                        ⌂
+                    </span>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <a href="health-monitoring.html" class="nav-item">
+
+                    <span class="nav-icon">
+                        ♥
+                    </span>
+
+                    <span>
+                        Health Monitoring
+                    </span>
+
+                </a>
+
+
+                <a href="health-history.html" class="nav-item">
+
+                    <span class="nav-icon">
+                        ◈
+                    </span>
+
+                    <span>
+                        Health History
+                    </span>
+
+                </a>
+
+
+                <a href="health-trends.html" class="nav-item active">
+
+                    <span class="nav-icon">
+                        ↗
+                    </span>
+
+                    <span>
+                        Health Trends
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <span class="nav-icon">
+                        ◌
+                    </span>
+
+                    <span>
+                        Analytics
+                    </span>
+
+                </a>
+
+
+                <p class="nav-label second-label">
+                    CARE
+                </p>
+
+
+                <a href="#" class="nav-item">
+
+                    <span class="nav-icon">
+                        !
+                    </span>
+
+                    <span>
+                        Risk Status
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <span class="nav-icon">
+                        ◇
+                    </span>
+
+                    <span>
+                        Alerts
+                    </span>
+
+                    <span class="alert-count">
+                        2
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <span class="nav-icon">
+                        □
+                    </span>
+
+                    <span>
+                        Appointments
+                    </span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <span class="nav-icon">
+                        ↻
+                    </span>
+
+                    <span>
+                        Follow-Up
+                    </span>
+
+                </a>
+
+            </nav>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="#" class="nav-item">
+
+                <span class="nav-icon">
+                    ○
+                </span>
+
+                <span>
+                    My Profile
+                </span>
+
+            </a>
+
+
+            <a href="../index.html" class="nav-item logout">
+
+                <span class="nav-icon">
+                    ←
+                </span>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <p class="page-section">
+                    PATIENT PORTAL
+                </p>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button class="icon-button">
+                    ♧
+                </button>
+
+
+                <button class="notification-button">
+
+                    ◇
+
+                    <span></span>
+
+                </button>
+
+
+                <div class="user-profile">
+
+                    <div class="avatar">
+                        SF
+                    </div>
+
+                    <div class="user-info">
+
+                        <strong>
+                            Syeed Faruk
+                        </strong>
+
+                        <small>
+                            Patient
+                        </small>
+
+                    </div>
+
+                    <span class="dropdown-arrow">
+                        ▾
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <div class="content-wrapper trends-page">
+
+
+            <!-- HEADER -->
+
+            <section class="trends-header">
+
+                <p class="date-label">
+                    HEALTH ANALYSIS
+                </p>
+
+                <h1>
+                    Health Trends
+                </h1>
+
+                <p>
+                    Track how your health parameters change over time.
+                </p>
+
+            </section>
+
+
+            <!-- SUMMARY CARDS -->
+
+            <section class="trend-summary">
+
+
+                <div class="trend-card">
+
+                    <div class="trend-card-top">
+
+                        <span class="trend-card-label">
+                            HEART RATE
+                        </span>
+
+                        <div class="trend-icon">
+                            ♥
+                        </div>
+
+                    </div>
+
+                    <div class="trend-value">
+                        78
+                        <span>BPM</span>
+                    </div>
+
+                    <div class="trend-change">
+                        ↓ 3 BPM this week
+                    </div>
+
+                </div>
+
+
+                <div class="trend-card">
+
+                    <div class="trend-card-top">
+
+                        <span class="trend-card-label">
+                            BLOOD PRESSURE
+                        </span>
+
+                        <div class="trend-icon">
+                            BP
+                        </div>
+
+                    </div>
+
+                    <div class="trend-value">
+                        120/80
+                        <span>mmHg</span>
+                    </div>
+
+                    <div class="trend-change">
+                        Stable this week
+                    </div>
+
+                </div>
+
+
+                <div class="trend-card">
+
+                    <div class="trend-card-top">
+
+                        <span class="trend-card-label">
+                            BLOOD OXYGEN
+                        </span>
+
+                        <div class="trend-icon">
+                            O₂
+                        </div>
+
+                    </div>
+
+                    <div class="trend-value">
+                        98
+                        <span>%</span>
+                    </div>
+
+                    <div class="trend-change">
+                        Stable this week
+                    </div>
+
+                </div>
+
+
+                <div class="trend-card">
+
+                    <div class="trend-card-top">
+
+                        <span class="trend-card-label">
+                            WEIGHT
+                        </span>
+
+                        <div class="trend-icon">
+                            W
+                        </div>
+
+                    </div>
+
+                    <div class="trend-value">
+                        72
+                        <span>kg</span>
+                    </div>
+
+                    <div class="trend-change">
+                        ↓ 0.3 kg this week
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- MAIN CHART -->
+
+            <section class="chart-panel">
+
+
+                <div class="chart-panel-header">
+
+                    <div>
+
+                        <h2>
+                            Health Parameter Trends
+                        </h2>
+
+                        <p>
+                            Historical measurements recorded by the patient
+                        </p>
+
+                    </div>
+
+
+                    <div class="chart-controls">
+
+                        <button
+                            id="heartBtn"
+                            class="active"
+                            onclick="changeChart('heart')"
+                        >
+                            Heart Rate
+                        </button>
+
+                        <button
+                            id="bpBtn"
+                            onclick="changeChart('bp')"
+                        >
+                            Blood Pressure
+                        </button>
+
+                        <button
+                            id="oxygenBtn"
+                            onclick="changeChart('oxygen')"
+                        >
+                            SpO₂
+                        </button>
+
+                        <button
+                            id="weightBtn"
+                            onclick="changeChart('weight')"
+                        >
+                            Weight
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chart-container">
+
+                    <canvas id="healthChart"></canvas>
+
+                </div>
+
+            </section>
+
+
+            <!-- LOWER SECTION -->
+
+            <section class="bottom-trends">
+
+
+                <!-- INSIGHTS -->
+
+                <div class="insight-panel">
+
+                    <div class="panel-heading">
+
+                        <h2>
+                            Trend Insights
+                        </h2>
+
+                        <p>
+                            Summary of recent changes
+                        </p>
+
+                    </div>
+
+
+                    <div class="insight">
+
+
+                        <div class="insight-icon">
+                            ↘
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Heart rate is stable
+                            </strong>
+
+                            <span>
+                                Your recent readings have remained
+                                within a relatively consistent range.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="insight">
+
+
+                        <div class="insight-icon">
+                            →
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Blood pressure is consistent
+                            </strong>
+
+                            <span>
+                                Recent blood pressure measurements
+                                show a stable pattern.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="insight">
+
+
+                        <div class="insight-icon">
+                            ↓
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Weight trend is slightly decreasing
+                            </strong>
+
+                            <span>
+                                Your recorded weight has decreased
+                                slightly over the selected period.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- PARAMETER STATUS -->
+
+                <div class="range-panel">
+
+                    <div class="panel-heading">
+
+                        <h2>
+                            Current Parameters
+                        </h2>
+
+                        <p>
+                            Latest recorded values
+                        </p>
+
+                    </div>
+
+
+                    <div class="range-row">
+
+                        <span class="range-name">
+                            Heart Rate
+                        </span>
+
+                        <span class="range-value">
+                            78 BPM
+                        </span>
+
+                        <span class="range-status">
+                            Normal
+                        </span>
+
+                    </div>
+
+
+                    <div class="range-row">
+
+                        <span class="range-name">
+                            Blood Pressure
+                        </span>
+
+                        <span class="range-value">
+                            120/80
+                        </span>
+
+                        <span class="range-status">
+                            Normal
+                        </span>
+
+                    </div>
+
+
+                    <div class="range-row">
+
+                        <span class="range-name">
+                            SpO₂
+                        </span>
+
+                        <span class="range-value">
+                            98%
+                        </span>
+
+                        <span class="range-status">
+                            Normal
+                        </span>
+
+                    </div>
+
+
+                    <div class="range-row">
+
+                        <span class="range-name">
+                            Weight
+                        </span>
+
+                        <span class="range-value">
+                            72 kg
+                        </span>
+
+                        <span class="range-status">
+                            Stable
+                        </span>
+
+                    </div>
+
+
+                    <div class="range-row">
+
+                        <span class="range-name">
+                            Glucose
+                        </span>
+
+                        <span class="range-value">
+                            104 mg/dL
+                        </span>
+
+                        <span class="range-status monitor">
+                            Monitor
+                        </span>
+
+                    </div>
+
+
+                    <div class="demo-note">
+
+                        These values are currently sample frontend
+                        data. Actual trends will be generated from
+                        patient records after MySQL integration.
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    let chartData = {};
+
+    let currentChart;
+
+    const ctx =
+        document
+            .getElementById("healthChart")
+            .getContext("2d");
+
+
+    async function loadHealthTrends() {
+
+        const token = localStorage.getItem("chronicareToken");
+
+        if (!token) {
+            alert("Please login first.");
+            window.location.href = "../login.html";
+            return;
+        }
+
+        try {
+
+            const response = await fetch(
+                "http://127.0.0.1:5000/api/health/trends",
+                {
+                    method: "GET",
+
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    }
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                alert(result.message || "Failed to load health trends.");
+                return;
+            }
+
+
+            const records = result.trends;
+            const latest = records[records.length - 1];
+
+const trendValues =
+    document.querySelectorAll(".trend-value");
+
+if (latest && trendValues.length >= 4) {
+
+    trendValues[0].innerHTML =
+        `${latest.heart_rate} <span>BPM</span>`;
+
+    trendValues[1].innerHTML =
+        `${latest.blood_pressure} <span>mmHg</span>`;
+
+    trendValues[2].innerHTML =
+        `${latest.spo2} <span>%</span>`;
+
+    trendValues[3].innerHTML =
+        `${latest.weight} <span>kg</span>`;
+}
+
+
+            if (!records || records.length === 0) {
+
+                alert("No health records available for trends.");
+
+                return;
+
+            }
+
+
+            const labels = records.map(record =>
+                record.record_date
+            );
+
+
+            const heartRateData = records.map(record =>
+                Number(record.heart_rate)
+            );
+
+
+            const systolicBPData = records.map(record => {
+
+                if (!record.blood_pressure) {
+                    return null;
+                }
+
+                return Number(
+                    record.blood_pressure.split("/")[0]
+                );
+
+            });
+
+
+            const spo2Data = records.map(record =>
+                Number(record.spo2)
+            );
+
+
+            const weightData = records.map(record =>
+                Number(record.weight)
+            );
+
+
+            chartData = {
+
+                heart: {
+
+                    label: "Heart Rate (BPM)",
+
+                    data: heartRateData,
+
+                    min: 40,
+
+                    max: 120
+
+                },
+
+
+                bp: {
+
+                    label: "Systolic Blood Pressure (mmHg)",
+
+                    data: systolicBPData,
+
+                    min: 80,
+
+                    max: 160
+
+                },
+
+
+                oxygen: {
+
+                    label: "SpO₂ (%)",
+
+                    data: spo2Data,
+
+                    min: 90,
+
+                    max: 100
+
+                },
+
+
+                weight: {
+
+                    label: "Weight (kg)",
+
+                    data: weightData,
+
+                    min: Math.min(...weightData) - 5,
+
+                    max: Math.max(...weightData) + 5
+
+                }
+
+            };
+
+
+            window.healthTrendLabels = labels;
+
+
+            createChart("heart");
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to connect to the CHRONICARE server."
+            );
+
+        }
+
+    }
+
+
+    function createChart(type) {
+
+        const selected =
+            chartData[type];
+
+
+        if (!selected) {
+            return;
+        }
+
+
+        if (currentChart) {
+            currentChart.destroy();
+        }
+
+
+        currentChart = new Chart(ctx, {
+
+            type: "line",
+
+            data: {
+
+                labels: window.healthTrendLabels,
+
+                datasets: [{
+
+                    label: selected.label,
+
+                    data: selected.data,
+
+                    borderColor: "#2E7D32",
+
+                    backgroundColor: "rgba(46, 125, 50, 0.08)",
+
+                    borderWidth: 3,
+
+                    pointBackgroundColor: "#2E7D32",
+
+                    pointBorderColor: "#FFFFFF",
+
+                    pointBorderWidth: 2,
+
+                    pointRadius: 5,
+
+                    pointHoverRadius: 7,
+
+                    tension: 0.35,
+
+                    fill: true
+
+                }]
+
+            },
+
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+
+                        display: false
+
+                    },
+
+                    tooltip: {
+
+                        backgroundColor: "#263238",
+
+                        padding: 10,
+
+                        titleFont: {
+                            size: 11
+                        },
+
+                        bodyFont: {
+                            size: 10
+                        }
+
+                    }
+
+                },
+
+
+                scales: {
+
+                    y: {
+
+                        min: selected.min,
+
+                        max: selected.max,
+
+                        grid: {
+
+                            color: "#EEF2EF"
+
+                        },
+
+                        ticks: {
+
+                            color: "#7D8981",
+
+                            font: {
+                                size: 9
+                            }
+
+                        }
+
+                    },
+
+
+                    x: {
+
+                        grid: {
+
+                            display: false
+
+                        },
+
+                        ticks: {
+
+                            color: "#7D8981",
+
+                            font: {
+                                size: 9
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    function changeChart(type) {
+
+        document
+            .querySelectorAll(".chart-controls button")
+            .forEach(button => {
+
+                button.classList.remove("active");
+
+            });
+
+
+        if (type === "heart") {
+
+            document
+                .getElementById("heartBtn")
+                .classList.add("active");
+
+        }
+
+
+        if (type === "bp") {
+
+            document
+                .getElementById("bpBtn")
+                .classList.add("active");
+
+        }
+
+
+        if (type === "oxygen") {
+
+            document
+                .getElementById("oxygenBtn")
+                .classList.add("active");
+
+        }
+
+
+        if (type === "weight") {
+
+            document
+                .getElementById("weightBtn")
+                .classList.add("active");
+
+        }
+
+
+        createChart(type);
+
+    }
+
+
+    loadHealthTrends();
+
+</script>
+
+
+</body>
+
+</html>

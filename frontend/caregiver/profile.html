@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | CHRONICARE</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f6f8f7;
+            color: #263238;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            min-width: 250px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            border-right: 1px solid #e2e7e3;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            height: 88px;
+            padding: 22px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #edf0ee;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: #2e7d32;
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .brand-text h2 {
+            font-size: 18px;
+        }
+
+        .brand-text p {
+            margin-top: 2px;
+            font-size: 11px;
+            color: #78909c;
+        }
+
+        .nav {
+            padding: 20px 14px;
+            flex: 1;
+        }
+
+        .nav-title {
+            padding: 0 12px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #90a4ae;
+            text-transform: uppercase;
+        }
+
+        .nav a,
+        .sidebar-bottom a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            height: 44px;
+            padding: 0 13px;
+            margin-bottom: 4px;
+            text-decoration: none;
+            color: #607d68;
+            font-size: 14px;
+            border-radius: 9px;
+        }
+
+        .nav a:hover,
+        .nav a.active,
+        .sidebar-bottom a:hover {
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-weight: 700;
+        }
+
+        .nav-icon {
+            width: 21px;
+            text-align: center;
+        }
+
+        .sidebar-bottom {
+            padding: 14px;
+            border-top: 1px solid #edf0ee;
+        }
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 88px;
+            background: #fff;
+            border-bottom: 1px solid #e5e9e6;
+            padding: 0 34px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+        }
+
+        .page-title p {
+            margin-top: 4px;
+            font-size: 13px;
+            color: #78909c;
+        }
+
+        .profile-mini {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e8f5e9;
+            color: #2e7d32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .profile-mini span {
+            color: #78909c;
+            font-size: 11px;
+        }
+
+        .content {
+            padding: 30px 34px;
+            max-width: 1200px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 22px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e3e8e4;
+            border-radius: 14px;
+            padding: 26px;
+            box-shadow: 0 2px 8px rgba(38,50,56,.035);
+        }
+
+        .summary {
+            text-align: center;
+        }
+
+        .large-avatar {
+            width: 92px;
+            height: 92px;
+            margin: 3px auto 16px;
+            border-radius: 50%;
+            background: #e8f5e9;
+            color: #2e7d32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .summary h2 {
+            font-size: 19px;
+        }
+
+        .summary p {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #78909c;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .stats {
+            margin-top: 24px;
+            border-top: 1px solid #edf0ee;
+        }
+
+        .stat {
+            padding: 15px 0;
+            border-bottom: 1px solid #edf0ee;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 18px;
+        }
+
+        .stat span {
+            display: block;
+            margin-top: 3px;
+            color: #90a4ae;
+            font-size: 10px;
+        }
+
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .header h2 {
+            font-size: 19px;
+        }
+
+        .header p {
+            margin-top: 5px;
+            color: #78909c;
+            font-size: 13px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #d8e0db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #66bb6a;
+        }
+
+        .form-group input:disabled {
+            background: #f6f8f7;
+            color: #78909c;
+        }
+
+        .form-group textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .actions {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #edf0ee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .button {
+            padding: 11px 20px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .cancel {
+            background: #fff;
+            color: #607d68;
+            border: 1px solid #d8e0db;
+        }
+
+        .save {
+            background: #2e7d32;
+            color: #fff;
+            border: none;
+        }
+
+        .save:hover {
+            background: #1b5e20;
+        }
+
+        .info-box {
+            margin-top: 20px;
+            padding: 14px 16px;
+            background: #f1f8e9;
+            border-left: 3px solid #66bb6a;
+            border-radius: 7px;
+            color: #607d68;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 850px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 210px;
+                min-width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                width: calc(100% - 210px);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .app {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .nav,
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .profile-mini {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                C
+            </div>
+
+            <div class="brand-text">
+                <h2>CHRONICARE</h2>
+                <p>Health Monitoring</p>
+            </div>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <div class="nav-title">
+                Caregiver Portal
+            </div>
+
+            <a href="dashboard.html">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a href="patient-info.html">
+                <span class="nav-icon">♙</span>
+                Patient Information
+            </a>
+
+            <a href="alerts.html">
+                <span class="nav-icon">⚠</span>
+                Alerts
+            </a>
+
+            <a href="patient-trends.html">
+                <span class="nav-icon">⌁</span>
+                Patient Trends
+            </a>
+
+            <a href="risk-status.html">
+                <span class="nav-icon">!</span>
+                Risk Status
+            </a>
+
+            <a href="appointments.html">
+                <span class="nav-icon">▣</span>
+                Appointments
+            </a>
+
+            <a href="profile.html" class="active">
+                <span class="nav-icon">◉</span>
+                My Profile
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="../login.html">
+                <span class="nav-icon">↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="page-title">
+                <h1>My Profile</h1>
+                <p>Manage your caregiver profile information.</p>
+            </div>
+
+            <div class="profile-mini">
+
+                <div class="avatar">
+                    RK
+                </div>
+
+                <div>
+                    <strong>Rajesh Kumar</strong><br>
+                    <span>Caregiver</span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <div class="content">
+
+            <section class="layout">
+
+
+                <div class="card summary">
+
+                    <div class="large-avatar">
+                        RK
+                    </div>
+
+                    <h2>
+                        Rajesh Kumar
+                    </h2>
+
+                    <p>
+                        Family Caregiver
+                    </p>
+
+                    <span class="status">
+                        ACTIVE ACCOUNT
+                    </span>
+
+
+                    <div class="stats">
+
+                        <div class="stat">
+                            <strong id="connectedPatients">0</strong>
+                            <span>Connected Patient</span>
+                        </div>
+
+                        <div class="stat">
+                            <strong id="activeAlerts">0</strong>
+                            <span>Active Alerts</span>
+                        </div>
+
+                        <div class="stat">
+                            <strong id="upcomingAppointments">0</strong>
+                            <span>Upcoming Appointments</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="header">
+
+                        <h2>
+                            Profile Information
+                        </h2>
+
+                        <p>
+                            Update your personal and caregiver information.
+                        </p>
+
+                    </div>
+
+
+                    <form id="profileForm">
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Full Name
+                                </label>
+
+                                <input
+    id="profileName"
+    type="text"
+    value="Rajesh Kumar"
+    required
+>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Email Address
+                                </label>
+
+                                <input
+    id="profileEmail"
+    type="email"
+    value="rajesh.kumar@chronicare.com"
+    required
+>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Phone Number
+                                </label>
+
+                                <input
+    id="profilePhone"
+    type="tel"
+    value=""
+>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Relationship to Patient
+                                </label>
+
+                                <input
+    id="profileRelationship"
+    type="text"
+    value=""
+>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Caregiver ID
+                                </label>
+
+                                <input
+    id="profileCaregiverId"
+    type="text"
+    value="C001"
+    disabled
+>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Role
+                                </label>
+
+                               <input
+    id="profileRole"
+    type="text"
+    value="Caregiver"
+    disabled
+>
+
+                            </div>
+
+
+                            <div class="form-group full">
+
+                                <label>
+                                    Address
+                                </label>
+
+                                <textarea id="profileAddress"></textarea>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="actions">
+
+                            <button
+                                type="button"
+                                class="button cancel"
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                type="submit"
+                                class="button save"
+                            >
+                                Save Changes
+                            </button>
+
+                        </div>
+
+                    </form>
+
+
+                   
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<script>
+const PROFILE_API = "http://localhost:5000/api/health";
+
+const profileForm = document.getElementById("profileForm");
+const profileMessage = document.querySelector(".info-box");
+
+let savedProfile = null;
+
+function getProfileToken() {
+    return localStorage.getItem("chronicareToken") ||
+           sessionStorage.getItem("chronicareToken");
+}
+
+function initials(name) {
+    return String(name || "Caregiver")
+        .trim()
+        .split(/\s+/)
+        .map(part => part[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase();
+}
+
+function showProfileMessage(message, success = true) {
+    profileMessage.textContent = message;
+    profileMessage.style.color = success ? "#2e7d32" : "#b91c1c";
+}
+
+function setProfileValues(profile) {
+    document.getElementById("profileName").value = profile.name || "";
+    document.getElementById("profileEmail").value = profile.email || "";
+    document.getElementById("profilePhone").value = profile.phone || "";
+    document.getElementById("profileRelationship").value =
+        profile.relationship_to_patient || "";
+
+    document.getElementById("profileCaregiverId").value =
+        `C${String(profile.caregiver_id).padStart(3, "0")}`;
+
+    document.getElementById("profileRole").value = profile.role || "caregiver";
+
+    // Address is not stored in the current database schema.
+    document.getElementById("profileAddress").value = "";
+
+    document.querySelector(".summary h2").textContent =
+        profile.name || "Caregiver";
+
+    document.querySelector(".summary p").textContent =
+        profile.relationship_to_patient || "Caregiver";
+
+    document.querySelector(".large-avatar").textContent =
+        initials(profile.name);
+
+    const mini = document.querySelector(".profile-mini");
+    if (mini) {
+        mini.querySelector(".avatar").textContent = initials(profile.name);
+        mini.querySelector("strong").textContent = profile.name || "Caregiver";
+    }
+
+    document.getElementById("connectedPatients").textContent =
+        profile.linked_patients ?? 0;
+
+    document.getElementById("activeAlerts").textContent =
+        profile.active_alerts ?? 0;
+
+    document.getElementById("upcomingAppointments").textContent =
+        profile.total_appointments ?? 0;
+}
+
+async function requestProfile(method = "GET", body = null) {
+    const token = getProfileToken();
+
+    if (!token) {
+        throw new Error("Your login session is missing. Please log in again.");
+    }
+
+    const response = await fetch(`${PROFILE_API}/caregiver-profile`, {
+        method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        ...(body ? { body: JSON.stringify(body) } : {})
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || `Request failed (${response.status}).`);
+    }
+
+    return data;
+}
+
+async function loadProfile() {
+    try {
+        const data = await requestProfile();
+        savedProfile = data.profile;
+
+        setProfileValues(savedProfile);
+
+        showProfileMessage(
+            "Your profile is connected to CHRONICARE. Changes are saved to your account."
+        );
+    } catch (error) {
+        console.error("Profile loading error:", error);
+        showProfileMessage(error.message, false);
+    }
+}
+
+profileForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const saveButton = profileForm.querySelector(".save");
+    saveButton.disabled = true;
+    saveButton.textContent = "Saving...";
+
+    const updatedProfile = {
+        name: document.getElementById("profileName").value.trim(),
+        email: document.getElementById("profileEmail").value.trim(),
+        phone: document.getElementById("profilePhone").value.trim(),
+        relationship_to_patient:
+            document.getElementById("profileRelationship").value.trim()
+    };
+
+    try {
+        await requestProfile("PUT", updatedProfile);
+
+        const data = await requestProfile();
+        savedProfile = data.profile;
+        setProfileValues(savedProfile);
+
+        showProfileMessage("Profile updated successfully.");
+    } catch (error) {
+        console.error("Profile save error:", error);
+        showProfileMessage(error.message, false);
+    } finally {
+        saveButton.disabled = false;
+        saveButton.textContent = "Save Changes";
+    }
+});
+
+document.querySelector(".cancel").addEventListener("click", () => {
+    if (savedProfile) {
+        setProfileValues(savedProfile);
+        showProfileMessage("Changes discarded. Your saved profile has been restored.");
+    } else {
+        profileForm.reset();
+    }
+});
+
+document.addEventListener("DOMContentLoaded", loadProfile);
+</script>
+
+
+</body>
+</html>

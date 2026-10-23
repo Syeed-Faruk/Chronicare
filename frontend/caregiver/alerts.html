@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Alerts | CHRONICARE</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f6f8f7;
+            color: #263238;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            min-width: 250px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            border-right: 1px solid #e2e7e3;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            height: 88px;
+            padding: 22px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #edf0ee;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: #2e7d32;
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .brand-text h2 {
+            font-size: 18px;
+        }
+
+        .brand-text p {
+            margin-top: 2px;
+            font-size: 11px;
+            color: #78909c;
+        }
+
+        .nav {
+            padding: 20px 14px;
+            flex: 1;
+        }
+
+        .nav-title {
+            padding: 0 12px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #90a4ae;
+            text-transform: uppercase;
+        }
+
+        .nav a,
+        .sidebar-bottom a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            height: 44px;
+            padding: 0 13px;
+            margin-bottom: 4px;
+            text-decoration: none;
+            color: #607d68;
+            font-size: 14px;
+            border-radius: 9px;
+        }
+
+        .nav a:hover,
+        .nav a.active,
+        .sidebar-bottom a:hover {
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-weight: 700;
+        }
+
+        .nav-icon {
+            width: 21px;
+            text-align: center;
+        }
+
+        .sidebar-bottom {
+            padding: 14px;
+            border-top: 1px solid #edf0ee;
+        }
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 88px;
+            background: #fff;
+            border-bottom: 1px solid #e5e9e6;
+            padding: 0 34px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+        }
+
+        .page-title p {
+            margin-top: 4px;
+            font-size: 13px;
+            color: #78909c;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e8f5e9;
+            color: #2e7d32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .profile-info strong {
+            font-size: 13px;
+        }
+
+        .profile-info span {
+            display: block;
+            margin-top: 2px;
+            font-size: 11px;
+            color: #78909c;
+        }
+
+        .content {
+            padding: 30px 34px;
+            max-width: 1400px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .summary-card {
+            background: #fff;
+            border: 1px solid #e3e8e4;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(38,50,56,.035);
+        }
+
+        .summary-label {
+            font-size: 12px;
+            color: #78909c;
+        }
+
+        .summary-number {
+            margin-top: 7px;
+            font-size: 27px;
+            font-weight: 700;
+        }
+
+        .summary-description {
+            margin-top: 5px;
+            font-size: 11px;
+            color: #90a4ae;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e3e8e4;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(38,50,56,.035);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-header h2 {
+            font-size: 19px;
+        }
+
+        .card-header p {
+            margin-top: 5px;
+            color: #78909c;
+            font-size: 13px;
+        }
+
+        .filter select {
+            padding: 9px 12px;
+            border: 1px solid #d8e0db;
+            border-radius: 8px;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .alert {
+            display: grid;
+            grid-template-columns: 44px 1fr auto;
+            gap: 15px;
+            align-items: center;
+            padding: 18px 4px;
+            border-bottom: 1px solid #edf0ee;
+        }
+
+        .alert:last-child {
+            border-bottom: none;
+        }
+
+        .alert-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .warning {
+            background: #fff8e1;
+            color: #f9a825;
+        }
+
+        .high {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .normal {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .alert h3 {
+            font-size: 14px;
+        }
+
+        .alert p {
+            margin-top: 4px;
+            font-size: 12px;
+            color: #78909c;
+            line-height: 1.5;
+        }
+
+        .time {
+            margin-top: 5px;
+            color: #90a4ae;
+            font-size: 10px;
+        }
+
+        .status {
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .new {
+            background: #fff8e1;
+            color: #f9a825;
+        }
+
+        .reviewed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .info-box {
+            margin-top: 20px;
+            background: #f1f8e9;
+            border-left: 3px solid #66bb6a;
+            padding: 14px 16px;
+            border-radius: 7px;
+            color: #607d68;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 210px;
+                min-width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                width: calc(100% - 210px);
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .app {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .nav,
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .profile {
+                display: none;
+            }
+
+            .card-header {
+                flex-direction: column;
+            }
+
+            .alert {
+                grid-template-columns: 42px 1fr;
+            }
+
+            .alert > .status {
+                grid-column: 2;
+                width: max-content;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">C</div>
+
+            <div class="brand-text">
+                <h2>CHRONICARE</h2>
+                <p>Health Monitoring</p>
+            </div>
+        </div>
+
+        <nav class="nav">
+
+            <div class="nav-title">
+                Caregiver Portal
+            </div>
+
+            <a href="dashboard.html">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a href="patient-info.html">
+                <span class="nav-icon">♙</span>
+                Patient Information
+            </a>
+
+            <a href="alerts.html" class="active">
+                <span class="nav-icon">⚠</span>
+                Alerts
+            </a>
+
+            <a href="patient-trends.html">
+                <span class="nav-icon">⌁</span>
+                Patient Trends
+            </a>
+
+            <a href="risk-status.html">
+                <span class="nav-icon">!</span>
+                Risk Status
+            </a>
+
+            <a href="appointments.html">
+                <span class="nav-icon">▣</span>
+                Appointments
+            </a>
+
+            <a href="profile.html">
+                <span class="nav-icon">◉</span>
+                My Profile
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="../login.html">
+                <span class="nav-icon">↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="page-title">
+                <h1>Alerts</h1>
+                <p>Review important health alerts for your patient.</p>
+            </div>
+
+            <div class="profile">
+
+                <div class="avatar">RK</div>
+
+                <div class="profile-info">
+                    <strong>Rajesh Kumar</strong>
+                    <span>Caregiver</span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <div class="content">
+
+
+            <section class="summary-grid">
+
+                <div class="summary-card">
+                    <div class="summary-label">Total Alerts</div>
+                    <div class="summary-number">6</div>
+                    <div class="summary-description">
+                        Recent notifications
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-label">New Alerts</div>
+                    <div class="summary-number">2</div>
+                    <div class="summary-description">
+                        Require attention
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-label">Reviewed</div>
+                    <div class="summary-number">4</div>
+                    <div class="summary-description">
+                        Previously reviewed
+                    </div>
+                </div>
+
+            </section>
+
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>Recent Patient Alerts</h2>
+                        <p>
+                            Notifications generated from patient monitoring.
+                        </p>
+                    </div>
+
+                    <div class="filter">
+
+                        <select id="filter">
+
+                            <option value="all">
+                                All Alerts
+                            </option>
+
+                            <option value="new">
+                                New
+                            </option>
+
+                            <option value="reviewed">
+                                Reviewed
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div id="alertList">
+
+
+                    <div class="alert" data-status="new">
+
+                        <div class="alert-icon high">
+                            !
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Elevated Risk Status
+                            </h3>
+
+                            <p>
+                                The patient's latest risk assessment
+                                indicates an elevated risk category.
+                            </p>
+
+                            <div class="time">
+                                45 minutes ago
+                            </div>
+
+                        </div>
+
+                        <span class="status new">
+                            New
+                        </span>
+
+                    </div>
+
+
+                    <div class="alert" data-status="new">
+
+                        <div class="alert-icon warning">
+                            ⚠
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Elevated Blood Pressure
+                            </h3>
+
+                            <p>
+                                Latest blood pressure reading was
+                                138/88 mmHg.
+                            </p>
+
+                            <div class="time">
+                                1 hour ago
+                            </div>
+
+                        </div>
+
+                        <span class="status new">
+                            New
+                        </span>
+
+                    </div>
+
+
+                    <div class="alert" data-status="reviewed">
+
+                        <div class="alert-icon warning">
+                            ⚠
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Heart Rate Variation
+                            </h3>
+
+                            <p>
+                                Recent heart rate readings show
+                                variation from the patient's baseline.
+                            </p>
+
+                            <div class="time">
+                                4 hours ago
+                            </div>
+
+                        </div>
+
+                        <span class="status reviewed">
+                            Reviewed
+                        </span>
+
+                    </div>
+
+
+                    <div class="alert" data-status="reviewed">
+
+                        <div class="alert-icon normal">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Health Data Updated
+                            </h3>
+
+                            <p>
+                                New health parameters have been recorded
+                                for the patient.
+                            </p>
+
+                            <div class="time">
+                                Yesterday
+                            </div>
+
+                        </div>
+
+                        <span class="status reviewed">
+                            Reviewed
+                        </span>
+
+                    </div>
+
+
+                    <div class="alert" data-status="reviewed">
+
+                        <div class="alert-icon normal">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Appointment Confirmed
+                            </h3>
+
+                            <p>
+                                Patient appointment with Dr. Priya Sharma
+                                has been confirmed.
+                            </p>
+
+                            <div class="time">
+                                Yesterday
+                            </div>
+
+                        </div>
+
+                        <span class="status reviewed">
+                            Reviewed
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <strong>Important:</strong>
+CHRONICARE alerts are generated from patient monitoring
+and risk assessments. Please contact the patient's
+healthcare provider if you have concerns about an alert.
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<script>
+const API_BASE = "http://localhost:5000/api/health";
+
+const filter = document.getElementById("filter");
+const alertList = document.getElementById("alertList");
+const summaryNumbers = document.querySelectorAll(".summary-number");
+
+let allAlerts = [];
+
+function getToken() {
+    return localStorage.getItem("chronicareToken") ||
+           sessionStorage.getItem("chronicareToken");
+}
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+function getAlertStatus(alert) {
+    const status = String(
+        alert.status ?? alert.alert_status ?? "new"
+    ).toLowerCase().trim();
+
+    return ["reviewed", "read", "resolved", "acknowledged"]
+        .includes(status) ? "reviewed" : "new";
+}
+
+function getSeverity(alert) {
+    const value = String(
+        alert.severity ?? alert.risk_level ?? alert.alert_type ?? ""
+    ).toLowerCase();
+
+    if (value.includes("high") || value.includes("critical") ||
+        value.includes("emergency")) return "high";
+
+    if (value.includes("normal") || value.includes("low") ||
+        value.includes("resolved")) return "normal";
+
+    return "warning";
+}
+
+function getAlertTitle(alert) {
+    return alert.title ||
+           alert.alert_title ||
+           alert.alert_type ||
+           alert.type ||
+           "Health Alert";
+}
+
+function getAlertMessage(alert) {
+    return alert.message ||
+           alert.description ||
+           alert.alert_message ||
+           alert.notes ||
+           "Please review the patient's health information.";
+}
+
+function formatAlertTime(value) {
+    if (!value) return "Time unavailable";
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return String(value);
+
+    return date.toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+}
+
+function updateSummary() {
+    const reviewed = allAlerts.filter(
+        alert => getAlertStatus(alert) === "reviewed"
+    ).length;
+
+    summaryNumbers[0].textContent = allAlerts.length;
+    summaryNumbers[1].textContent = allAlerts.length - reviewed;
+    summaryNumbers[2].textContent = reviewed;
+}
+
+
+function renderAlerts() {
+    const selected = filter.value;
+
+    const visibleAlerts = allAlerts.filter(alert =>
+        selected === "all" || getAlertStatus(alert) === selected
+    );
+
+    if (visibleAlerts.length === 0) {
+        alertList.innerHTML = `
+            <p style="padding:24px 4px;color:#78909c">
+                No alerts found for this filter.
+            </p>`;
+        return;
+    }
+
+    alertList.innerHTML = visibleAlerts.map((alert, index) => {
+        const status = getAlertStatus(alert);
+        const severity = getSeverity(alert);
+        const title = getAlertTitle(alert);
+        const message = getAlertMessage(alert);
+        const patient = alert.patient_name || "Linked patient";
+        const time = formatAlertTime(
+            alert.created_at || alert.alert_date || alert.createdAt
+        );
+
+        return `
+            <div class="alert"
+                 data-alert-id="${Number(alert.alert_id)}"
+                 data-status="${status}"
+                 tabindex="0"
+                 role="button"
+                 aria-label="View ${escapeHTML(title)}">
+
+                <div class="alert-icon ${severity}">
+                    ${severity === "normal" ? "✓" : "!"}
+                </div>
+
+                <div>
+                    <h3>${escapeHTML(title)}</h3>
+                    <p>${escapeHTML(message)}</p>
+                    <p><strong>Patient:</strong> ${escapeHTML(patient)}</p>
+                    <div class="time">${escapeHTML(time)}</div>
+                </div>
+
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+                    <span class="status ${status}">
+                        ${status === "new" ? "New" : "Reviewed"}
+                    </span>
+
+                    ${status === "new" ? `
+                        <button type="button"
+                            class="review-alert-btn"
+                            data-alert-id="${Number(alert.alert_id)}"
+                            style="padding:7px 10px;border:0;border-radius:7px;background:#2e7d32;color:white;cursor:pointer">
+                            Mark Reviewed
+                        </button>
+                    ` : ""}
+                </div>
+            </div>`;
+    }).join("");
+
+    // Clicking an alert displays its details.
+    alertList.querySelectorAll(".alert").forEach(element => {
+        const openDetails = () => {
+            const alert = allAlerts.find(item =>
+                String(item.alert_id) === element.dataset.alertId
+            );
+
+            if (!alert) return;
+
+            window.alert(
+                "ALERT DETAILS\n\n" +
+                "Title: " + getAlertTitle(alert) + "\n" +
+                "Patient: " + (alert.patient_name || "Linked patient") + "\n" +
+                "Risk category: " + (alert.risk_category || "Not specified") + "\n" +
+                "Risk score: " + (alert.risk_score ?? "Not available") + "\n" +
+                "Status: " + getAlertStatus(alert) + "\n\n" +
+                getAlertMessage(alert)
+            );
+        };
+
+        element.addEventListener("click", event => {
+            if (event.target.closest(".review-alert-btn")) return;
+            openDetails();
+        });
+
+        element.addEventListener("keydown", event => {
+            if (
+                (event.key === "Enter" || event.key === " ") &&
+                event.target === element
+            ) {
+                event.preventDefault();
+                openDetails();
+            }
+        });
+    });
+
+    // Mark an alert as reviewed in the database.
+    alertList.querySelectorAll(".review-alert-btn").forEach(button => {
+        button.addEventListener("click", async event => {
+            event.stopPropagation();
+
+            button.disabled = true;
+            button.textContent = "Updating...";
+
+            try {
+                const response = await fetch(
+                    `${API_BASE}/caregiver-alerts/${button.dataset.alertId}/review`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Authorization": `Bearer ${getToken()}`
+                        }
+                    }
+                );
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(
+                        result.message || "Failed to review alert."
+                    );
+                }
+
+                // Reload the database values and summary counts.
+                await loadCaregiverAlerts();
+
+            } catch (error) {
+                window.alert(error.message);
+                button.disabled = false;
+                button.textContent = "Mark Reviewed";
+            }
+        });
+    });
+}
+
+
+async function loadCaregiverAlerts() {
+    if (!getToken()) {
+        alertList.innerHTML = `
+            <p style="padding:20px;color:#b45309">
+                Please log in as a caregiver to view alerts.
+            </p>`;
+        return;
+    }
+
+    alertList.innerHTML = `
+        <p style="padding:20px;color:#78909c">
+            Loading patient alerts...
+        </p>`;
+
+    try {
+        const response = await fetch(
+            `${API_BASE}/caregiver-alerts`,
+            {
+                headers: {
+                    "Authorization": `Bearer ${getToken()}`
+                }
+            }
+        );
+
+        if (response.status === 401 || response.status === 403) {
+            throw new Error("Your login session may have expired. Please log in again.");
+        }
+
+        if (!response.ok) {
+            throw new Error(`Server returned HTTP ${response.status}.`);
+        }
+
+        const data = await response.json();
+
+        allAlerts = Array.isArray(data)
+            ? data
+            : Array.isArray(data.alerts)
+                ? data.alerts
+                : [];
+
+        updateSummary();
+        renderAlerts();
+
+    } catch (error) {
+        console.error("Unable to load caregiver alerts:", error);
+
+        alertList.innerHTML = `
+            <p style="padding:20px;color:#b91c1c">
+                ${escapeHTML(error.message)}
+                <br>Check that the backend is running and try refreshing.
+            </p>`;
+    }
+}
+
+filter.addEventListener("change", renderAlerts);
+
+document.addEventListener("DOMContentLoaded", loadCaregiverAlerts);
+</script>
+
+
+</body>
+</html>

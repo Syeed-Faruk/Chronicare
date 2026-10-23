@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Risk Status | CHRONICARE</title>
+
+    <link
+        rel="stylesheet"
+        href="../css/dashboard.css"
+    >
+
+    <style>
+
+        .risk-page {
+            max-width: 1400px;
+        }
+
+        .risk-header {
+            margin-bottom: 28px;
+        }
+
+        .risk-header h1 {
+            font-size: 28px;
+            margin-bottom: 7px;
+        }
+
+        .risk-header p {
+            color: #607D68;
+            font-size: 13px;
+        }
+
+        .risk-main-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .risk-card {
+            background: white;
+            border: 1px solid #E1E8E2;
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .risk-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+
+        .risk-card-header h2 {
+            font-size: 16px;
+        }
+
+        .risk-card-header p {
+            color: #607D68;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        .assessment-date {
+            color: #8A958E;
+            font-size: 9px;
+        }
+
+        .risk-overview {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .risk-circle {
+            width: 170px;
+            height: 170px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            border: 13px solid #E8F5E9;
+            border-top-color: #2E7D32;
+            border-right-color: #66BB6A;
+            border-bottom-color: #F9A825;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .risk-circle strong {
+            font-size: 45px;
+            color: #2E7D32;
+            line-height: 1;
+        }
+
+        .risk-circle span {
+            color: #8A958E;
+            font-size: 9px;
+            margin-top: 6px;
+        }
+
+        .risk-summary {
+            flex: 1;
+        }
+
+        .risk-level {
+            display: inline-block;
+            padding: 7px 10px;
+            border-radius: 6px;
+            background: #FFF8E1;
+            color: #9A6A00;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: .6px;
+            margin-bottom: 12px;
+        }
+
+        .risk-summary h3 {
+            font-size: 15px;
+            margin-bottom: 7px;
+        }
+
+        .risk-summary p {
+            color: #607D68;
+            font-size: 10px;
+            line-height: 1.65;
+        }
+
+        .risk-score-bar {
+            margin-top: 18px;
+        }
+
+        .risk-score-track {
+            height: 8px;
+            background: #E8EDE9;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .risk-score-fill {
+            width: 72%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                #66BB6A,
+                #F9A825
+            );
+            border-radius: 10px;
+        }
+
+        .risk-score-labels {
+            display: flex;
+            justify-content: space-between;
+            color: #8A958E;
+            font-size: 8px;
+            margin-top: 5px;
+        }
+
+        .factor-list {
+            margin-top: 5px;
+        }
+
+        .factor-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #EEF2EF;
+        }
+
+        .factor-item:last-child {
+            border-bottom: none;
+        }
+
+        .factor-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .factor-name {
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .factor-value {
+            color: #607D68;
+            font-size: 9px;
+        }
+
+        .factor-bar {
+            height: 6px;
+            background: #EDF1EE;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .factor-fill {
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .factor-fill.normal {
+            width: 35%;
+            background: #66BB6A;
+        }
+
+        .factor-fill.moderate {
+            width: 58%;
+            background: #F9A825;
+        }
+
+        .factor-fill.low {
+            width: 25%;
+            background: #66BB6A;
+        }
+
+        .factor-bottom {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+        }
+
+        .factor-bottom span {
+            color: #8A958E;
+            font-size: 8px;
+        }
+
+        .factor-bottom strong {
+            font-size: 8px;
+            color: #2E7D32;
+        }
+
+        .factor-bottom strong.monitor {
+            color: #9A6A00;
+        }
+
+        .recommendation {
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 8px;
+            background: #F1F8E9;
+            border-left: 3px solid #66BB6A;
+        }
+
+        .recommendation strong {
+            display: block;
+            color: #2E7D32;
+            font-size: 10px;
+            margin-bottom: 5px;
+        }
+
+        .recommendation p {
+            color: #607D68;
+            font-size: 9px;
+            line-height: 1.6;
+        }
+
+        .history-panel {
+            background: white;
+            border: 1px solid #E1E8E2;
+            border-radius: 10px;
+            padding: 22px;
+        }
+
+        .history-heading {
+            margin-bottom: 18px;
+        }
+
+        .history-heading h2 {
+            font-size: 16px;
+        }
+
+        .history-heading p {
+            color: #607D68;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        .assessment-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .assessment-table th {
+            background: #F8FAF8;
+            color: #607D68;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            text-align: left;
+            padding: 12px;
+        }
+
+        .assessment-table td {
+            padding: 13px 12px;
+            border-bottom: 1px solid #EEF2EF;
+            font-size: 10px;
+        }
+
+        .assessment-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .score-cell {
+            font-weight: 800;
+            color: #2E7D32;
+        }
+
+        .normal-badge,
+        .elevated-badge {
+            display: inline-block;
+            padding: 5px 7px;
+            border-radius: 5px;
+            font-size: 8px;
+            font-weight: 800;
+        }
+
+        .normal-badge {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .elevated-badge {
+            background: #FFF8E1;
+            color: #9A6A00;
+        }
+
+        .demo-note {
+            margin-top: 18px;
+            padding: 11px 13px;
+            background: #FFF8E1;
+            border-left: 3px solid #F9A825;
+            color: #806000;
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 950px) {
+
+            .risk-main-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .risk-overview {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .risk-circle {
+                width: 145px;
+                height: 145px;
+            }
+
+            .assessment-table {
+                min-width: 650px;
+            }
+
+            .history-panel {
+                overflow-x: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="dashboard-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-top">
+
+            <a
+                href="dashboard.html"
+                class="dashboard-brand"
+            >
+
+                <span class="brand-mark">
+                    C
+                </span>
+
+                <span>
+                    CHRONICARE
+                </span>
+
+            </a>
+
+
+            <nav class="sidebar-nav">
+
+                <p class="nav-label">
+                    MAIN MENU
+                </p>
+
+
+                <a
+                    href="dashboard.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        ⌂
+                    </span>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="health-monitoring.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        ♥
+                    </span>
+
+                    <span>
+                        Health Monitoring
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="health-history.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        ◈
+                    </span>
+
+                    <span>
+                        Health History
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="health-trends.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        ↗
+                    </span>
+
+                    <span>
+                        Health Trends
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="analytics.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        ◌
+                    </span>
+
+                    <span>
+                        Analytics
+                    </span>
+
+                </a>
+
+
+                <p class="nav-label second-label">
+                    CARE
+                </p>
+
+
+                <a
+                    href="risk-status.html"
+                    class="nav-item active"
+                >
+
+                    <span class="nav-icon">
+                        !
+                    </span>
+
+                    <span>
+                        Risk Status
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="#"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        ◇
+                    </span>
+
+                    <span>
+                        Alerts
+                    </span>
+
+                    <span class="alert-count">
+                        2
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="#"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        □
+                    </span>
+
+                    <span>
+                        Appointments
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="#"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+                        ↻
+                    </span>
+
+                    <span>
+                        Follow-Up
+                    </span>
+
+                </a>
+
+            </nav>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="#"
+                class="nav-item"
+            >
+
+                <span class="nav-icon">
+                    ○
+                </span>
+
+                <span>
+                    My Profile
+                </span>
+
+            </a>
+
+
+            <a
+                href="../index.html"
+                class="nav-item logout"
+            >
+
+                <span class="nav-icon">
+                    ←
+                </span>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <p class="page-section">
+                    PATIENT PORTAL
+                </p>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button class="icon-button">
+                    ♧
+                </button>
+
+
+                <button class="notification-button">
+
+                    ◇
+
+                    <span></span>
+
+                </button>
+
+
+                <div class="user-profile">
+
+                    <div class="avatar">
+                        SF
+                    </div>
+
+                    <div class="user-info">
+
+                        <strong>
+                            Syeed Faruk
+                        </strong>
+
+                        <small>
+                            Patient
+                        </small>
+
+                    </div>
+
+                    <span class="dropdown-arrow">
+                        ▾
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE -->
+
+        <div class="content-wrapper risk-page">
+
+
+            <!-- HEADER -->
+
+            <section class="risk-header">
+
+                <p class="date-label">
+                    RISK ASSESSMENT
+                </p>
+
+                <h1>
+                    Risk Status
+                </h1>
+
+                <p>
+                    Review the latest health risk assessment generated from recorded parameters.
+                </p>
+
+            </section>
+
+
+            <!-- MAIN RISK AREA -->
+
+            <section class="risk-main-grid">
+
+
+                <!-- RISK SCORE -->
+
+                <div class="risk-card">
+
+                    <div class="risk-card-header">
+
+                        <div>
+
+                            <h2>
+                                Latest Risk Assessment
+                            </h2>
+
+                            <p>
+                                Overall assessment based on recent health data
+                            </p>
+
+                        </div>
+
+
+                        <span class="assessment-date">
+                            30 Sep 2026
+                        </span>
+
+                    </div>
+
+
+                    <div class="risk-overview">
+
+
+                        <div class="risk-circle">
+
+                            <strong>
+                                72
+                            </strong>
+
+                            <span>
+                                SCORE / 100
+                            </span>
+
+                        </div>
+
+
+                        <div class="risk-summary">
+
+                            <span class="risk-level">
+                                ELEVATED RISK
+                            </span>
+
+                            <h3>
+                                Continued monitoring recommended
+                            </h3>
+
+                            <p>
+                                The current sample assessment indicates
+                                that some recorded parameters require
+                                continued observation.
+                            </p>
+
+
+                            <div class="risk-score-bar">
+
+                                <div class="risk-score-track">
+
+                                    <div class="risk-score-fill"></div>
+
+                                </div>
+
+
+                                <div class="risk-score-labels">
+
+                                    <span>
+                                        Lower
+                                    </span>
+
+                                    <span>
+                                        Moderate
+                                    </span>
+
+                                    <span>
+                                        Higher
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="recommendation">
+
+                        <strong>
+                            Assessment Information
+                        </strong>
+
+                        <p>
+                            This page presents a prototype risk assessment.
+                            The final risk score will be generated by the
+                            CHRONICARE AI service using the patient's
+                            recorded health parameters.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CONTRIBUTING FACTORS -->
+
+                <div class="risk-card">
+
+                    <div class="risk-card-header">
+
+                        <div>
+
+                            <h2>
+                                Contributing Factors
+                            </h2>
+
+                            <p>
+                                Parameters considered in the assessment
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="factor-list">
+
+
+                        <div class="factor-item">
+
+                            <div class="factor-top">
+
+                                <span class="factor-name">
+                                    Blood Glucose
+                                </span>
+
+                                <span class="factor-value">
+                                    104 mg/dL
+                                </span>
+
+                            </div>
+
+
+                            <div class="factor-bar">
+
+                                <div class="factor-fill moderate"></div>
+
+                            </div>
+
+
+                            <div class="factor-bottom">
+
+                                <span>
+                                    Contribution
+                                </span>
+
+                                <strong class="monitor">
+                                    Monitor
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="factor-item">
+
+                            <div class="factor-top">
+
+                                <span class="factor-name">
+                                    Blood Pressure
+                                </span>
+
+                                <span class="factor-value">
+                                    120/80
+                                </span>
+
+                            </div>
+
+
+                            <div class="factor-bar">
+
+                                <div class="factor-fill normal"></div>
+
+                            </div>
+
+
+                            <div class="factor-bottom">
+
+                                <span>
+                                    Contribution
+                                </span>
+
+                                <strong>
+                                    Normal
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="factor-item">
+
+                            <div class="factor-top">
+
+                                <span class="factor-name">
+                                    Heart Rate
+                                </span>
+
+                                <span class="factor-value">
+                                    78 BPM
+                                </span>
+
+                            </div>
+
+
+                            <div class="factor-bar">
+
+                                <div class="factor-fill low"></div>
+
+                            </div>
+
+
+                            <div class="factor-bottom">
+
+                                <span>
+                                    Contribution
+                                </span>
+
+                                <strong>
+                                    Normal
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="factor-item">
+
+                            <div class="factor-top">
+
+                                <span class="factor-name">
+                                    SpO₂
+                                </span>
+
+                                <span class="factor-value">
+                                    98%
+                                </span>
+
+                            </div>
+
+
+                            <div class="factor-bar">
+
+                                <div class="factor-fill low"></div>
+
+                            </div>
+
+
+                            <div class="factor-bottom">
+
+                                <span>
+                                    Contribution
+                                </span>
+
+                                <strong>
+                                    Normal
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ASSESSMENT HISTORY -->
+
+            <section class="history-panel">
+
+                <div class="history-heading">
+
+                    <h2>
+                        Assessment History
+                    </h2>
+
+                    <p>
+                        Previous risk assessments
+                    </p>
+
+                </div>
+
+
+                <table class="assessment-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Score
+                            </th>
+
+                            <th>
+                                Risk Level
+                            </th>
+
+                            <th>
+                                Main Factor
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        <tr>
+
+                            <td>
+                                30 Sep 2026
+                            </td>
+
+                            <td class="score-cell">
+                                72
+                            </td>
+
+                            <td>
+                                <span class="elevated-badge">
+                                    ELEVATED
+                                </span>
+                            </td>
+
+                            <td>
+                                Blood glucose
+                            </td>
+
+                            <td>
+                                Current
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                27 Sep 2026
+                            </td>
+
+                            <td class="score-cell">
+                                68
+                            </td>
+
+                            <td>
+                                <span class="elevated-badge">
+                                    ELEVATED
+                                </span>
+                            </td>
+
+                            <td>
+                                Blood glucose
+                            </td>
+
+                            <td>
+                                Previous
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                24 Sep 2026
+                            </td>
+
+                            <td class="score-cell">
+                                61
+                            </td>
+
+                            <td>
+                                <span class="normal-badge">
+                                    NORMAL
+                                </span>
+                            </td>
+
+                            <td>
+                                Stable parameters
+                            </td>
+
+                            <td>
+                                Previous
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                21 Sep 2026
+                            </td>
+
+                            <td class="score-cell">
+                                59
+                            </td>
+
+                            <td>
+                                <span class="normal-badge">
+                                    NORMAL
+                                </span>
+                            </td>
+
+                            <td>
+                                Stable parameters
+                            </td>
+
+                            <td>
+                                Previous
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+
+
+                <div class="demo-note">
+
+                    <strong>Prototype note:</strong>
+                    Risk scores and factor contributions shown on this
+                    page are sample values. They are not a medical diagnosis
+                    and will be replaced by the project's AI model during
+                    backend integration.
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+<script>
+
+    async function loadRiskStatus() {
+
+        const token = localStorage.getItem("chronicareToken");
+
+        if (!token) {
+            alert("Please login first.");
+            window.location.href = "../login.html";
+            return;
+        }
+
+        try {
+
+            const response = await fetch(
+                "http://localhost:5000/api/health/risk-status",
+                {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(data.message || "Failed to load risk status.");
+                return;
+            }
+
+            const risk = data.risk;
+
+            /* Risk score */
+
+            const scoreElement =
+                document.querySelector(".risk-circle strong");
+
+            scoreElement.textContent =
+                Number(risk.risk_score).toFixed(0);
+
+
+            /* Risk category */
+
+            const riskLevel =
+                document.querySelector(".risk-level");
+
+            riskLevel.textContent =
+                risk.risk_category.toUpperCase() + " RISK";
+
+
+            /* Assessment date */
+
+            const dateElement =
+                document.querySelector(".assessment-date");
+
+            const assessmentDate =
+                new Date(risk.assessment_date);
+
+            dateElement.textContent =
+                assessmentDate.toLocaleDateString(
+                    "en-GB",
+                    {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric"
+                    }
+                );
+
+
+            /* Risk score progress bar */
+
+            const scoreFill =
+                document.querySelector(".risk-score-fill");
+
+            scoreFill.style.width =
+                Number(risk.risk_score) + "%";
+
+
+            /* Blood Pressure */
+
+            const factorValues =
+                document.querySelectorAll(".factor-value");
+
+            if (factorValues.length >= 4) {
+
+                factorValues[1].textContent =
+                    risk.blood_pressure || "-";
+
+                factorValues[2].textContent =
+                    Number(risk.heart_rate) + " BPM";
+
+                factorValues[3].textContent =
+                    Number(risk.spo2) + "%";
+
+            }
+
+
+            /* Update risk description */
+
+            const riskDescription =
+                document.querySelector(".risk-summary p");
+
+            if (risk.risk_category === "High") {
+
+                riskDescription.textContent =
+                    "The latest assessment indicates a high-risk status based on the recorded health parameters.";
+
+            } else if (risk.risk_category === "Moderate") {
+
+                riskDescription.textContent =
+                    "The latest assessment indicates a moderate-risk status and requires continued monitoring.";
+
+            } else {
+
+                riskDescription.textContent =
+                    "The latest assessment indicates a low-risk status based on the recorded health parameters.";
+
+            }
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to connect to the CHRONICARE server."
+            );
+
+        }
+
+    }
+
+
+    loadRiskStatus();
+
+</script>
+</body>
+
+</html>

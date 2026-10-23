@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics | CHRONICARE</title>
+
+    <link rel="stylesheet" href="../css/dashboard.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        .analytics-page {
+            max-width: 1400px;
+        }
+
+        .analytics-header {
+            margin-bottom: 28px;
+        }
+
+        .analytics-header h1 {
+            font-size: 28px;
+            margin-bottom: 7px;
+        }
+
+        .analytics-header p {
+            color: #607D68;
+            font-size: 13px;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 0.8fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .analytics-panel {
+            background: white;
+            border: 1px solid #E1E8E2;
+            border-radius: 10px;
+            padding: 22px;
+        }
+
+        .panel-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .panel-heading h2 {
+            font-size: 16px;
+        }
+
+        .panel-heading p {
+            color: #607D68;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        .period-select {
+            border: 1px solid #DDE5DF;
+            background: white;
+            border-radius: 6px;
+            padding: 7px 10px;
+            color: #607D68;
+            font-size: 10px;
+            outline: none;
+        }
+
+        .score-section {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 15px 0;
+        }
+
+        .score-circle {
+            width: 145px;
+            height: 145px;
+            border-radius: 50%;
+            border: 12px solid #E8F5E9;
+            border-top-color: #2E7D32;
+            border-right-color: #66BB6A;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .score-circle strong {
+            font-size: 36px;
+            color: #2E7D32;
+            line-height: 1;
+        }
+
+        .score-circle span {
+            color: #607D68;
+            font-size: 9px;
+            margin-top: 5px;
+        }
+
+        .score-details {
+            flex: 1;
+        }
+
+        .score-details h3 {
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        .score-details p {
+            color: #607D68;
+            font-size: 10px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .score-bar {
+            height: 7px;
+            background: #E8EDE9;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .score-bar-fill {
+            width: 72%;
+            height: 100%;
+            background: #66BB6A;
+            border-radius: 10px;
+        }
+
+        .score-labels {
+            display: flex;
+            justify-content: space-between;
+            color: #8A958E;
+            font-size: 8px;
+            margin-top: 5px;
+        }
+
+        .distribution-chart {
+            height: 240px;
+            position: relative;
+        }
+
+        .parameter-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .parameter-card {
+            background: white;
+            border: 1px solid #E1E8E2;
+            border-radius: 10px;
+            padding: 17px;
+        }
+
+        .parameter-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 13px;
+        }
+
+        .parameter-name {
+            color: #607D68;
+            font-size: 10px;
+        }
+
+        .parameter-status {
+            font-size: 8px;
+            font-weight: 800;
+            padding: 4px 6px;
+            border-radius: 5px;
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .parameter-status.monitor {
+            background: #FFF8E1;
+            color: #9A6A00;
+        }
+
+        .parameter-value {
+            font-size: 21px;
+            font-weight: 750;
+        }
+
+        .parameter-value span {
+            color: #89958D;
+            font-size: 9px;
+            font-weight: 500;
+        }
+
+        .parameter-description {
+            color: #8A958E;
+            font-size: 9px;
+            margin-top: 6px;
+        }
+
+        .insights-panel {
+            background: white;
+            border: 1px solid #E1E8E2;
+            border-radius: 10px;
+            padding: 22px;
+        }
+
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .insight-card {
+            padding: 16px;
+            border: 1px solid #E8EDE9;
+            border-radius: 8px;
+        }
+
+        .insight-card-icon {
+            width: 31px;
+            height: 31px;
+            border-radius: 7px;
+            background: #E8F5E9;
+            color: #2E7D32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .insight-card h3 {
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        .insight-card p {
+            color: #607D68;
+            font-size: 9px;
+            line-height: 1.6;
+        }
+
+        .demo-note {
+            margin-top: 18px;
+            padding: 11px 13px;
+            background: #FFF8E1;
+            border-left: 3px solid #F9A825;
+            color: #806000;
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 1000px) {
+
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .parameter-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .insight-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .parameter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .score-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="dashboard-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-top">
+
+            <a href="dashboard.html" class="dashboard-brand">
+
+                <span class="brand-mark">
+                    C
+                </span>
+
+                <span>
+                    CHRONICARE
+                </span>
+
+            </a>
+
+
+            <nav class="sidebar-nav">
+
+                <p class="nav-label">
+                    MAIN MENU
+                </p>
+
+
+                <a href="dashboard.html" class="nav-item">
+
+                    <span class="nav-icon">⌂</span>
+
+                    <span>Dashboard</span>
+
+                </a>
+
+
+                <a href="health-monitoring.html" class="nav-item">
+
+                    <span class="nav-icon">♥</span>
+
+                    <span>Health Monitoring</span>
+
+                </a>
+
+
+                <a href="health-history.html" class="nav-item">
+
+                    <span class="nav-icon">◈</span>
+
+                    <span>Health History</span>
+
+                </a>
+
+
+                <a href="health-trends.html" class="nav-item">
+
+                    <span class="nav-icon">↗</span>
+
+                    <span>Health Trends</span>
+
+                </a>
+
+
+                <a href="analytics.html" class="nav-item active">
+
+                    <span class="nav-icon">◌</span>
+
+                    <span>Analytics</span>
+
+                </a>
+
+
+                <p class="nav-label second-label">
+                    CARE
+                </p>
+
+
+                <a href="#" class="nav-item">
+
+                    <span class="nav-icon">!</span>
+
+                    <span>Risk Status</span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <span class="nav-icon">◇</span>
+
+                    <span>Alerts</span>
+
+                    <span class="alert-count">2</span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <span class="nav-icon">□</span>
+
+                    <span>Appointments</span>
+
+                </a>
+
+
+                <a href="#" class="nav-item">
+
+                    <span class="nav-icon">↻</span>
+
+                    <span>Follow-Up</span>
+
+                </a>
+
+            </nav>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="#" class="nav-item">
+
+                <span class="nav-icon">○</span>
+
+                <span>My Profile</span>
+
+            </a>
+
+
+            <a href="../index.html" class="nav-item logout">
+
+                <span class="nav-icon">←</span>
+
+                <span>Logout</span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+            <div>
+
+                <p class="page-section">
+                    PATIENT PORTAL
+                </p>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button class="icon-button">
+                    ♧
+                </button>
+
+
+                <button class="notification-button">
+
+                    ◇
+
+                    <span></span>
+
+                </button>
+
+
+                <div class="user-profile">
+
+                    <div class="avatar">
+                        SF
+                    </div>
+
+                    <div class="user-info">
+
+                        <strong>
+                            Syeed Faruk
+                        </strong>
+
+                        <small>
+                            Patient
+                        </small>
+
+                    </div>
+
+                    <span class="dropdown-arrow">
+                        ▾
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+
+        <div class="content-wrapper analytics-page">
+
+
+            <section class="analytics-header">
+
+                <p class="date-label">
+                    HEALTH ANALYTICS
+                </p>
+
+                <h1>
+                    Health Analytics
+                </h1>
+
+                <p>
+                    A summarized view of your recent health measurements.
+                </p>
+
+            </section>
+
+
+            <!-- TOP ANALYTICS -->
+
+            <section class="analytics-grid">
+
+
+                <!-- HEALTH SCORE -->
+
+                <div class="analytics-panel">
+
+                    <div class="panel-heading">
+
+                        <div>
+
+                            <h2>
+                                Overall Health Summary
+                            </h2>
+
+                            <p>
+                                Based on recent recorded parameters
+                            </p>
+
+                        </div>
+
+
+                        <select class="period-select">
+
+                            <option>
+                                Last 7 Days
+                            </option>
+
+                            <option>
+                                Last 30 Days
+                            </option>
+
+                            <option>
+                                Last 3 Months
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="score-section">
+
+
+                        <div class="score-circle">
+
+                            <strong id="healthScore">
+    0
+</strong>
+
+                            <span id="scoreLabel">
+    HEALTH SCORE
+</span>
+
+                        </div>
+
+
+                        <div class="score-details">
+
+                            <h3>
+                                Health parameters are being monitored
+                            </h3>
+
+                            <p>
+                                Recent measurements show generally
+                                stable values, with some parameters
+                                requiring continued observation.
+                            </p>
+
+
+                            <div class="score-bar">
+
+                                <div
+    class="score-bar-fill"
+    id="scoreBarFill"
+></div>
+
+                            </div>
+
+
+                            <div class="score-labels">
+
+                                <span>
+                                    0
+                                </span>
+
+                                <span>
+                                    50
+                                </span>
+
+                                <span>
+                                    100
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATUS DISTRIBUTION -->
+
+                <div class="analytics-panel">
+
+                    <div class="panel-heading">
+
+                        <div>
+
+                            <h2>
+                                Parameter Status
+                            </h2>
+
+                            <p>
+                                Current distribution
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="distribution-chart">
+
+                        <canvas id="statusChart"></canvas>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PARAMETER CARDS -->
+
+            <section class="parameter-grid">
+
+
+                <div class="parameter-card">
+
+                    <div class="parameter-card-header">
+
+                        <span class="parameter-name">
+                            HEART RATE
+                        </span>
+
+                        <span class="parameter-status" id="heartRateStatus">
+    NORMAL
+</span>
+
+                    </div>
+
+                    <div class="parameter-value">
+                        <span id="analyticsHeartRate">0</span> <span>BPM</span>
+                    </div>
+
+                    <p class="parameter-description">
+                        Recent readings remain consistent.
+                    </p>
+
+                </div>
+
+
+                <div class="parameter-card">
+
+                    <div class="parameter-card-header">
+
+                        <span class="parameter-name">
+                            BLOOD PRESSURE
+                        </span>
+
+                        <span class="parameter-status" id="bloodPressureStatus">
+    NORMAL
+</span>
+
+                    </div>
+
+                    <div class="parameter-value">
+                        <span id="analyticsBloodPressure">0/0</span> <span>mmHg</span>
+                    </div>
+
+                    <p class="parameter-description">
+                        Latest recorded measurement.
+                    </p>
+
+                </div>
+
+
+                <div class="parameter-card">
+
+                    <div class="parameter-card-header">
+
+                        <span class="parameter-name">
+                            BLOOD OXYGEN
+                        </span>
+
+                        <span class="parameter-status" id="spo2Status">
+    NORMAL
+</span>
+
+                    </div>
+
+                    <div class="parameter-value">
+                        <span id="analyticsSpo2">0</span> <span>%</span>
+                    </div>
+
+                    <p class="parameter-description">
+                        Latest SpO₂ measurement.
+                    </p>
+
+                </div>
+
+
+                <div class="parameter-card">
+
+                    <div class="parameter-card-header">
+
+                        <span class="parameter-name">
+                            WEIGHT
+                        </span>
+
+                        <span class="parameter-status" id="weightStatus">
+    STABLE
+</span>
+
+                    </div>
+
+                    <div class="parameter-value">
+<span id="analyticsWeight">0</span> <span>kg</span>                    </div>
+
+                    <p class="parameter-description">
+                        Slight decrease over the week.
+                    </p>
+
+                </div>
+
+
+                <div class="parameter-card">
+
+                    <div class="parameter-card-header">
+
+                        <span class="parameter-name">
+                            BLOOD GLUCOSE
+                        </span>
+
+                        <span class="parameter-status monitor">
+                            MONITOR
+                        </span>
+
+                    </div>
+
+                    <div class="parameter-value">
+                        104 <span>mg/dL</span>
+                    </div>
+
+                    <p class="parameter-description">
+                        Included as a frontend demo parameter.
+                    </p>
+
+                </div>
+
+
+                <div class="parameter-card">
+
+                    <div class="parameter-card-header">
+
+                        <span class="parameter-name">
+                            TEMPERATURE
+                        </span>
+
+                        <span class="parameter-status">
+                            NORMAL
+                        </span>
+
+                    </div>
+
+                    <div class="parameter-value">
+                        98.4 <span>°F</span>
+                    </div>
+
+                    <p class="parameter-description">
+                        Latest recorded temperature.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- INSIGHTS -->
+
+            <section class="insights-panel">
+
+
+                <div class="panel-heading">
+
+                    <div>
+
+                        <h2>
+                            Health Insights
+                        </h2>
+
+                        <p>
+                            Automatically generated summary of recent data
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="insight-grid">
+
+
+                    <div class="insight-card">
+
+                        <div class="insight-card-icon">
+                            ✓
+                        </div>
+
+                        <h3 id="vitalInsightTitle">
+    Stable Vital Signs
+</h3>
+
+                        <p id="vitalInsightText">
+    Heart rate, blood pressure and SpO₂
+    have remained relatively consistent
+    across recent records.
+</p>
+
+                    </div>
+
+
+                    <div class="insight-card">
+
+                        <div class="insight-card-icon">
+                            ↘
+                        </div>
+
+                        <h3 id="weightInsightTitle">
+    Weight Trend
+</h3>
+
+                        <p id="weightInsightText">
+    Recent records show a small downward
+    movement in recorded body weight.
+</p>
+
+                    </div>
+
+
+                    <div class="insight-card">
+
+                        <div class="insight-card-icon">
+                            !
+                        </div>
+
+                        <h3 id="monitorInsightTitle">
+    Parameter to Monitor
+</h3>
+
+                        <p id="monitorInsightText">
+    Blood glucose is currently marked for
+    monitoring in this frontend prototype.
+</p>
+
+                    </div>
+
+                </div>
+
+
+               <div class="demo-note">
+    <strong>Analytics note:</strong>
+    Analytics are generated from the patient's latest
+    recorded health parameters and AI-based risk
+    assessment. Values are updated from the CHRONICARE
+    backend and MySQL database.
+</div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    const statusCanvas =
+        document
+            .getElementById("statusChart")
+            .getContext("2d");
+
+
+   const statusChart = new Chart(statusCanvas, {
+
+        type: "doughnut",
+
+        data: {
+
+    labels: [
+        "Normal",
+        "Stable",
+        "Monitor"
+    ],
+
+    datasets: [{
+
+        data: [
+            0,
+            0,
+            0
+        ],
+
+        backgroundColor: [
+            "#2E7D32",
+            "#66BB6A",
+            "#F9A825"
+        ],
+
+        borderWidth: 0,
+
+        hoverOffset: 5
+
+    }]
+
+},
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            cutout: "68%",
+
+            plugins: {
+
+                legend: {
+
+                    position: "bottom",
+
+                    labels: {
+
+                        color: "#607D68",
+
+                        font: {
+                            size: 9
+                        },
+
+                        padding: 15,
+
+                        usePointStyle: true,
+
+                        pointStyle: "circle"
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
+<script>
+
+async function loadAnalytics() {
+
+    const token =
+        localStorage.getItem("chronicareToken");
+
+    if (!token) {
+        console.log("No login token found.");
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            "http://127.0.0.1:5000/api/health/analytics",
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error(
+                data.message || "Failed to load analytics."
+            );
+            return;
+        }
+
+        console.log("Analytics data:", data);
+
+        const records = data.records;
+
+        if (!records || records.length === 0) {
+            console.log("No health records found.");
+            return;
+        }
+
+        const latest = records[0];
+
+console.log("Latest record:", latest);
+console.log("Latest risk:", data.latestRisk);
+
+
+// UPDATE HEALTH SCORE
+
+if (data.latestRisk) {
+
+    const riskScore =
+        Number(data.latestRisk.risk_score);
+
+    const healthScore =
+        document.getElementById("healthScore");
+
+    const scoreBarFill =
+        document.getElementById("scoreBarFill");
+
+    const scoreLabel =
+        document.getElementById("scoreLabel");
+
+    if (healthScore) {
+        healthScore.textContent =
+            riskScore;
+    }
+
+    if (scoreBarFill) {
+        scoreBarFill.style.width =
+            riskScore + "%";
+    }
+
+    if (scoreLabel) {
+        scoreLabel.textContent =
+            data.latestRisk.risk_category.toUpperCase() +
+            " RISK";
+    }
+    const heartRateElement =
+    document.getElementById("analyticsHeartRate");
+
+const bloodPressureElement =
+    document.getElementById("analyticsBloodPressure");
+
+const spo2Element =
+    document.getElementById("analyticsSpo2");
+
+const weightElement =
+    document.getElementById("analyticsWeight");
+
+
+if (heartRateElement) {
+    heartRateElement.textContent =
+        Number(latest.heart_rate);
+}
+
+if (bloodPressureElement) {
+    bloodPressureElement.textContent =
+        latest.blood_pressure;
+}
+
+if (spo2Element) {
+    spo2Element.textContent =
+        Number(latest.spo2);
+}
+
+if (weightElement) {
+    weightElement.textContent =
+        Number(latest.weight);
+}
+const heartRateStatus =
+    document.getElementById("heartRateStatus");
+
+const bloodPressureStatus =
+    document.getElementById("bloodPressureStatus");
+
+const spo2Status =
+    document.getElementById("spo2Status");
+
+const weightStatus =
+    document.getElementById("weightStatus");
+
+
+// HEART RATE
+
+if (heartRateStatus) {
+
+    const heartRate =
+        Number(latest.heart_rate);
+
+    if (heartRate > 100 || heartRate < 60) {
+
+        heartRateStatus.textContent =
+            "MONITOR";
+
+        heartRateStatus.classList.add("monitor");
+
+    } else {
+
+        heartRateStatus.textContent =
+            "NORMAL";
+
+    }
+}
+
+
+// BLOOD PRESSURE
+
+if (bloodPressureStatus) {
+
+    const systolic =
+        Number(
+            latest.blood_pressure.split("/")[0]
+        );
+
+    if (systolic >= 140) {
+
+        bloodPressureStatus.textContent =
+            "MONITOR";
+
+        bloodPressureStatus.classList.add("monitor");
+
+    } else {
+
+        bloodPressureStatus.textContent =
+            "NORMAL";
+
+    }
+}
+
+
+// BLOOD OXYGEN
+
+if (spo2Status) {
+
+    const spo2 =
+        Number(latest.spo2);
+
+    if (spo2 < 95) {
+
+        spo2Status.textContent =
+            "MONITOR";
+
+        spo2Status.classList.add("monitor");
+
+    } else {
+
+        spo2Status.textContent =
+            "NORMAL";
+
+    }
+}
+
+
+// WEIGHT
+
+if (weightStatus) {
+
+    weightStatus.textContent =
+        "STABLE";
+
+}
+// UPDATE STATUS CHART
+
+let normalCount = 0;
+let stableCount = 0;
+let monitorCount = 0;
+
+const heartRate =
+    Number(latest.heart_rate);
+
+const systolic =
+    Number(
+        latest.blood_pressure.split("/")[0]
+    );
+
+const spo2 =
+    Number(latest.spo2);
+
+
+// HEART RATE STATUS
+
+if (heartRate > 100 || heartRate < 60) {
+    monitorCount++;
+} else {
+    normalCount++;
+}
+
+
+// BLOOD PRESSURE STATUS
+
+if (systolic >= 140) {
+    monitorCount++;
+} else {
+    normalCount++;
+}
+
+
+// SpO2 STATUS
+
+if (spo2 < 95) {
+    monitorCount++;
+} else {
+    normalCount++;
+}
+
+
+// WEIGHT STATUS
+
+stableCount++;
+
+
+// UPDATE CHART
+
+statusChart.data.datasets[0].data = [
+    normalCount,
+    stableCount,
+    monitorCount
+];
+
+statusChart.update();
+// UPDATE HEALTH INSIGHTS
+
+const vitalInsightTitle =
+    document.getElementById("vitalInsightTitle");
+
+const vitalInsightText =
+    document.getElementById("vitalInsightText");
+
+const weightInsightTitle =
+    document.getElementById("weightInsightTitle");
+
+const weightInsightText =
+    document.getElementById("weightInsightText");
+
+const monitorInsightTitle =
+    document.getElementById("monitorInsightTitle");
+
+const monitorInsightText =
+    document.getElementById("monitorInsightText");
+
+
+// VITAL SIGNS INSIGHT
+
+const heartRateValue =
+    Number(latest.heart_rate);
+
+const systolicValue =
+    Number(
+        latest.blood_pressure.split("/")[0]
+    );
+
+const spo2Value =
+    Number(latest.spo2);
+
+const vitalConcern =
+    heartRateValue > 100 ||
+    heartRateValue < 60 ||
+    systolicValue >= 140 ||
+    spo2Value < 95;
+
+if (vitalConcern) {
+
+    vitalInsightTitle.textContent =
+        "Vital Signs Need Attention";
+
+    vitalInsightText.textContent =
+        "Recent measurements show one or more vital signs outside the normal monitoring range.";
+
+} else {
+
+    vitalInsightTitle.textContent =
+        "Stable Vital Signs";
+
+    vitalInsightText.textContent =
+        "Recent heart rate, blood pressure and SpO₂ measurements are within the monitoring range.";
+
+}
+
+
+// WEIGHT INSIGHT
+
+if (records.length >= 2) {
+
+    const latestWeight =
+        Number(records[0].weight);
+
+    const previousWeight =
+        Number(records[1].weight);
+
+    if (latestWeight > previousWeight) {
+
+        weightInsightTitle.textContent =
+            "Weight Trend";
+
+        weightInsightText.textContent =
+            "Recent records show an increase in recorded body weight.";
+
+    } else if (latestWeight < previousWeight) {
+
+        weightInsightTitle.textContent =
+            "Weight Trend";
+
+        weightInsightText.textContent =
+            "Recent records show a decrease in recorded body weight.";
+
+    } else {
+
+        weightInsightTitle.textContent =
+            "Stable Weight";
+
+        weightInsightText.textContent =
+            "Recent records show no change in recorded body weight.";
+
+    }
+
+} else {
+
+    weightInsightTitle.textContent =
+        "Weight Trend";
+
+    weightInsightText.textContent =
+        "More health records are needed to identify a weight trend.";
+
+}
+
+
+// PARAMETER TO MONITOR
+
+if (systolicValue >= 140) {
+
+    monitorInsightTitle.textContent =
+        "Blood Pressure to Monitor";
+
+    monitorInsightText.textContent =
+        "The latest blood pressure reading is above the monitoring threshold.";
+
+} else if (heartRateValue > 100 || heartRateValue < 60) {
+
+    monitorInsightTitle.textContent =
+        "Heart Rate to Monitor";
+
+    monitorInsightText.textContent =
+        "The latest heart rate reading requires continued monitoring.";
+
+} else if (spo2Value < 95) {
+
+    monitorInsightTitle.textContent =
+        "Blood Oxygen to Monitor";
+
+    monitorInsightText.textContent =
+        "The latest SpO₂ reading requires continued monitoring.";
+
+} else {
+
+    monitorInsightTitle.textContent =
+        "No Immediate Parameter Concern";
+
+    monitorInsightText.textContent =
+        "The latest recorded parameters are within the defined monitoring ranges.";
+
+}
+
+}
+    } catch (error) {
+
+        console.error(
+            "Unable to connect to CHRONICARE server.",
+            error
+        );
+
+    }
+
+}
+
+loadAnalytics();
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Health Monitoring | CHRONICARE</title>
+
+    <link rel="stylesheet" href="../css/dashboard.css">
+
+    <style>
+        .monitor-page {
+            max-width: 1200px;
+        }
+
+        .monitor-header {
+            margin-bottom: 28px;
+        }
+
+        .monitor-header h1 {
+            font-size: 28px;
+            margin-bottom: 7px;
+        }
+
+        .monitor-header p {
+            color: #607D68;
+            font-size: 13px;
+        }
+
+        .monitor-layout {
+            display: grid;
+            grid-template-columns: 1.4fr 0.8fr;
+            gap: 20px;
+        }
+
+        .form-panel,
+        .info-panel {
+            background: #ffffff;
+            border: 1px solid #E1E8E2;
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .panel-title {
+            font-size: 17px;
+            margin-bottom: 5px;
+        }
+
+        .panel-subtitle {
+            color: #607D68;
+            font-size: 11px;
+            margin-bottom: 25px;
+        }
+
+        .form-section-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #2E7D32;
+            letter-spacing: .5px;
+            margin: 24px 0 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #E8F5E9;
+        }
+
+        .form-section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #263238;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            border: 1px solid #DDE5DF;
+            border-radius: 7px;
+            padding: 11px 12px;
+            font-family: inherit;
+            font-size: 12px;
+            color: #263238;
+            background: #ffffff;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #66BB6A;
+            box-shadow: 0 0 0 3px #E8F5E9;
+        }
+
+        .input-unit {
+            position: relative;
+        }
+
+        .input-unit input {
+            padding-right: 55px;
+        }
+
+        .unit {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8A958E;
+            font-size: 10px;
+        }
+
+        textarea {
+            min-height: 85px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #EAEFEB;
+        }
+
+        .cancel-btn {
+            padding: 11px 18px;
+            border: 1px solid #DDE5DF;
+            border-radius: 7px;
+            background: white;
+            color: #607D68;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            padding: 11px 20px;
+            border: none;
+            border-radius: 7px;
+            background: #2E7D32;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #1B5E20;
+        }
+
+        .info-box {
+            padding: 17px;
+            border-radius: 8px;
+            background: #F1F8E9;
+            margin-bottom: 20px;
+        }
+
+        .info-box strong {
+            display: block;
+            color: #2E7D32;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .info-box p {
+            color: #607D68;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        .parameter-list {
+            margin-top: 15px;
+        }
+
+        .parameter-item {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 12px 0;
+            border-bottom: 1px solid #EEF2EF;
+        }
+
+        .parameter-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 7px;
+            background: #E8F5E9;
+            color: #2E7D32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .parameter-item strong {
+            display: block;
+            font-size: 11px;
+            margin-bottom: 3px;
+        }
+
+        .parameter-item span {
+            color: #607D68;
+            font-size: 9px;
+        }
+
+        .demo-note {
+            margin-top: 20px;
+            padding: 12px;
+            border-left: 3px solid #F9A825;
+            background: #FFF8E1;
+            color: #806000;
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 850px) {
+            .monitor-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-top">
+
+                <a href="dashboard.html" class="dashboard-brand">
+                    <span class="brand-mark">C</span>
+                    <span>CHRONICARE</span>
+                </a>
+
+                <nav class="sidebar-nav">
+
+                    <p class="nav-label">MAIN MENU</p>
+
+                    <a href="dashboard.html" class="nav-item">
+                        <span class="nav-icon">⌂</span>
+                        <span>Dashboard</span>
+                    </a>
+
+                    <a href="health-monitoring.html" class="nav-item active">
+                        <span class="nav-icon">♥</span>
+                        <span>Health Monitoring</span>
+                    </a>
+
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">◈</span>
+                        <span>Health History</span>
+                    </a>
+
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">↗</span>
+                        <span>Health Trends</span>
+                    </a>
+
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">◌</span>
+                        <span>Analytics</span>
+                    </a>
+
+                    <p class="nav-label second-label">CARE</p>
+
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">!</span>
+                        <span>Risk Status</span>
+                    </a>
+
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">◇</span>
+                        <span>Alerts</span>
+                        <span class="alert-count">2</span>
+                    </a>
+
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">□</span>
+                        <span>Appointments</span>
+                    </a>
+
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">↻</span>
+                        <span>Follow-Up</span>
+                    </a>
+
+                </nav>
+
+            </div>
+
+            <div class="sidebar-bottom">
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">○</span>
+                    <span>My Profile</span>
+                </a>
+
+                <a href="../index.html" class="nav-item logout">
+                    <span class="nav-icon">←</span>
+                    <span>Logout</span>
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN -->
+
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div>
+                    <p class="page-section">PATIENT PORTAL</p>
+                </div>
+
+                <div class="topbar-right">
+
+                    <button class="icon-button">♧</button>
+
+                    <button class="notification-button">
+                        ◇
+                        <span></span>
+                    </button>
+
+                    <div class="user-profile">
+
+                        <div class="avatar">SF</div>
+
+                        <div class="user-info">
+                            <strong>Syeed Faruk</strong>
+                            <small>Patient</small>
+                        </div>
+
+                        <span class="dropdown-arrow">▾</span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- PAGE CONTENT -->
+
+            <div class="content-wrapper monitor-page">
+
+                <section class="monitor-header">
+
+                    <p class="date-label">
+                        HEALTH MONITORING
+                    </p>
+
+                    <h1>
+                        Record Your Health Data
+                    </h1>
+
+                    <p>
+                        Enter your latest health measurements to keep your health records updated.
+                    </p>
+
+                </section>
+
+
+                <div class="monitor-layout">
+
+
+                    <!-- FORM -->
+
+                    <div class="form-panel">
+
+                        <h2 class="panel-title">
+                            Health Parameters
+                        </h2>
+
+                        <p class="panel-subtitle">
+                            Enter the latest measurements available to you.
+                        </p>
+
+
+                        <form id="healthForm">
+
+
+                            <div class="form-section-title">
+                                VITAL SIGNS
+                            </div>
+
+
+                            <div class="form-grid">
+
+
+                                <div class="form-group">
+
+                                    <label for="heartRate">
+                                        Heart Rate
+                                    </label>
+
+                                    <div class="input-unit">
+
+                                        <input
+                                            type="number"
+                                            id="heartRate"
+                                            placeholder="e.g. 78"
+                                        >
+
+                                        <span class="unit">
+                                            BPM
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="bloodPressure">
+                                        Blood Pressure
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="bloodPressure"
+                                        placeholder="e.g. 120/80"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="spo2">
+                                        Blood Oxygen
+                                    </label>
+
+                                    <div class="input-unit">
+
+                                        <input
+                                            type="number"
+                                            id="spo2"
+                                            placeholder="e.g. 98"
+                                        >
+
+                                        <span class="unit">
+                                            %
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="weight">
+                                        Weight
+                                    </label>
+
+                                    <div class="input-unit">
+
+                                        <input
+                                            type="number"
+                                            id="weight"
+                                            step="0.1"
+                                            placeholder="e.g. 72"
+                                        >
+
+                                        <span class="unit">
+                                            kg
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="glucose">
+                                        Blood Glucose
+                                    </label>
+
+                                    <div class="input-unit">
+
+                                        <input
+                                            type="number"
+                                            id="glucose"
+                                            placeholder="e.g. 104"
+                                        >
+
+                                        <span class="unit">
+                                            mg/dL
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="temperature">
+                                        Temperature
+                                    </label>
+
+                                    <div class="input-unit">
+
+                                        <input
+                                            type="number"
+                                            id="temperature"
+                                            step="0.1"
+                                            placeholder="e.g. 98.4"
+                                        >
+
+                                        <span class="unit">
+                                            °F
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-section-title">
+                                ADDITIONAL INFORMATION
+                            </div>
+
+
+                            <div class="form-grid">
+
+
+                                <div class="form-group">
+
+                                    <label for="recordDate">
+                                        Record Date
+                                    </label>
+
+                                    <input
+                                        type="date"
+                                        id="recordDate"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="measurementTime">
+                                        Measurement Time
+                                    </label>
+
+                                    <input
+                                        type="time"
+                                        id="measurementTime"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group full">
+
+                                    <label for="notes">
+                                        Notes
+                                    </label>
+
+                                    <textarea
+                                        id="notes"
+                                        placeholder="Add any relevant observations..."
+                                    ></textarea>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-actions">
+
+                                <button
+                                    type="reset"
+                                    class="cancel-btn"
+                                >
+                                    Clear
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    class="save-btn"
+                                >
+                                    Save Health Data
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+
+                    <!-- INFORMATION PANEL -->
+
+                    <div class="info-panel">
+
+                        <div class="info-box">
+
+                            <strong>
+                                Keep your records updated
+                            </strong>
+
+                            <p>
+                                Regular health data entries help CHRONICARE
+                                track your health trends and support future
+                                risk assessment.
+                            </p>
+
+                        </div>
+
+
+                        <h3 class="panel-title">
+                            Parameters Being Monitored
+                        </h3>
+
+                        <p class="panel-subtitle">
+                            These measurements will be used by the platform.
+                        </p>
+
+
+                        <div class="parameter-list">
+
+
+                            <div class="parameter-item">
+
+                                <div class="parameter-icon">
+                                    ♥
+                                </div>
+
+                                <div>
+                                    <strong>Heart Rate</strong>
+                                    <span>Measured in BPM</span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="parameter-item">
+
+                                <div class="parameter-icon">
+                                    BP
+                                </div>
+
+                                <div>
+                                    <strong>Blood Pressure</strong>
+                                    <span>Systolic / Diastolic</span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="parameter-item">
+
+                                <div class="parameter-icon">
+                                    O₂
+                                </div>
+
+                                <div>
+                                    <strong>Blood Oxygen</strong>
+                                    <span>SpO₂ percentage</span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="parameter-item">
+
+                                <div class="parameter-icon">
+                                    W
+                                </div>
+
+                                <div>
+                                    <strong>Weight</strong>
+                                    <span>Measured in kilograms</span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="parameter-item">
+
+                                <div class="parameter-icon">
+                                    G
+                                </div>
+
+                                <div>
+                                    <strong>Blood Glucose</strong>
+                                    <span>Demo field for dashboard</span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="parameter-item">
+
+                                <div class="parameter-icon">
+                                    °C
+                                </div>
+
+                                <div>
+                                    <strong>Temperature</strong>
+                                    <span>Demo field for dashboard</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="demo-note">
+
+                            <strong>Prototype note:</strong>
+                            Blood glucose and temperature are currently
+                            included for the frontend demonstration.
+                            Database integration will be finalized later.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <script>
+
+       document
+    .getElementById("healthForm")
+    .addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        const token = localStorage.getItem("chronicareToken");
+
+        if (!token) {
+            alert("Please login first.");
+            window.location.href = "../login.html";
+            return;
+        }
+
+        const recordDate = document.getElementById("recordDate").value;
+        const notes = document.getElementById("notes").value.trim();
+
+        const bloodPressure =
+            document.getElementById("bloodPressure").value.trim();
+
+        const heartRate =
+            document.getElementById("heartRate").value;
+
+        const spo2 =
+            document.getElementById("spo2").value;
+
+        const weight =
+            document.getElementById("weight").value;
+
+        if (
+            !recordDate ||
+            !bloodPressure ||
+            !heartRate ||
+            !spo2 ||
+            !weight
+        ) {
+            alert("Please fill in all required health parameters.");
+            return;
+        }
+
+        try {
+
+            const response = await fetch(
+                "http://localhost:5000/api/health/record",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    },
+
+                    body: JSON.stringify({
+                        record_date: recordDate,
+                        notes: notes,
+                        blood_pressure: bloodPressure,
+                        heart_rate: Number(heartRate),
+                        spo2: Number(spo2),
+                        weight: Number(weight)
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(data.message || "Failed to save health data.");
+                return;
+            }
+
+            alert(
+                "Health data saved successfully!"
+            );
+
+            document
+                .getElementById("healthForm")
+                .reset();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to connect to the CHRONICARE server."
+            );
+
+        }
+
+    });
+
+    </script>
+
+</body>
+
+</html>

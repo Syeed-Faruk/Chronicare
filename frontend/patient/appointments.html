@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Appointments | CHRONICARE</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f6f8f7;
+            color: #263238;
+        }
+
+        /* =========================
+           MAIN LAYOUT
+        ========================= */
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            width: 250px;
+            min-width: 250px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            background: #ffffff;
+            border-right: 1px solid #e2e7e3;
+
+            display: flex;
+            flex-direction: column;
+
+            z-index: 100;
+        }
+
+        .brand {
+            height: 88px;
+            padding: 22px 24px;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            border-bottom: 1px solid #edf0ee;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+
+            background: #2e7d32;
+            color: white;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .brand-text h2 {
+            font-size: 18px;
+            color: #263238;
+            letter-spacing: 0.3px;
+        }
+
+        .brand-text p {
+            margin-top: 2px;
+            font-size: 11px;
+            color: #78909c;
+        }
+
+        /* Navigation */
+
+        .nav {
+            padding: 20px 14px;
+            flex: 1;
+        }
+
+        .nav-title {
+            padding: 0 12px 10px;
+
+            font-size: 11px;
+            font-weight: 700;
+            color: #90a4ae;
+
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .nav a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            height: 44px;
+            padding: 0 13px;
+
+            margin-bottom: 4px;
+
+            text-decoration: none;
+            color: #607d68;
+
+            font-size: 14px;
+            font-weight: 500;
+
+            border-radius: 9px;
+
+            transition: 0.2s ease;
+        }
+
+        .nav a:hover {
+            background: #f1f8e9;
+            color: #2e7d32;
+        }
+
+        .nav a.active {
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-weight: 700;
+        }
+
+        .nav-icon {
+            width: 21px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .sidebar-bottom {
+            padding: 14px;
+
+            border-top: 1px solid #edf0ee;
+        }
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        /* =========================
+           TOPBAR
+        ========================= */
+
+        .topbar {
+            height: 88px;
+
+            background: #ffffff;
+            border-bottom: 1px solid #e5e9e6;
+
+            padding: 0 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #263238;
+        }
+
+        .page-title p {
+            margin-top: 4px;
+            font-size: 13px;
+            color: #78909c;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 50%;
+
+            background: #e8f5e9;
+            color: #2e7d32;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .profile-info strong {
+            font-size: 13px;
+            color: #263238;
+        }
+
+        .profile-info span {
+            font-size: 11px;
+            color: #78909c;
+        }
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            padding: 30px 34px 40px;
+            max-width: 1600px;
+        }
+
+        /* =========================
+           SUMMARY CARDS
+        ========================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .summary-card {
+            background: #ffffff;
+
+            border: 1px solid #e3e8e4;
+            border-radius: 12px;
+
+            padding: 20px 22px;
+
+            box-shadow: 0 2px 8px rgba(38, 50, 56, 0.035);
+        }
+
+        .summary-label {
+            font-size: 12px;
+            color: #78909c;
+            font-weight: 500;
+        }
+
+        .summary-number {
+            margin-top: 7px;
+
+            font-size: 27px;
+            font-weight: 700;
+
+            color: #263238;
+        }
+
+        /* =========================
+           TWO COLUMN AREA
+        ========================= */
+
+        .appointment-grid {
+            display: grid;
+
+            grid-template-columns: minmax(0, 1.7fr) minmax(330px, 1fr);
+
+            gap: 22px;
+
+            align-items: start;
+        }
+
+        .card {
+            background: #ffffff;
+
+            border: 1px solid #e3e8e4;
+            border-radius: 14px;
+
+            padding: 24px;
+
+            box-shadow: 0 2px 8px rgba(38, 50, 56, 0.035);
+        }
+
+        .card-header {
+            margin-bottom: 20px;
+        }
+
+        .card-header h2 {
+            font-size: 19px;
+            color: #263238;
+        }
+
+        .card-header p {
+            margin-top: 5px;
+            font-size: 13px;
+            color: #78909c;
+        }
+
+        /* =========================
+           UPCOMING APPOINTMENT
+        ========================= */
+
+        .upcoming {
+            border: 1px solid #dcebdc;
+            border-left: 4px solid #2e7d32;
+
+            background: #f7fbf5;
+
+            border-radius: 10px;
+
+            padding: 20px;
+
+            margin-bottom: 28px;
+        }
+
+        .upcoming-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 15px;
+        }
+
+        .doctor-info {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .doctor-avatar {
+            width: 46px;
+            height: 46px;
+
+            border-radius: 10px;
+
+            background: #e8f5e9;
+            color: #2e7d32;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .doctor-info h3 {
+            font-size: 16px;
+            color: #263238;
+        }
+
+        .doctor-info p {
+            margin-top: 4px;
+            font-size: 12px;
+            color: #607d68;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+
+            padding: 6px 11px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .confirmed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .pending {
+            background: #fff8e1;
+            color: #f9a825;
+        }
+
+        .completed {
+            background: #eceff1;
+            color: #607d68;
+        }
+
+        .appointment-info {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 15px;
+
+            margin-top: 20px;
+
+            padding-top: 18px;
+
+            border-top: 1px solid #e1e9e1;
+        }
+
+        .info-item label {
+            display: block;
+
+            font-size: 11px;
+            color: #78909c;
+
+            margin-bottom: 5px;
+        }
+
+        .info-item strong {
+            font-size: 13px;
+            color: #263238;
+        }
+
+        /* =========================
+           HISTORY TABLE
+        ========================= */
+
+        .history-title {
+            margin-bottom: 14px;
+        }
+
+        .history-title h3 {
+            font-size: 16px;
+            color: #263238;
+        }
+
+        .history-title p {
+            margin-top: 4px;
+            font-size: 12px;
+            color: #78909c;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+
+            padding: 11px 12px;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            color: #78909c;
+
+            background: #f8faf9;
+
+            border-bottom: 1px solid #e4e9e6;
+        }
+
+        td {
+            padding: 14px 12px;
+
+            font-size: 12px;
+            color: #455a64;
+
+            border-bottom: 1px solid #edf0ee;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #fafcfb;
+        }
+
+        /* =========================
+           SCHEDULE FORM
+        ========================= */
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #455a64;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+
+            padding: 11px 12px;
+
+            border: 1px solid #d8e0db;
+            border-radius: 8px;
+
+            background: #ffffff;
+
+            color: #263238;
+
+            font-family: inherit;
+            font-size: 13px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #66bb6a;
+
+            box-shadow:
+                0 0 0 3px rgba(102, 187, 106, 0.12);
+        }
+
+        .schedule-button {
+            width: 100%;
+
+            margin-top: 20px;
+
+            padding: 12px 16px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #2e7d32;
+            color: #ffffff;
+
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .schedule-button:hover {
+            background: #1b5e20;
+        }
+
+        .form-note {
+            margin-top: 16px;
+
+            padding: 13px 14px;
+
+            background: #f1f8e9;
+
+            border-left: 3px solid #66bb6a;
+
+            border-radius: 7px;
+
+            font-size: 11px;
+            line-height: 1.6;
+
+            color: #607d68;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .appointment-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                width: 210px;
+                min-width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                width: calc(100% - 210px);
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .appointment-info {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content {
+                padding: 22px;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-width: 100%;
+                height: auto;
+            }
+
+            .app {
+                flex-direction: column;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .topbar {
+                height: auto;
+                padding: 18px 20px;
+                gap: 15px;
+            }
+
+            .profile {
+                display: none;
+            }
+
+            .appointment-info {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .upcoming-top {
+                flex-direction: column;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                C
+            </div>
+
+            <div class="brand-text">
+                <h2>CHRONICARE</h2>
+                <p>Health Monitoring</p>
+            </div>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <div class="nav-title">
+                Patient Portal
+            </div>
+
+            <a href="dashboard.html">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a href="health-monitoring.html">
+                <span class="nav-icon">♡</span>
+                Health Monitoring
+            </a>
+
+            <a href="health-history.html">
+                <span class="nav-icon">▤</span>
+                Health History
+            </a>
+
+            <a href="health-trends.html">
+                <span class="nav-icon">⌁</span>
+                Health Trends
+            </a>
+
+            <a href="analytics.html">
+                <span class="nav-icon">◫</span>
+                Analytics
+            </a>
+
+            <a href="risk-status.html">
+                <span class="nav-icon">!</span>
+                Risk Status
+            </a>
+
+            <a href="alerts.html">
+                <span class="nav-icon">⚠</span>
+                Alerts
+            </a>
+
+            <a href="appointments.html" class="active">
+                <span class="nav-icon">▣</span>
+                Appointments
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="#">
+                <span class="nav-icon">⚙</span>
+                Settings
+            </a>
+
+            <a href="../login.html">
+                <span class="nav-icon">↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="main">
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="page-title">
+
+                <h1>Appointments</h1>
+
+                <p>
+                    Schedule and manage your doctor appointments.
+                </p>
+
+            </div>
+
+
+            <div class="profile">
+
+                <div class="avatar">
+                    SF
+                </div>
+
+                <div class="profile-info">
+
+                    <strong>Syeed Faruk</strong>
+
+                    <span>Patient</span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+
+            <!-- SUMMARY -->
+
+            <section class="summary-grid">
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Upcoming Appointments
+                    </div>
+
+                    <div class="summary-number" id="upcomingCount">
+    0
+</div>
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Completed Appointments
+                    </div>
+
+                    <div class="summary-number" id="completedCount">
+    0
+</div>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Pending Requests
+                    </div>
+
+                    <div class="summary-number" id="pendingCount">
+    0
+</div>
+
+                </div>
+
+            </section>
+
+
+            <!-- APPOINTMENT GRID -->
+
+            <section class="appointment-grid">
+
+
+                <!-- =========================
+                     LEFT CARD
+                ========================= -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h2>Upcoming Appointment</h2>
+
+                        <p>
+                            Your next scheduled consultation
+                        </p>
+
+                    </div>
+
+
+                    <div class="upcoming">
+
+                        <div class="upcoming-top">
+
+                            <div class="doctor-info">
+
+    <div class="doctor-avatar" id="upcomingDoctorAvatar">
+        --
+    </div>
+
+    <div>
+        <h3 id="upcomingDoctorName">
+            No appointment
+        </h3>
+
+        <p id="upcomingDoctorSpecialization">
+            --
+        </p>
+    </div>
+
+</div>
+
+                            <span class="status pending" id="upcomingStatus">
+    Pending
+</span>
+
+                        </div>
+
+
+                        <div class="appointment-info">
+
+                            <div class="info-item">
+
+                                <label>
+                                    DATE
+                                </label>
+
+                                <strong id="upcomingDate">
+                                     --
+                                </strong>
+
+                            </div>
+
+
+                            <div class="info-item">
+
+                                <label>
+                                    TIME
+                                </label>
+
+                                <strong>
+                                    10:30 AM
+                                </strong>
+
+                            </div>
+
+
+                            <div class="info-item">
+
+                                <label>
+                                    TYPE
+                                </label>
+
+                                <strong>
+                                    Consultation
+                                </strong>
+
+                            </div>
+
+
+                            <div class="info-item">
+
+                                <label>
+                                    STATUS
+                                </label>
+
+                               <strong id="upcomingStatusText">
+    Pending
+</strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- HISTORY -->
+
+                    <div class="history-title">
+
+                        <h3>
+                            Appointment History
+                        </h3>
+
+                        <p>
+                            Previous and current appointments
+                        </p>
+
+                    </div>
+
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        DOCTOR
+                                    </th>
+
+                                    <th>
+                                        DATE
+                                    </th>
+
+                                    <th>
+                                        TIME
+                                    </th>
+
+                                    <th>
+                                        STATUS
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="appointmentHistoryBody">
+</tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     RIGHT CARD
+                ========================= -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h2>
+                            Schedule Appointment
+                        </h2>
+
+                        <p>
+                            Request a new consultation
+                        </p>
+
+                    </div>
+
+
+                    <form id="appointmentForm">
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group full">
+
+                                <label for="doctor">
+                                    Select Doctor
+                                </label>
+
+                                <select id="doctor" required>
+
+    <option value="">
+        Choose a doctor
+    </option>
+
+</select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="date">
+                                    Appointment Date
+                                </label>
+
+                                <input
+                                    type="date"
+                                    id="date"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="time">
+                                    Appointment Time
+                                </label>
+
+                                <input
+                                    type="time"
+                                    id="time"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group full">
+
+                                <label for="reason">
+                                    Reason for Appointment
+                                </label>
+
+                                <textarea
+                                    id="reason"
+                                    placeholder="Enter the reason for your appointment..."
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="schedule-button"
+                        >
+                            Schedule Appointment
+                        </button>
+
+                    </form>
+
+
+                    <div class="form-note">
+
+    <strong>Appointment Information</strong><br>
+
+    Your appointment request has been connected to
+    the CHRONICARE backend and MySQL database.
+    The request will be reviewed and confirmed by the doctor.
+
+</div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    // Load doctors from the CHRONICARE backend
+    async function loadDoctors() {
+
+        try {
+
+            const response = await fetch(
+                "http://127.0.0.1:5000/api/health/doctors",
+                {
+                    headers: {
+                        "Authorization":
+                            "Bearer " + localStorage.getItem("chronicareToken")
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            const doctorSelect =
+                document.getElementById("doctor");
+
+            data.doctors.forEach(doctor => {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = doctor.doctor_id;
+
+                option.textContent =
+                    `${doctor.name} — ${doctor.specialization}`;
+
+                doctorSelect.appendChild(option);
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "Failed to load doctors:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // Load doctors when the page opens
+    loadDoctors();
+        // Load patient appointments
+        function formatAppointmentTime(time) {
+
+    const [hours, minutes] = time.split(":");
+
+    const date = new Date();
+
+    date.setHours(hours);
+    date.setMinutes(minutes);
+
+    return date.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit"
+    });
+
+}
+    async function loadAppointments() {
+
+        try {
+
+            const response = await fetch(
+                "http://127.0.0.1:5000/api/health/appointments",
+                {
+                    headers: {
+                        "Authorization":
+                            "Bearer " +
+                            localStorage.getItem("chronicareToken")
+                    }
+                }
+            );
+
+            const data = await response.json();
+            const appointments = data.appointments;
+            const historyBody =
+    document.getElementById("appointmentHistoryBody");
+
+historyBody.innerHTML = "";
+
+
+appointments.forEach(appointment => {
+
+    const row =
+        document.createElement("tr");
+
+
+    const formattedDate =
+        new Date(appointment.appointment_date)
+            .toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            });
+
+
+    const formattedTime =
+        formatAppointmentTime(
+            appointment.appointment_time
+        );
+
+
+    let statusClass = "pending";
+
+    if (appointment.status === "Completed") {
+        statusClass = "completed";
+    }
+
+    if (appointment.status === "Confirmed") {
+        statusClass = "confirmed";
+    }
+
+
+    row.innerHTML = `
+        <td>
+            ${appointment.doctor_name}
+        </td>
+
+        <td>
+            ${formattedDate}
+        </td>
+
+        <td>
+            ${formattedTime}
+        </td>
+
+        <td>
+            <span class="status ${statusClass}">
+                ${appointment.status}
+            </span>
+        </td>
+    `;
+
+
+    historyBody.appendChild(row);
+
+});
+
+const upcomingCount =
+    appointments.filter(
+        appointment =>
+            appointment.status !== "Completed"
+    ).length;
+
+const completedCount =
+    appointments.filter(
+        appointment =>
+            appointment.status === "Completed"
+    ).length;
+
+const pendingCount =
+    appointments.filter(
+        appointment =>
+            appointment.status === "Pending"
+    ).length;
+
+
+document.getElementById("upcomingCount").textContent =
+    upcomingCount;
+
+document.getElementById("completedCount").textContent =
+    completedCount;
+
+document.getElementById("pendingCount").textContent =
+    pendingCount;
+
+            if (data.appointments.length > 0) {
+
+    const appointment = data.appointments[0];
+
+    document.getElementById("upcomingDoctorAvatar").textContent =
+        appointment.doctor_name
+            .split(" ")
+            .map(name => name[0])
+            .join("")
+            .substring(0, 2)
+            .toUpperCase();
+
+    document.getElementById("upcomingDoctorName").textContent =
+        appointment.doctor_name;
+
+    document.getElementById("upcomingDoctorSpecialization").textContent =
+        appointment.specialization;
+
+    document.getElementById("upcomingDate").textContent =
+        new Date(appointment.appointment_date)
+            .toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
+            });
+
+    document.getElementById("upcomingTime").textContent =
+        formatAppointmentTime(appointment.appointment_time);
+
+    document.getElementById("upcomingStatus").textContent =
+        appointment.status;
+
+    document.getElementById("upcomingStatusText").textContent =
+        appointment.status;
+
+}
+
+        } catch (error) {
+
+            console.error(
+                "Failed to load appointments:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // Load appointments when the page opens
+    loadAppointments();
+
+    // Appointment form
+    document
+        .getElementById("appointmentForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+
+            const doctor =
+                document.getElementById("doctor").value;
+
+            const date =
+                document.getElementById("date").value;
+
+            const time =
+                document.getElementById("time").value;
+
+            const reason =
+                document.getElementById("reason").value;
+
+
+            if (!doctor || !date || !time) {
+
+                alert(
+                    "Please select a doctor, date and time."
+                );
+
+                return;
+            }
+
+
+            try {
+
+                const response = await fetch(
+                    "http://127.0.0.1:5000/api/health/appointments",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization":
+                                "Bearer " +
+                                localStorage.getItem("chronicareToken")
+                        },
+
+                        body: JSON.stringify({
+                            doctor_id: doctor,
+                            appointment_date: date,
+                            appointment_time: time,
+                            notes: reason
+                        })
+                    }
+                );
+
+
+                const data = await response.json();
+
+
+                if (!response.ok) {
+
+                    alert(
+                        data.message ||
+                        "Failed to schedule appointment."
+                    );
+
+                    return;
+                }
+
+
+                alert(
+                    "Appointment request submitted successfully!"
+                );
+
+
+                this.reset();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Appointment error:",
+                    error
+                );
+
+                alert(
+                    "Unable to connect to the CHRONICARE backend."
+                );
+
+            }
+
+        });
+
+</script>
+
+</body>
+</html>

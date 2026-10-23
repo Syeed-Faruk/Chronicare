@@ -1,0 +1,779 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+:root {
+    --primary: #2E7D32;
+    --primary-dark: #1B5E20;
+    --fresh-green: #66BB6A;
+
+    --mint: #E8F5E9;
+    --sage: #F1F8E9;
+
+    --charcoal: #263238;
+    --gray: #607D68;
+    --border: #DDE5DE;
+
+    --white: #FFFFFF;
+}
+
+
+body {
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    color: var(--charcoal);
+
+    background: var(--sage);
+}
+
+
+/* =========================================
+   MAIN AUTH LAYOUT
+========================================= */
+
+.auth-page {
+    min-height: 100vh;
+
+    display: grid;
+
+    grid-template-columns: 46% 54%;
+}
+
+
+/* =========================================
+   LEFT SHOWCASE
+========================================= */
+
+.auth-showcase {
+    position: relative;
+
+    background:
+        linear-gradient(
+            145deg,
+            #E8F5E9 0%,
+            #F1F8E9 55%,
+            #FFFFFF 100%
+        );
+
+    padding: 48px 9vw 42px 7vw;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    overflow: hidden;
+}
+
+
+/* Decorative background */
+
+.auth-showcase::before {
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    border-radius: 50%;
+
+    background: rgba(102, 187, 106, 0.10);
+
+    right: -180px;
+    bottom: -160px;
+}
+
+
+.auth-showcase::after {
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(46, 125, 50, 0.12);
+
+    right: 12%;
+    top: 16%;
+}
+
+
+/* =========================================
+   BRAND
+========================================= */
+
+.brand {
+    position: relative;
+    z-index: 2;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    width: fit-content;
+
+    text-decoration: none;
+
+    color: var(--charcoal);
+
+    font-size: 19px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+}
+
+
+.brand-mark {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: var(--primary);
+
+    color: white;
+
+    font-size: 18px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================
+   SHOWCASE TEXT
+========================================= */
+
+.showcase-content {
+    position: relative;
+    z-index: 2;
+}
+
+
+.showcase-text {
+    max-width: 520px;
+
+    margin-top: 105px;
+}
+
+
+.eyebrow,
+.form-step {
+    display: block;
+
+    color: var(--primary);
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.7px;
+
+    margin-bottom: 18px;
+}
+
+
+.showcase-text h1 {
+    font-size: clamp(42px, 4.5vw, 68px);
+
+    line-height: 1.02;
+
+    letter-spacing: -2.5px;
+
+    font-weight: 750;
+
+    margin-bottom: 25px;
+}
+
+
+.showcase-text h1 span {
+    color: var(--primary);
+}
+
+
+.showcase-text p {
+    max-width: 470px;
+
+    color: var(--gray);
+
+    font-size: 17px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================
+   FEATURES
+========================================= */
+
+.feature-list {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+
+    margin-top: 55px;
+}
+
+
+.feature-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+.feature-icon {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: var(--white);
+
+    color: var(--primary);
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    border: 1px solid rgba(46, 125, 50, 0.10);
+}
+
+
+.feature-item strong {
+    display: block;
+
+    font-size: 14px;
+
+    margin-bottom: 3px;
+}
+
+
+.feature-item span {
+    color: var(--gray);
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   SHOWCASE FOOTER
+========================================= */
+
+.showcase-footer {
+    position: relative;
+    z-index: 2;
+
+    color: #78907D;
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   RIGHT FORM SECTION
+========================================= */
+
+.auth-form-section {
+    background: var(--white);
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 50px 70px;
+}
+
+
+.form-container {
+    width: 100%;
+
+    max-width: 530px;
+}
+
+
+.mobile-brand {
+    display: none;
+}
+
+
+.form-header {
+    margin-bottom: 30px;
+}
+
+
+.form-header h2 {
+    font-size: 34px;
+
+    line-height: 1.15;
+
+    letter-spacing: -1px;
+
+    margin-bottom: 10px;
+}
+
+
+.form-header p {
+    color: var(--gray);
+
+    font-size: 14px;
+}
+
+
+/* =========================================
+   INPUTS
+========================================= */
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+
+.input-group label {
+    display: block;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    margin-bottom: 8px;
+}
+
+
+.input-group input {
+    width: 100%;
+
+    height: 48px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    padding: 0 14px;
+
+    font-size: 14px;
+
+    color: var(--charcoal);
+
+    outline: none;
+
+    background: white;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.input-group input::placeholder {
+    color: #A4AEA7;
+}
+
+
+.input-group input:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(46, 125, 50, 0.08);
+}
+
+
+/* =========================================
+   ROLE SELECTION
+========================================= */
+
+.role-options {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+}
+
+
+.role-card {
+    position: relative;
+
+    cursor: pointer;
+}
+
+
+.role-card input {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+.role-content {
+    min-height: 82px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    background: white;
+
+    transition: all 0.2s ease;
+}
+
+
+.role-card:hover .role-content {
+    border-color: var(--fresh-green);
+
+    background: var(--mint);
+}
+
+
+.role-card input:checked + .role-content {
+    border-color: var(--primary);
+
+    background: var(--mint);
+
+    box-shadow:
+        0 0 0 2px rgba(46, 125, 50, 0.10);
+}
+
+
+.role-icon {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: var(--sage);
+
+    color: var(--primary);
+
+    font-size: 12px;
+
+    font-weight: 800;
+}
+
+
+.role-text {
+    text-align: center;
+}
+
+
+.role-text strong {
+    display: block;
+
+    font-size: 12px;
+
+    margin-bottom: 2px;
+}
+
+
+.role-text small {
+    display: block;
+
+    color: var(--gray);
+
+    font-size: 10px;
+}
+
+
+/* =========================================
+   PASSWORD ROW
+========================================= */
+
+.password-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 14px;
+}
+
+
+.password-row .input-group {
+    margin-bottom: 0;
+}
+
+
+.password-hint {
+    color: #7A857D;
+
+    font-size: 11px;
+
+    margin-top: 8px;
+
+    margin-bottom: 23px;
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.submit-button {
+    width: 100%;
+
+    height: 50px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: var(--primary);
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.submit-button:hover {
+    background: var(--primary-dark);
+
+    transform: translateY(-1px);
+}
+
+
+.submit-button span {
+    font-size: 18px;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.form-footer {
+    text-align: center;
+
+    margin-top: 25px;
+}
+
+
+.form-footer p {
+    color: var(--gray);
+
+    font-size: 13px;
+}
+
+
+.form-footer a {
+    color: var(--primary);
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+.form-footer a:hover {
+    text-decoration: underline;
+}
+
+
+.back-link {
+    display: inline-block;
+
+    margin-top: 16px;
+
+    color: #7A857D !important;
+
+    font-size: 12px;
+
+    font-weight: 500 !important;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 950px) {
+
+    .auth-page {
+        grid-template-columns: 1fr;
+    }
+
+
+    .auth-showcase {
+        display: none;
+    }
+
+
+    .auth-form-section {
+        padding: 40px 25px;
+    }
+
+
+    .mobile-brand {
+        display: block;
+
+        margin-bottom: 45px;
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .auth-form-section {
+        padding: 30px 18px;
+    }
+
+
+    .form-header h2 {
+        font-size: 29px;
+    }
+
+
+    .role-options {
+        grid-template-columns: 1fr;
+    }
+
+
+    .role-content {
+        min-height: 62px;
+
+        flex-direction: row;
+
+        justify-content: flex-start;
+
+        padding: 0 15px;
+    }
+
+
+    .role-text {
+        text-align: left;
+    }
+
+
+    .password-row {
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+}
+.password-label {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 8px;
+}
+
+
+.password-label label {
+    margin-bottom: 0;
+}
+
+
+.password-label a {
+    color: var(--primary);
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+
+.password-label a:hover {
+    text-decoration: underline;
+}
+
+
+.remember-option {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 3px;
+
+    margin-bottom: 22px;
+
+    color: var(--gray);
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+
+.remember-option input {
+    width: 15px;
+
+    height: 15px;
+
+    accent-color: var(--primary);
+
+    cursor: pointer;
+}

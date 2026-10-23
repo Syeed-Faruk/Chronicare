@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patient Dashboard | CHRONICARE</title>
+
+    <link rel="stylesheet" href="../css/dashboard.css">
+
+</head>
+
+
+<body>
+
+    <div class="dashboard-layout">
+
+
+        <!-- =========================================
+             SIDEBAR
+        ========================================== -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-top">
+
+                <!-- BRAND -->
+
+                <a href="dashboard.html" class="dashboard-brand">
+
+                    <span class="brand-mark">
+                        C
+                    </span>
+
+                    <span>
+                        CHRONICARE
+                    </span>
+
+                </a>
+
+
+                <!-- NAVIGATION -->
+
+                <nav class="sidebar-nav">
+
+                    <p class="nav-label">
+                        MAIN MENU
+                    </p>
+
+
+                   <a href="dashboard.html" class="nav-item active">
+
+                        <span class="nav-icon">
+                            ⌂
+                        </span>
+
+                        <span>
+                            Dashboard
+                        </span>
+
+                    </a>
+
+
+                    <a href="health-monitoring.html" class="nav-item">
+
+                        <span class="nav-icon">
+                            ♥
+                        </span>
+
+                        <span>
+                            Health Monitoring
+                        </span>
+
+                    </a>
+
+
+                    <a href="health-history.html" class="nav-item">
+
+                        <span class="nav-icon">
+                            ◈
+                        </span>
+
+                        <span>
+                            Health History
+                        </span>
+
+                    </a>
+
+
+                   <a href="health-trends.html" class="nav-item">
+
+                        <span class="nav-icon">
+                            ↗
+                        </span>
+
+                        <span>
+                            Health Trends
+                        </span>
+
+                    </a>
+
+
+                    <a href="analytics.html" class="nav-item">
+
+                        <span class="nav-icon">
+                            ◌
+                        </span>
+
+                        <span>
+                            Analytics
+                        </span>
+
+                    </a>
+
+
+                    <p class="nav-label second-label">
+                        CARE
+                    </p>
+
+
+                    <a href="#" class="nav-item">
+
+                        <span class="nav-icon">
+                            !
+                        </span>
+
+                        <span>
+                            Risk Status
+                        </span>
+
+                        <span class="notification-dot"></span>
+
+                    </a>
+
+
+                    <a href="alerts.html" class="nav-item">
+
+                        <span class="nav-icon">
+                            ◇
+                        </span>
+
+                        <span>
+                            Alerts
+                        </span>
+
+                        <span class="alert-count">
+                            2
+                        </span>
+
+                    </a>
+
+
+                   <a href="appointments.html" class="nav-item">
+
+                        <span class="nav-icon">
+                            □
+                        </span>
+
+                        <span>
+                            Appointments
+                        </span>
+
+                    </a>
+
+
+                    <a href="follow-up.html" class="nav-item">
+
+                        <span class="nav-icon">
+                            ↻
+                        </span>
+
+                        <span>
+                            Follow-Up
+                        </span>
+
+                    </a>
+
+                </nav>
+
+            </div>
+
+
+            <!-- SIDEBAR BOTTOM -->
+
+            <div class="sidebar-bottom">
+
+                <a href="profile.html" class="nav-item">
+
+                    <span class="nav-icon">
+                        ○
+                    </span>
+
+                    <span>
+                        My Profile
+                    </span>
+
+                </a>
+
+
+                <a href="../index.html" class="nav-item logout">
+
+                    <span class="nav-icon">
+                        ←
+                    </span>
+
+                    <span>
+                        Logout
+                    </span>
+
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =========================================
+             MAIN CONTENT
+        ========================================== -->
+
+        <main class="main-content">
+
+
+            <!-- TOP BAR -->
+
+            <header class="topbar">
+
+                <div>
+
+                    <p class="page-section">
+                        PATIENT PORTAL
+                    </p>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <button class="icon-button">
+                        ♧
+                    </button>
+
+
+                    <button class="notification-button">
+
+                        ◇
+
+                        <span></span>
+
+                    </button>
+
+
+                    <div class="user-profile">
+
+                        <div class="avatar">
+                            SF
+                        </div>
+
+                        <div class="user-info">
+
+                            <strong>
+                                Syeed Faruk
+                            </strong>
+
+                            <small>
+                                Patient
+                            </small>
+
+                        </div>
+
+                        <span class="dropdown-arrow">
+                            ▾
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- CONTENT -->
+
+            <div class="content-wrapper">
+
+
+                <!-- GREETING -->
+
+                <section class="welcome-section">
+
+                    <div>
+
+                        <p class="date-label">
+                            Wednesday, September 30, 2026
+                        </p>
+
+                        <h1>
+                            Good evening, Syeed
+                        </h1>
+
+                        <p>
+                            Here's an overview of your health today.
+                        </p>
+
+                    </div>
+
+
+                    <button class="primary-action">
+
+                        <span>
+                            +
+                        </span>
+
+                        Add Health Data
+
+                    </button>
+
+                </section>
+
+
+                <!-- =========================================
+                     HEALTH SUMMARY
+                ========================================== -->
+
+                <section class="section-block">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <h2>
+                                Health Overview
+                            </h2>
+
+                            <p>
+                                Your latest recorded health parameters
+                            </p>
+
+                        </div>
+
+                        <span class="last-updated">
+                            Updated 10 min ago
+                        </span>
+
+                    </div>
+
+
+                    <div class="health-grid">
+
+
+                        <!-- HEART RATE -->
+
+                        <div class="health-card">
+
+                            <div class="health-card-top">
+
+                                <div class="metric-icon heart">
+                                    ♥
+                                </div>
+
+                                <span class="status-normal">
+                                    Normal
+                                </span>
+
+                            </div>
+
+                            <p class="metric-label">
+                                Heart Rate
+                            </p>
+
+                            <div class="metric-value" id="heartRateValue">
+    78
+    <span>BPM</span>
+</div>
+
+                            <p class="metric-change positive">
+                                ↓ 3 BPM from yesterday
+                            </p>
+
+                        </div>
+
+
+                        <!-- BLOOD PRESSURE -->
+
+                        <div class="health-card">
+
+                            <div class="health-card-top">
+
+                                <div class="metric-icon pressure">
+                                    +
+                                </div>
+
+                                <span class="status-normal">
+                                    Normal
+                                </span>
+
+                            </div>
+
+                            <p class="metric-label">
+                                Blood Pressure
+                            </p>
+
+                            <div class="metric-value" id="bloodPressureValue">
+    120/80
+    <span>mmHg</span>
+</div>
+
+                            <p class="metric-change positive">
+                                Within normal range
+                            </p>
+
+                        </div>
+
+
+                        <!-- SPO2 -->
+
+                        <div class="health-card">
+
+                            <div class="health-card-top">
+
+                                <div class="metric-icon oxygen">
+                                    O₂
+                                </div>
+
+                                <span class="status-normal">
+                                    Normal
+                                </span>
+
+                            </div>
+
+                            <p class="metric-label">
+                                Blood Oxygen
+                            </p>
+
+                            <div class="metric-value" id="spo2Value">
+    98
+    <span>%</span>
+</div>
+
+                            <p class="metric-change positive">
+                                Optimal oxygen level
+                            </p>
+
+                        </div>
+
+
+                        <!-- GLUCOSE -->
+
+                        <div class="health-card">
+
+                            <div class="health-card-top">
+
+                                <div class="metric-icon glucose">
+                                    G
+                                </div>
+
+                                <span class="status-elevated">
+                                    Monitor
+                                </span>
+
+                            </div>
+
+                            <p class="metric-label">
+                                Blood Glucose
+                            </p>
+
+                            <div class="metric-value" id="glucoseValue">
+                                104
+                                <span>mg/dL</span>
+                            </div>
+
+                            <p class="metric-change neutral">
+                                Slightly above baseline
+                            </p>
+
+                        </div>
+
+
+                        <!-- TEMPERATURE -->
+
+                        <div class="health-card">
+
+                            <div class="health-card-top">
+
+                                <div class="metric-icon temperature">
+                                    °C
+                                </div>
+
+                                <span class="status-normal">
+                                    Normal
+                                </span>
+
+                            </div>
+
+                            <p class="metric-label">
+                                Temperature
+                            </p>
+
+                            <div class="metric-value" id="temperatureValue">
+                                98.4
+                                <span>°F</span>
+                            </div>
+
+                            <p class="metric-change positive">
+                                Normal body temperature
+                            </p>
+
+                        </div>
+
+
+                        <!-- WEIGHT -->
+
+                        <div class="health-card">
+
+                            <div class="health-card-top">
+
+                                <div class="metric-icon weight">
+                                    W
+                                </div>
+
+                                <span class="status-normal">
+                                    Stable
+                                </span>
+
+                            </div>
+
+                            <p class="metric-label">
+                                Weight
+                            </p>
+
+                            <div class="metric-value" id="weightValue">
+                                72
+                                <span>kg</span>
+                            </div>
+
+                            <p class="metric-change neutral">
+                                No significant change
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+                <!-- =========================================
+                     CHART + RISK
+                ========================================== -->
+
+                <section class="dashboard-grid">
+
+
+                    <!-- HEALTH TREND -->
+
+                    <div class="panel trend-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <h2>
+                                    Health Trends
+                                </h2>
+
+                                <p>
+                                    Heart rate over the past 7 days
+                                </p>
+
+                            </div>
+
+
+                            <select class="chart-select">
+
+                                <option>
+                                    Heart Rate
+                                </option>
+
+                                <option>
+                                    Blood Pressure
+                                </option>
+
+                                <option>
+                                    SpO₂
+                                </option>
+
+                                <option>
+                                    Weight
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="chart-area">
+
+                            <div class="y-axis">
+
+                                <span>
+                                    100
+                                </span>
+
+                                <span>
+                                    90
+                                </span>
+
+                                <span>
+                                    80
+                                </span>
+
+                                <span>
+                                    70
+                                </span>
+
+                                <span>
+                                    60
+                                </span>
+
+                            </div>
+
+
+                            <div class="chart">
+
+                                <div class="grid-line line-1"></div>
+                                <div class="grid-line line-2"></div>
+                                <div class="grid-line line-3"></div>
+                                <div class="grid-line line-4"></div>
+                                <div class="grid-line line-5"></div>
+
+
+                                <svg
+                                    viewBox="0 0 600 220"
+                                    preserveAspectRatio="none"
+                                >
+
+                                    <polyline
+                                        points="0,125 85,108 170,118 255,88 340,103 425,80 510,92 600,65"
+                                        fill="none"
+                                        stroke="#2E7D32"
+                                        stroke-width="4"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+
+                                    <circle
+                                        cx="0"
+                                        cy="125"
+                                        r="5"
+                                        fill="#2E7D32"
+                                    />
+
+                                    <circle
+                                        cx="85"
+                                        cy="108"
+                                        r="5"
+                                        fill="#2E7D32"
+                                    />
+
+                                    <circle
+                                        cx="170"
+                                        cy="118"
+                                        r="5"
+                                        fill="#2E7D32"
+                                    />
+
+                                    <circle
+                                        cx="255"
+                                        cy="88"
+                                        r="5"
+                                        fill="#2E7D32"
+                                    />
+
+                                    <circle
+                                        cx="340"
+                                        cy="103"
+                                        r="5"
+                                        fill="#2E7D32"
+                                    />
+
+                                    <circle
+                                        cx="425"
+                                        cy="80"
+                                        r="5"
+                                        fill="#2E7D32"
+                                    />
+
+                                    <circle
+                                        cx="510"
+                                        cy="92"
+                                        r="5"
+                                        fill="#2E7D32"
+                                    />
+
+                                    <circle
+                                        cx="600"
+                                        cy="65"
+                                        r="6"
+                                        fill="#2E7D32"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+
+                            <div class="x-axis">
+
+                                <span>Thu</span>
+                                <span>Fri</span>
+                                <span>Sat</span>
+                                <span>Sun</span>
+                                <span>Mon</span>
+                                <span>Tue</span>
+                                <span>Wed</span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- RISK STATUS -->
+
+                    <div class="panel risk-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <h2>
+                                    Risk Status
+                                </h2>
+
+                                <p>
+                                    Latest AI assessment
+                                </p>
+
+                            </div>
+
+                            <span class="risk-info">
+                                i
+                            </span>
+
+                        </div>
+
+
+                        <div class="risk-content">
+
+                            <div class="risk-score">
+
+                                <div class="score-number">
+                                    72
+                                </div>
+
+                                <div class="score-total">
+                                    / 100
+                                </div>
+
+                            </div>
+
+
+                            <span class="risk-badge">
+                                ELEVATED RISK
+                            </span>
+
+
+                            <p class="risk-description">
+
+                                Your recent health data shows
+                                some parameters that require
+                                monitoring.
+
+                            </p>
+
+
+                            <div class="risk-factors">
+
+                                <div>
+
+                                    <span>
+                                        Blood glucose
+                                    </span>
+
+                                    <strong>
+                                        Elevated
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>
+                                        Blood pressure
+                                    </span>
+
+                                    <strong class="normal-text">
+                                        Normal
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>
+                                        Heart rate
+                                    </span>
+
+                                    <strong class="normal-text">
+                                        Normal
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <button class="secondary-action" id="assessRiskButton">
+    Run AI Risk Assessment →
+</button>
+
+<p id="riskAssessmentMessage" style="margin-top: 10px; font-size: 13px;"></p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =========================================
+                     ALERTS + APPOINTMENT
+                ========================================== -->
+
+                <section class="bottom-grid">
+
+
+                    <!-- ALERTS -->
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <h2>
+                                    Recent Alerts
+                                </h2>
+
+                                <p>
+                                    Health notifications
+                                </p>
+
+                            </div>
+
+                            <a href="#" class="view-link">
+                                View all
+                            </a>
+
+                        </div>
+
+
+                        <div class="alert-list">
+
+
+                            <div class="alert-item elevated-alert">
+
+                                <div class="alert-icon">
+                                    !
+                                </div>
+
+                                <div class="alert-content">
+
+                                    <strong>
+                                        Blood glucose needs monitoring
+                                    </strong>
+
+                                    <span>
+                                        Your latest reading was
+                                        slightly above baseline.
+                                    </span>
+
+                                </div>
+
+                                <time>
+                                    10 min
+                                </time>
+
+                            </div>
+
+
+                            <div class="alert-item normal-alert">
+
+                                <div class="alert-icon">
+                                    ✓
+                                </div>
+
+                                <div class="alert-content">
+
+                                    <strong>
+                                        Heart rate within range
+                                    </strong>
+
+                                    <span>
+                                        Your latest reading is
+                                        within the expected range.
+                                    </span>
+
+                                </div>
+
+                                <time>
+                                    1 hr
+                                </time>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- APPOINTMENT -->
+
+                    <div class="panel appointment-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <h2>
+                                    Upcoming Appointment
+                                </h2>
+
+                                <p>
+                                    Your next scheduled visit
+                                </p>
+
+                            </div>
+
+                            <a href="#" class="view-link">
+                                View all
+                            </a>
+
+                        </div>
+
+
+                        <div class="appointment-card">
+
+                            <div class="doctor-avatar">
+                                DR
+                            </div>
+
+
+                            <div class="appointment-info">
+
+                                <strong>
+                                    Dr. Rahul Kumar
+                                </strong>
+
+                                <span>
+                                    General Physician
+                                </span>
+
+                                <div class="appointment-time">
+
+                                    <span>
+                                        12 Oct 2026
+                                    </span>
+
+                                    <span>
+                                        •
+                                    </span>
+
+                                    <span>
+                                        10:30 AM
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <span class="confirmed">
+                                Confirmed
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+    const API_BASE = "http://localhost:5000/api";
+
+    const token =
+        localStorage.getItem("chronicareToken") ||
+        sessionStorage.getItem("chronicareToken");
+
+    if (!token) {
+        console.error("Login token not found. Please log in again.");
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `${API_BASE}/health/analytics`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error("Health API error:", data);
+            return;
+        }
+
+        const latest = data.records?.[0];
+
+        if (!latest) {
+            console.log("No health records found.");
+            return;
+        }
+
+        function updateMetric(id, value, unit) {
+            const element = document.getElementById(id);
+
+            if (element && value != null) {
+                element.innerHTML =
+                    `${value} <span>${unit}</span>`;
+            }
+        }
+
+        updateMetric("heartRateValue", latest.heart_rate, "BPM");
+        updateMetric("bloodPressureValue", latest.blood_pressure, "mmHg");
+        updateMetric("spo2Value", latest.spo2, "%");
+        updateMetric("weightValue", latest.weight, "kg");
+
+        console.log("Patient health data loaded successfully.");
+
+    } catch (error) {
+        console.error("Failed to load patient health data:", error);
+    }
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const API_BASE = "http://localhost:5000/api";
+    const button = document.getElementById("assessRiskButton");
+    const message = document.getElementById("riskAssessmentMessage");
+
+    if (!button || !message) return;
+
+    button.addEventListener("click", async function () {
+        const token =
+            localStorage.getItem("chronicareToken") ||
+            sessionStorage.getItem("chronicareToken");
+
+        if (!token) {
+            message.textContent = "Please log in again before running an assessment.";
+            return;
+        }
+
+        button.disabled = true;
+        button.textContent = "Assessing...";
+        message.textContent = "Analyzing your latest recorded health data...";
+
+        try {
+            const response = await fetch(
+                `${API_BASE}/health/assess-risk`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    result.message || "The assessment could not be completed."
+                );
+            }
+
+            const scoreElement = document.querySelector(".score-number");
+            const badgeElement = document.querySelector(".risk-badge");
+
+            if (scoreElement) {
+                scoreElement.textContent = result.risk_score;
+            }
+
+            if (badgeElement) {
+                badgeElement.textContent =
+                    `${result.risk_category || "Unknown"} RISK`.toUpperCase();
+            }
+
+            message.textContent =
+                `Assessment saved successfully. Risk: ${result.risk_category}, score: ${result.risk_score}/100.`;
+
+        } catch (error) {
+            console.error("Risk assessment error:", error);
+            message.textContent = error.message;
+        } finally {
+            button.disabled = false;
+            button.textContent = "Run AI Risk Assessment →";
+        }
+    });
+});
+</script>
+</body>
+
+</html>
