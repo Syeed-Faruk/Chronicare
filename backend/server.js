@@ -64,6 +64,33 @@ app.get("/api/auth/me", authenticateToken, (req, res) => {
     });
 });
 // Start server
+app.get("/api/db-network-test", async (req, res) => {
+  const net = require("net");
+
+  const socket = net.createConnection({
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT || 3306)
+  });
+
+  socket.setTimeout(8000);
+
+  socket.on("connect", () => {
+    socket.destroy();
+    res.json({ network: "connected" });
+  });
+
+  socket.on("timeout", () => {
+    socket.destroy();
+    res.status(504).json({ network: "timeout" });
+  });
+
+  socket.on("error", (err) => {
+    res.status(500).json({
+      network: "failed",
+      code: err.code
+    });
+  });
+});
 app.listen(PORT, () => {
 
     console.log(
