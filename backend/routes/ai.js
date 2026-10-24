@@ -20,25 +20,35 @@ router.post("/predict-risk", authenticateToken, async (req, res) => {
             });
         }
 
+        const aiServiceUrl = process.env.AI_SERVICE_URL;
+
+        if (!aiServiceUrl) {
+            console.error("AI_SERVICE_URL is not configured");
+            return res.status(503).json({
+                message: "AI service is not configured"
+            });
+        }
+
         const response = await axios.post(
-            "http://127.0.0.1:8000/predict-risk",
+            `${aiServiceUrl.replace(/\/+$/, "")}/predict-risk`,
             {
                 heart_rate: Number(heart_rate),
                 spo2: Number(spo2),
                 systolic_bp: Number(systolic_bp),
                 weight: Number(weight)
-            }
+            },
+            { timeout: 20000 }
         );
 
-        res.json(response.data);
+        return res.json(response.data);
 
     } catch (error) {
         console.error(
             "AI prediction error:",
-            error.response?.data || error.message
+            error.response?.data || error.code || error.message
         );
 
-        res.status(502).json({
+        return res.status(502).json({
             message: "Could not obtain a prediction from the AI service"
         });
     }
